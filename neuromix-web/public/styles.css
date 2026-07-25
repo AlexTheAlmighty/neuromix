@@ -200,7 +200,7 @@ select[size] option { padding: 6px 8px; border-radius: 5px; }
 .btn-sm { padding: 5px 10px; font-size: 0.82rem; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
 
-/* analysis button grid (mirrors the Enrichr tool list in the R app) */
+/* analysis button grid: the collapsible Enrichr library groups */
 .tool-group { border-top: 1px solid var(--border); }
 .tool-group:last-of-type { border-bottom: 1px solid var(--border); }
 .tool-group > summary {

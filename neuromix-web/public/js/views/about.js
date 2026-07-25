@@ -41,7 +41,7 @@ export function mount(root) {
       ]),
       el('p', {
         text: 'Exact match restricts results to the symbol you typed. With it off, a search for KIF also returns '
-          + 'KIF1A, KIF5B and every other symbol containing those letters, which is how the original tool behaved.',
+          + 'KIF1A, KIF5B and every other symbol containing those letters.',
       }),
 
       el('h2', { text: 'Gene list analysis' }),
