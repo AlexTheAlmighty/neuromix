@@ -39,8 +39,12 @@ quietly stopped parsing.
 ## Hosting
 
 Static bundle on GitHub Pages at https://neuromix.org, published by
-`.github/workflows/deploy.yml` from `neuromix-web/public`. `public/CNAME` holds the
-custom domain. There is no server and no runtime secret.
+`.github/workflows/deploy.yml` from `neuromix-web/public`. There is no server and no
+runtime secret.
+
+The custom domain lives in the repository's Pages settings, not in `public/CNAME`.
+When Pages builds from Actions rather than from a branch, the CNAME file in the
+artifact is ignored. It is kept only so a branch-based deploy would still work.
 
 Enrichr, STRING and NCBI are called straight from the browser, since all three send
 permissive CORS headers. BioGRID is not used: its webservice needs an access key, and
