@@ -1,0 +1,1783 @@
+﻿library(shiny)
+library(DT)
+library(shinythemes)
+library(dplyr)
+#library(org.Hs.eg.db) conditionally loaded later
+library(rentrez)
+library(data.table)
+#library(shinyWidgets)
+#library(enrichR) conditionally loaded later
+library(ggplot2)
+library(stringr)
+#remotes::install_github("moosa-r/rbioapi")
+library(rbioapi)
+#remotes::install_github("npjc/biogridr")
+library(biogridr)
+
+
+
+
+
+
+# Load raw dataset
+#setwd("C:/R Stuff")
+#.libPaths("C:/RLib")
+
+
+#Statistics for paper
+#sum(grepl("synapse", data[2, ]))
+
+
+#Read in data containing gene lists
+data = fread("neuromics_data.csv", encoding = "Latin-1", data.table=FALSE)
+data <- data[ , -1]
+
+
+data_below_row_7 <- data[-(1:7), ]
+data_below_row_7 <- lapply(data_below_row_7, toupper)
+#unique_genes <- unique(unlist(data_below_row_7)) # Unique gene names for autocomplete
+
+
+
+
+ui <- navbarPage(
+  title = div(style = "font-size: 40px;", "NeurOmix"),
+  theme = shinytheme("spacelab"),
+  tags$head(
+    
+    #For modal dialog
+    tags$script(HTML("
+      $(document).ready(function() {
+        $('h5').css('cursor', 'pointer');
+        $('h5').on('click', function() {
+          Shiny.setInputValue('show_about_modal', $(this).attr('data-modal-id'), {priority: 'event'});
+        });
+      });
+    ")),
+    
+    tags$script(HTML("
+      $(document).on('click', '.experiment-summary', function(e) {
+        e.preventDefault();
+        var summary = $(this).text();
+        Shiny.onInputChange('experiment_summary_clicked', summary);
+      });
+    ")),
+    
+    #custom hr = border in side panel. 
+    #interaction-table = sidebar tables
+    #h1,2,3, etc is all font except datatables
+    #custom datatable is main page data table
+    #a is hyperlinks
+    #shiny notification = loading screen
+    tags$style(HTML("
+      .custom-hr {
+        border: 1px;
+        height: 1px;
+        background: #62c1f5;  
+      }
+      
+h1, h2, h3, h4, h5, h6, p, div, span, a, button, input, select, textarea, table {
+      font-family: 'Helvetica', sans-serif; /* font */
+      font-size: 14px;
+      color: #000000;
+}
+
+
+#Controls tab buttons and gene search table
+  a:hover {
+  font-family: 'Helvetica', sans-serif; /* font */
+      color: #000000; /* grey blue */
+       #font-weight: bold;
+       font-size: 16px;
+      #text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3); /* Shadow effect */
+      transition: all 0.3s ease; /* Smooth transition */
+  }
+
+
+      .interaction-table {
+      background: #84abcf;
+      border: 1px solid #1b2421;
+      font-size: 11px;
+      font-family: 'Helvetica', sans-serif; /* font */
+      }
+      
+      .glow-text:hover {
+      color: #000000; /* grey blue */
+      #font-weight: bold;
+      font-size: 14px;
+      text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.6); /* Shadow effect */
+      transition: all 0.3s ease; /* Smooth transition */
+      }
+    
+    .custom-btn2:hover::after {
+                content: attr(title); /* connects to title */
+                position: fixed; 
+                left: 50%; /* Higher values move right */
+                top: 50%; /* Lower values move up */
+                transform: translateY(-50%); /* Center vertically */
+                transform: translateX(-20%); /* Center laterally */
+
+
+                background-color: #84abcf; /* Adjust color */
+                color: black; /* Adjust text color */
+                padding: 5px 5px; /* Adjust padding */
+                border-radius: 3px;
+                z-index: 9999; /* Bring tooltip to the front */
+
+
+                white-space: normal; /* Allow text wrapping */
+                max-width: 500px; /* Set maximum width for the tooltip */
+
+
+                box-shadow: 0 0 8px rgba(0,0,0,0.5);
+                pointer-events: none !important;
+
+
+            }
+      
+      
+      
+        a {
+        color: #000000; 
+        font-family: 'Helvetica', sans-serif; /* font */
+
+
+        }
+        
+      
+     .interaction-table th, .interaction-table td {
+          padding: 3px !important;
+          font-family: 'Helvetica', sans-serif; /* font */
+          border-bottom: 1px solid #111;
+      }
+  
+      .custom-select-input {
+        width: 100%;
+        white-space: normal;
+        margin-bottom: 10px;
+        height: auto;
+        font-family: 'Helvetica', sans-serif; /* font */
+
+
+        display: block;
+      }
+      .custom-select-input option {
+        white-space: normal;
+        margin-bottom: 4px;
+        font-size: 12px;
+      }
+
+
+        #shiny-notification-panel {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1050;
+        width: 200px;
+        font-size: 16px; /* Adjust the font size */
+        padding: 15px; /* Adjust the padding */
+        }
+      
+      .custom-btn {
+      color: black !important; /* Adjust color of font */
+      background: #5282AA; /* Adjust color of buttons in main gene search panel */
+      border: 1px solid #1b2421;
+      margin: 3px; 
+      border-bottom: 1px solid #111;
+      font-size:15px;
+      font-family: 'Helvetica', sans-serif; 
+      }
+        .custom-btn2 {
+      color: black !important; /* Adjust color of font */
+      background: #5282AA; /* Adjust color of buttons in main gene search panel */
+      border: 1px solid #1b2421;
+      margin: 3px; 
+      border-bottom: 1px solid #111;
+      font-size:15px;
+      font-family: 'Helvetica', sans-serif; 
+            }
+
+
+      .custom-btn:hover {
+      color: white !important; /* color of font */
+      background: #84abcf; /* Adjust hover color of buttons in gene search page */
+      border: 1px solid #1b2421;
+       font-weight: bold;
+      box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.7); /* Shadow effect */
+      transition: all 0.15s ease; /* Smooth transition */
+      font-size:15px;
+      }
+      
+.custom-btn:focus,
+.custom-btn:active {
+  background: #84abcf !important; /* Keep your button's normal background */
+  color: white !important; /* Keep your text color */
+      border: 1px solid #1b2421;
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Shadow effect */
+      transition: all 0.15s ease; /* Smooth transition */
+}
+
+
+      .custom-btn2:hover {
+      color: white !important; /* color of font */
+      background: #84abcf; /* Adjust hover color of buttons in gene search page */
+      border: 1px solid #1b2421;
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Shadow effect */
+      transition: all 0.15s ease; /* Smooth transition */
+      font-size:15px;
+      }
+      
+.custom-btn2:focus,
+.custom-btn2:active {
+  background: #84abcf !important; /* Keep your button's normal background */
+  color: white !important; /* Keep your text color */
+      border: 1px solid #1b2421;
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Shadow effect */
+      transition: all 0.15s ease; /* Smooth transition */
+}
+    
+      .custom-datatable {
+      background-color: #84abcf;
+      border: 1px solid #1b2421;
+      font-size: 12px;
+          }
+    
+    "))
+  ),
+  
+  # Gene Search Tab
+  tabPanel("Gene Analysis",
+           sidebarLayout(
+             
+             sidebarPanel(
+               width = 5,
+               h5(class = "glow-text", "Search the NeurOmix Database for your gene of interest. Add commas between genes to query multiple genes of interest. Click for more information.", `data-modal-id` = "NeurOmix", ),
+               textInput("gene", "Enter Gene Name", ""),
+               checkboxInput("exact_match", "Exact Match", value = FALSE),
+               actionButton("searchgenes", "Search NeurOmix Database", class = "custom-btn"),
+               actionButton("cooccurrence", "Search Co-Occurring Genes", class = "custom-btn"),
+               
+               
+               #SelectizeInput is for dynamically producing gene names as user types               
+               #               selectizeInput(
+               #                # inputId = "gene",
+               #               #  label = "Enter Gene Name(s):",
+               #              #   choices = unique_genes,
+               #              #   multiple = TRUE,
+               #              #   options = list(
+               #              #     placeholder = "Type to search genes (e.g., KIF)"#,
+               #              #     create = FALSE, # Prevent creating new options
+               #              #     maxOptions = 50 # Limit dropdown to 50 #suggestions
+               #                 )
+               #               ),
+               tags$hr(class = "custom-hr"),  # Add custom class to hr
+               h5(class = "glow-text", "Analyze interactome and expression data. Click for more information", `data-modal-id` = "interactome_data"),
+               #actionButton("interactome_analysis", "Search Protein Interactions & Expression", class = "custom-btn"),
+               DTOutput("interactome_results"),
+               actionButton("biogridstring", "Search Protein Interactions from BioGRID & STRING", class = "custom-btn"),
+               br(),
+               DTOutput("interaction_results"),
+               
+               tags$hr(class = "custom-hr")  # Add custom class to hr
+               
+             ),
+             mainPanel(
+               width = 7,
+               #print a simple description of searched gene
+               uiOutput("landingpage"),
+               #uiOutput("gene_description"),
+               #display article descriptions containing searched gene
+               DTOutput("search_results"),
+               uiOutput("no_results_message")
+               
+             )
+           )
+  ),
+  
+  tabPanel("Gene List Analysis",
+           sidebarLayout(
+             sidebarPanel(
+               width = 5,
+               div(class = "custom-select-input",
+                   textInput("keywords", "Enter a keyword to filter studies", 
+                             value = "", 
+                             width = "100%")
+               ),
+               div(class = "custom-select-input",
+                   selectInput("columns", "Select A Study To Paste Gene List Below", 
+                               choices = c("", colnames(data)), selected = NULL, 
+                               multiple = FALSE, width = "100%", selectize = FALSE, size = 7)
+               ),            
+               div(class = "custom-select-input",
+                   textAreaInput("textbox_genes", "Enter A Gene or Gene List (Separate By Comma)", value = "" , rows = 4),
+               ),
+               actionButton("NeurOmix_analysis", "Compare to NeurOmix Database", class = "custom-btn2", title = " Compare gene list to other gene lists in the NeurOmix database to identify shared genes "  ),
+               #actionButton("interactome_analysis", "Identify Co-Interacting Proteins", class = "custom-btn2",  title = " Identify all protein interactions of proteins in gene list (from BioPlex, BraINmap, Luck et al, GO et al), and search for shared interactions between them" ),
+               
+               h5("GO Analysis"),
+               actionButton("gobiological_analysis", "GO Biological Process", class = "custom-btn2", title = " Curated annotations of genes with biological processes from the Gene Ontology, updated for 2023 " ),
+               
+               actionButton("gocellular_analysis", "GO Cellular Component", class = "custom-btn2", title = " Curated annotations of genes with cellular components from the Gene Ontology, updated for 2023 " ),
+               
+               actionButton("gomolecular_analysis", "GO Molecular Function", class = "custom-btn2", title = " Curated annotations of genes with molecular functions from the Gene Ontology, updated for 2023 " ),
+               
+               actionButton("syngo_analysis", "SynGO Function", class = "custom-btn2", title = " An evidence-based, expert-curated resource for synapse function and gene enrichment studies " ),
+               
+               br(),
+               h5("Phenotype & Disease Analysis"),
+               
+               actionButton("MGIphenotype_analysis", "MGI Mouse KO Phenotypes", class = "custom-btn2", title = " Observed phenotypes of transgenic mice collected from mouse phenotyping studies. 15,572 genes, 10,295 phenotypes, 265,193 associations " ),
+               
+               actionButton("humanphenotype_analysis", "Human Phenotype Ontology", class = "custom-btn2", title = " Search the Human Phenotype Ontology atlas to identify phenotypes associated with gene list. Currently contains over 13,000 terms and over 156,000 annotations to hereditary diseases. " ),
+               
+               actionButton("phengen_analysis", "PhenGenI Phenotypes", class = "custom-btn2", title = " Phenotype-Genotype Integrator (PheGenI), merges GWAS catalog data with several association databases, including dbGaP, OMIM, eQTL and dbSNP " ),
+               
+               actionButton("disgenet_analysis", "DisGeNET Gene-Disease Database", class = "custom-btn2", title = " Gene-disease associations sourced from curated repositories, GWAS catalogues, animal models and the scientific literature. Currently contains 1,934,730 gene-disease associations and 1,254,874 variant-disease associations " ),
+               
+               br(),
+               h5("Protein Function Analysis"),
+               actionButton("cellsub_analysis", "Subcellular Location Barcode", class = "custom-btn2", title = " Searches the subcellular localtion of 12,418 genes from five different cell types, classifying proteins into cytosolic, nuclear, secretory and mitochondrial locations and into specific subcellular compartments " ),
+               
+               actionButton("pfamdomain_analysis", "Pfam Domains", class = "custom-btn2", title = " Analyze and predict protein domains of proteins in gene list from InterPro database. " ),
+               
+               
+               actionButton("CORUM_analysis", "CORUM Protein Complexes", class = "custom-btn2", title = " CORUM is a manually curated repository of experimentally characterized protein complexes from mammalian organisms " ),
+               
+               
+               actionButton("miRNA_analysis", "miRNA Targets", class = "custom-btn2", title = " Search miRTarBase, an experimentally validated microRNA-target interactions database containing over 360,000 miRNA targets " ),
+               
+               br(),
+               h5("Expression Analysis"),
+               actionButton("gtextissue_analysis", "GTEx Tissue Expression", class = "custom-btn2", title = " The Adult Genotype Tissue Expression (GTEx) Project is a comprehensive public resource to study human gene expression and regulation. Contains tissue expression data from 1,000 individuals across 17,000 samples " ),
+               
+               actionButton("aba_analysis", "Allen Brain Atlas Expression ", class = "custom-btn2", title = " Search single cell RNA transcriptomic data from Allen Brain Institute to identify brain cell types with high or low levels of expression of gene list " ),
+               
+               actionButton("chea_analysis", "ChEA TF Target Database", class = "custom-btn2", title = " Transcription factor binding site profiles from published ChIP-chip, ChIP-seq, and other transcription factor functional studies. Contains 18,365 genes, 757 transcription factor binding site profiles, 917,047 associations " ),
+               
+               actionButton("genepertup_analysis", "Gene Perturbations Upregulate", class = "custom-btn2", title = "  Analyze GEO database for genetic perturbations that increase expression of gene list. Contains expression data from ~ 7 million samples " ),
+               
+               
+               actionButton("genepertdown_analysis", "Gene Perturbations Downregulate", class = "custom-btn2", title = " Analyze GEO database for genetic perturbations that decrease expression of gene list. Contains expression data from ~ 7 million samples " ),
+               
+               
+               actionButton("LINCScrispr_analysis", "LINCS CRISPR Associations", class = "custom-btn2", title = " Searches SigCom LINCS for CRISPR expression data. Contains expression data from 7,500 CRISPR knockout experiments " ),
+               
+               br(),
+               h5("Drug Analysis"),
+               
+               actionButton("drugatlas_analysis", "Drug Atlas", class = "custom-btn2", title = " Search data from Mitchell et al (2023), a proteome-wide analysis of expression changes from 875 compounds " ),
+               
+               actionButton("geodrugup_analysis", "GEO Drug Upregulate", class = "custom-btn2", title = " Search GEO for drugs associated with increased expression of gene list. Contains expression data from ~ 7 million samples " ),
+               
+               actionButton("geodrugdown_analysis", "GEO Drug Downregulate", class = "custom-btn2", title = " Search GEO for drugs associated with decreased expression of gene list. Contains expression data from ~ 7 million samples " ),
+               
+               actionButton("LINCSdrugup_analysis", "LINCS Drug Upregulate", class = "custom-btn2", title = " Search SigCom LINCS database for drugs associated with increased expression of gene list. Contains expression data from 33,600 small molecules " ),
+               
+               actionButton("LINCSdrugdown_analysis", "LINCS Drug Downregulate", class = "custom-btn2", title = " Search SigCom LINCS database for drugs associated with decreased expression of gene list. Contains expression data from 33,600 small molecules " ),
+               br(),
+               
+               h5("Kinase Analysis"),
+               actionButton("Kinasecoexp_analysis", "ARCHS4 Kinase Co-expression", class = "custom-btn2", title = " Search ARCHS4 for kinases coexpressed with gene list. Contains RNA-seq data from ~140,000 human tissue samples " ),
+               
+               actionButton("kinaselibrary_analysis", "Kinase Library", class = "custom-btn2", title = " Search The Kinase Library, an atlas of serine/threonine kinase targets, for kinases targets gene list. Contains 5,046 genes, 303 kinases, 30,300 associations " )
+               
+             ),
+             mainPanel(
+               width = 7,
+               plotOutput("gofunction_graph"),
+               DTOutput("gofunction_results")
+               
+             )
+           )
+           
+  ),
+  tabPanel("About",
+           mainPanel(
+             downloadButton(outputId = "download_database", class = "custom-btn", label = "Download Database", style = "margin-bottom: 20px;"),
+             width = 7,
+             h6(HTML("Welcome to the NeurOmix database! <br> <br> NeurOmix is a database of ranked gene lists from various types of experiments, including transcriptomics, proteomics, CRISPR screens, and more. By ranking gene lists using a relevant statistic, such as P value or fold change, and providing a thorough description of the original experiment, NeurOmix facilitates the discovery of novel gene functions and activities.     
+<br> <br>
+<br> NeurOmix supports two primary approaches: a gene-level analysis, and a gene-list level analysis <br>")),
+             hr(),
+             h6(HTML(" <br> <b> Gene Level Analysis <b> <br> <br>")),
+             #img(src = "NeurOmix_AboutPicture.png", height = "630px", width = "1112px"), # Adjust height and width as needed
+             
+             h6(HTML("In the <b>Gene Analysis</b> tab users can search for a gene of interest (Search NeurOmix), which returns a brief description of the gene from the NCBI database and a table of all gene lists that contain the searched gene. 
+               <br> <br> Each row of the returned table corresponds to an experiment that identified the searched gene. 
+               <br><br> <b>Column 1</b> is the title of the article where the experiment was conducted, and clicking the title opens a hyperlink to the original research. 
+               <br> <br> <b> Column 2</b> contains a description of the original experiment that generated the gene list. Clicking this description opens a window containing the full ranked gene list and the abstract of the original article for additional context.
+               <br> <br> <b> Column 3</b> contains the user's queried gene 
+               <br> <br> <b> Column 4</b> contains the rank of the queried gene (the sorting method is described in column 1)
+               <br> <br> Rows are color-coded for clarity according to whether the gene was upregulated (green) or downregulated (red) in the associated experiment (blue is neither).
+                <br> <br> The side bar panel in the Gene Analysis tab contains additional resources for analysis.
+                <br> <br> The <b> Search Protein Interactions from BioGRID and STRING</b> button retrieves protein interaction data from the two largest interactome databases (BioGRID and STRING) and returns a list of protein-protein interactions from both databases. "),
+                
+                hr(),
+                
+                h6(HTML(" The <b> Gene List Analysis</b> tab allows users to analyze any gene list included in NeurOmix, or a custom gene list, using a variety of tools. 
+                         <br> <br> Begin by typing a keyword into the search box to filter articles. Selecting a study description inserts the associated gene list into the textbox.
+                         <br><br> The <b> Compare to NeurOmix Database </b>button compares the inputted gene list to all other gene lists in NeurOmix and returns gene lists with the most matching genes.
+                         <br><br> The <b> Identify Co-Interacting Proteins </b>button searches for proteins that interact with proteins in the inputted gene list. This analysis returns proteins (Interactors) that interact with the inputted gene list proteins sorted by the percentage of the interactor's interactome that is present in the inputted gene list. For example, if an Interactor has 100 total interactions, and 3 of those interacting proteins are present in the inputted gene list, a value of 3% is returned. Protein interactions are retreived from four comprehensive proteome-wide mammalian interactome studies (Pourhaghighi, 2020, BioPlex 3.0, Go et al, 2021, and Luck et al, 2020).
+                         <br><br> <b> Enrichr API</b> is integrated allowing users to analyze their gene list using a variety of Enrichr analysis pipelines. For more information on these analyses, visit https://maayanlab.cloud/Enrichr/")),
+                hr()
+                
+                
+             )))
+  
+)
+
+
+# server logic
+
+
+server <- function(input, output, session) {
+  
+  output$no_results_message <- renderUI({
+    tags$div(
+      tags$p("Enter a gene name, or a list of genes separated by commas, and click 'Search NeurOmix Database'"),
+      tags$p("Example Searches"),
+      tags$p("HTT (mutations in Huntingtin (HTT) cause Huntington's Disease)"),
+      tags$p("ATG101,ATG12,ATG13,ATG14,ATG16L1,ATG2A,ATG5,ATP13A2,ATP6V0A1 (search genes involved in autophagy)"), 
+      tags$p("KIF1A,KIF1B,KIF1C,KIF21A,KIF3A,KIF3B,KIF4A,KIF5A,KIF5B,KIF5C (search genes involved in axonal transport)")
+      
+    )
+    
+  })
+  
+  #Info for user when clicking text above search buttons
+  observeEvent(input$show_about_modal, {
+    #Count columns, which equals number of gene lists
+    x <- ncol(data)
+    
+    # Count unique cells in row 1, which is number of articles
+    first_row <- as.character(unlist(data[1, ]))
+    y <- length(unique(first_row))
+    
+    # Count non empty cells, which is number of genes
+    z <- sum(!is.na(data) & data != "")
+    
+    modal_content <- switch(input$show_about_modal,
+                            "NeurOmix" = HTML(paste("The NeurOmix database is a comprehensive manually curated collection of gene lists from high-throughput omics experiments. The studies included are broadly related to neuroscience and neurological diseases. 
+                              <br> <br> Selecting <b>'Search NeurOmix'</b> scans the database for all gene lists containing the searched gene(s) and returns a summary of the experiments, as well as the rank of the identified gene and a link to the original article.
+                              <br> <br> Selecting <b>'Search Co-Occurring Genes'</b> identifies all gene lists containing the searched gene and identifies genes that co-occur across gene lists.,
+                              <br><br>The current version of NeurOmix includes", x, "gene lists from", y, "articles, containing", z, "gene entries")),
+                            
+                            
+                            "interactome_data" = HTML(paste("Interactome data is drawn from API from BioGRID and STRING. BioGRID scores represent quantitative confidence scores as provided by the original publication, which vary by experimental methodology (e.g., CompPASS-Plus scores, SAINTexpress scores, or spectral count–based fold changes). STRING scores are computed from multiple lines of evidence (e.g., experimental, co-expression, text mining) resulting in a single likelihood score ranging from 0 to 1.")),
+                            
+                            
+                            "coexpression" = HTML(paste(" .. "))
+                            
+    )
+    
+    showModal(modalDialog(
+      title = "About NeurOmix",
+      modal_content,
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+  
+  updateSelectInput(session, "column_choices", choices = as.character(colnames(data)))
+  
+  observe({
+    updateTextInput(session, "textbox_genes", value = data[-(1:7), input$columns][data[-(1:7), input$columns] != ""])
+  })
+  
+  observeEvent(input$keywords, {
+    keyword <- input$keywords
+    
+    # If the user enters a keyword, create a regex pattern for filtering
+    if (keyword != "") {
+      keyword_pattern <- paste0("(?i)", keyword)  # (?i) makes the pattern case-insensitive
+    } else {
+      keyword_pattern <- ""  # No filtering if keyword is empty
+    }
+    
+    # Filter columns containing the keyword
+    filtered_columns <- colnames(data)[grepl(keyword_pattern, colnames(data))]
+    
+    # Update 'columns' selectInput choices with the filtered column names
+    updateSelectInput(session, "columns", choices = c("", filtered_columns), selected = filtered_columns[1])
+  })
+  
+  ################################################################## GENE SEARCH TAB
+  
+  
+  # Get gene info from entrez
+  
+  #get_gene_details <- function(gene_name) {
+  
+  #   tryCatch({
+  #    if (!gene_name %in% keys(org.Hs.eg.db, keytype = "SYMBOL")) {
+  #     return(paste("Gene", gene_name, "not found."))
+  #  }
+  #      gene_id <- mapIds(
+  #       org.Hs.eg.db, 
+  #      keys = gene_name, 
+  #     column = "ENTREZID", 
+  #    keytype = "SYMBOL", 
+  #   multiVals = "first"
+  #      )
+  #     if (is.na(gene_id)) {
+  #       return(paste("Gene", gene_name, "not found."))
+  #    }
+  #   gene_summary <- entrez_summary(db = "gene", id = gene_id)
+  #      paste(gene_name, ":", gene_summary$summary)
+  #   }, error = function(e) paste("Error fetching details for", gene_name))
+  #  }
+  
+  
+  # Gene search observer
+  observeEvent(input$searchgenes, {
+    withProgress(message = "Searching NeurOmix. Analyzing gene lists may require several minutes to complete", {
+      # Process input gene names
+      gene_names <- toupper(trimws(unlist(strsplit(input$gene, ","))))
+      
+      if (length(gene_names) == 0) {
+        output$gene_description <- renderUI({ NULL })
+        output$search_results <- renderDT({ NULL })
+        output$no_results_message <- renderUI({ p("Enter a gene name.") })
+        return()
+      }
+      
+      #   # Fetch gene descriptions
+      #    output$gene_description <- renderUI({
+      #      HTML(paste(sapply(gene_names, get_gene_details), collapse = "<br>"))
+      #    })
+      
+      # Search for genes (with exact/partial matching based on checkbox)
+      final_results <- do.call(rbind, lapply(gene_names, function(gene) {
+        matches <- lapply(names(data_below_row_7), function(col) {
+          if (input$exact_match) {
+            indices <- which(data_below_row_7[[col]] == gene) # Exact match
+          } else {
+            indices <- which(grepl(gene, data_below_row_7[[col]], ignore.case = TRUE)) # Partial match
+          }
+          if (length(indices) > 0) {
+            data.frame(
+              Article = paste0('<a href="', data[7, col], '" target="_blank">', data[1, col], '</a>'),
+              Description = paste0('<a href="#" class="experiment-summary" data-col="', col, '">', col, '</a>'),
+              Gene = data_below_row_7[[col]][indices],
+              Rank = indices,
+              stringsAsFactors = FALSE
+            )
+          }
+        })
+        do.call(rbind, matches)
+      }))
+      
+      # Render results
+      if (!is.null(final_results) && nrow(final_results) > 0) {
+        final_results <- final_results[!duplicated(final_results), ]
+        final_results <- final_results[order(final_results$Rank), ]
+        
+        output$search_results <- renderDT({
+          gene_text <- paste(gene_names, collapse = ", ")
+          caption_text <- paste0(
+            "<p><strong>NeurOmix Database Search Results</strong></p>",
+            "<p>Queried genes: <em>", gene_text, "</em> were identified in ", nrow(final_results), " experiments. ",
+            "The table below is sorted by the gene's ranked position in the corresponding experiments' gene list. ",
+            "Selecting the <em>article title</em> opens the original article, ",
+            "and selecting the <em>experiment description</em> provides the study abstract ",
+            "and corresponding gene list.</p>"
+          )
+          
+          datatable(
+            final_results,
+            options = list(
+              pageLength = 100,
+              autoWidth = TRUE,
+              dom = 'Bfrtip',
+              buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+              rowCallback = JS(
+                "function(row, data) {",
+                "  if (data[1].toLowerCase().includes('upregulated')) {",
+                "    $('td', row).css('background-color', 'lightgreen');",
+                "  } else if (data[1].toLowerCase().includes('downregulated')) {",
+                "    $('td', row).css('background-color', '#f8d7da');",
+                "  }",
+                "}"
+              ),
+              columnDefs = list(
+                list(targets = 0, searchable = FALSE), # Disable search for Article (hyperlinks from row 8)
+                list(targets = c(1, 2, 3), searchable = TRUE) # Enable search for Description, Gene, Rank
+              )
+            ),
+            rownames = FALSE,
+            escape = FALSE,
+            selection = "none",
+            caption = tags$caption(
+              style = 'caption-side: top; text-align: center; font-size: 14px; color: #000000;',
+              HTML(caption_text)
+            ),
+            class = 'custom-datatable'
+          )
+        })
+        output$no_results_message <- renderUI({ NULL })
+      } else {
+        output$search_results <- renderDT({ NULL })
+        output$no_results_message <- renderUI({ p("No results found.") })
+      }
+    })
+  })
+  
+  
+  # Co-occurrence gene search observer
+  observeEvent(input$cooccurrence, {
+    withProgress(message = "Identifying co-occurring genes across NeurOmix...", {
+      
+      # Process input gene names
+      gene_names <- toupper(trimws(unlist(strsplit(input$gene, ","))))
+      gene_names <- gene_names[gene_names != ""]
+      
+      if (length(gene_names) == 0) {
+        output$search_results     <- renderDT({ NULL })
+        output$no_results_message <- renderUI({ p("Enter a gene name.") })
+        return()
+      }
+      
+      # -------------------------------
+      # 1) Find experiments with seed genes
+      # -------------------------------
+      seed_hits <- do.call(rbind, lapply(gene_names, function(gene) {
+        hits <- lapply(names(data_below_row_7), function(col) {
+          col_vals <- data_below_row_7[[col]]
+          
+          if (input$exact_match) {
+            # Exact, case-insensitive match
+            indices <- which(toupper(col_vals) == gene)
+          } else {
+            # Partial match (case-insensitive)
+            indices <- which(grepl(gene, col_vals, ignore.case = TRUE))
+          }
+          
+          if (length(indices) > 0) {
+            data.frame(
+              ExperimentID = col,
+              stringsAsFactors = FALSE
+            )
+          }
+        })
+        
+        hits <- hits[!vapply(hits, is.null, logical(1))]
+        if (length(hits) == 0) return(NULL)
+        do.call(rbind, hits)
+      }))
+      
+      if (is.null(seed_hits) || nrow(seed_hits) == 0) {
+        output$search_results <- renderDT({
+          datatable(
+            data.frame(
+              Message = "No NeurOmix experiments containing the searched gene(s) were found."
+            ),
+            rownames = FALSE,
+            options = list(dom = 't')
+          )
+        })
+        output$no_results_message <- renderUI({ NULL })
+        return()
+      }
+      
+      experiments_with_seed <- unique(seed_hits$ExperimentID)
+      
+      # -------------------------------
+      # 2) Build gene/experiment pairs from those experiments
+      # -------------------------------
+      gene_exp_pairs <- do.call(rbind, lapply(experiments_with_seed, function(col) {
+        genes_in_col <- data_below_row_7[[col]]
+        genes_in_col <- toupper(trimws(genes_in_col))
+        genes_in_col <- genes_in_col[genes_in_col != "" & !is.na(genes_in_col)]
+        
+        # Remove the seed genes; we only want co-occurring partners
+        co_genes <- setdiff(unique(genes_in_col), gene_names)
+        if (length(co_genes) == 0) return(NULL)
+        
+        data.frame(
+          Gene         = co_genes,
+          ExperimentID = col,
+          stringsAsFactors = FALSE
+        )
+      }))
+      
+      if (is.null(gene_exp_pairs) || nrow(gene_exp_pairs) == 0) {
+        output$search_results <- renderDT({
+          datatable(
+            data.frame(
+              Message = "No co-occurring genes found for these search results."
+            ),
+            rownames = FALSE,
+            options = list(dom = 't')
+          )
+        })
+        output$no_results_message <- renderUI({ NULL })
+        return()
+      }
+      
+      # -------------------------------
+      # 3) Summarize co-occurrence: experiments per gene
+      # -------------------------------
+      exp_counts <- aggregate(ExperimentID ~ Gene,
+                              data = gene_exp_pairs,
+                              FUN  = function(x) length(unique(x)))
+      colnames(exp_counts)[2] <- "N_Experiments"
+      
+      exp_lists <- aggregate(ExperimentID ~ Gene,
+                             data = gene_exp_pairs,
+                             FUN  = function(x) paste(sort(unique(x)), collapse = "<br> "))
+      colnames(exp_lists)[2] <- "Experiment_Lists"
+      
+      co_df <- merge(exp_counts, exp_lists, by = "Gene")
+      
+      # Keep only genes that appear in >= 2 seed-containing experiments
+      co_df <- subset(co_df, N_Experiments >= 2)
+      
+      if (nrow(co_df) == 0) {
+        output$search_results <- renderDT({
+          datatable(
+            data.frame(
+              Message = "No co-occurring genes found (n ≥ 2) across NeurOmix gene lists."
+            ),
+            rownames = FALSE,
+            options = list(dom = 't')
+          )
+        })
+        output$no_results_message <- renderUI({ NULL })
+        return()
+      }
+      
+      # Order: most frequently co-occurring first
+      co_df <- co_df[order(-co_df$N_Experiments, co_df$Gene), ]
+      
+      # -------------------------------
+      # 4) Render as the main search_results table
+      # -------------------------------
+      output$search_results <- renderDT({
+        caption_text <- paste0(
+          "<p><strong>Co-occurring Genes Across NeurOmix Gene Lists</strong></p>",
+          "<p>Queried gene(s): ", paste(gene_names, collapse = ", "), "</p>",
+          "<p>These genes co-occur with the searched gene(s) in at least ",
+          "2 NeurOmix gene lists. ",
+          "<em>N_Experiments</em> indicates how many shared gene lists ",
+          "each gene appears in, and <em>Experiment_Lists</em> lists those experiments (column IDs).</p>"
+        )
+        
+        datatable(
+          co_df,
+          options = list(
+            pageLength = 100,
+            autoWidth  = TRUE,
+            dom        = 'Bfrtip',
+            buttons    = c('copy', 'csv', 'excel', 'pdf', 'print')
+          ),
+          escape = FALSE,
+          rownames = FALSE,
+          caption = tags$caption(
+            style = 'caption-side: top; text-align: center; font-size: 14px; color: #000000;',
+            HTML(caption_text)
+          ),
+          class = 'custom-datatable'
+        )
+      })
+      
+      output$no_results_message <- renderUI({ NULL })
+    })
+  })
+  
+  ######################
+  # Modal for experiment summary
+  observeEvent(input$experiment_summary_clicked, {
+    col <- input$experiment_summary_clicked
+    selected_genes <- data_below_row_7[[col]]
+    
+    showModal(modalDialog(
+      title = tagList(
+        br(),
+        span(col, style = "font-weight: bold;"),
+        br(),
+        br(),
+        actionButton("close_modal", "Close", style = "float: right;"),
+        downloadButton("download_genes", "Download Gene List", style = "float: right; margin-right: 10px;")
+      ),
+      tagList(
+        p(strong("Abstract: "), data[2, col]), # Row 3 for abstract
+        p(strong("Tissue Source: "), data[3, col]),
+        p(strong("Data Source: "), data[5, col]),
+        p(strong("Method: "), data[4, col]),
+        h2("Ranked Gene List", style = "font-weight: bold; font-size: 24px; margin-top: 20px;"),
+        DTOutput("modal_gene_table")
+      ),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+    
+    # Render gene table in modal
+    output$modal_gene_table <- renderDT({
+      datatable(data.frame(RankedGenes = selected_genes), 
+                options = list(pageLength = 100), 
+                class = 'custom-datatable',
+                rownames = FALSE)
+    })
+    
+    # Download handler
+    output$download_genes <- downloadHandler(
+      filename = function() paste0(col, "_gene_list.csv"),
+      content = function(file) write.csv(data.frame(RankedGenes = selected_genes), file, row.names = FALSE)
+    )
+    
+    # Close modal
+    observeEvent(input$close_modal, { removeModal() }, ignoreInit = TRUE)
+  })
+  
+  ############Complete dataset / About page
+  
+  # download database
+  output$download_database <- downloadHandler(
+    filename = function() {
+      "neuromix.csv" # File name
+    },
+    content = function(file) {
+      write.csv(data, file, row.names = FALSE) 
+    }
+  )
+  
+  output$raw_data_table <- renderDT({
+    datatable(data, class = 'interaction-table', options = list(pageLength = 100, autoWidth = TRUE), rownames = FALSE)
+  })
+  
+  
+  ################################################################## interactome data  and expression
+  
+  
+  observeEvent(input$biogridstring, {  #combine BioGRID and STRING
+    
+    gene_name <- toupper(input$gene)
+    
+    merged_results <- data.frame("ProteinA" = character(),
+                                 "ProteinB" = character(),
+                                 "Score" = numeric(),
+                                 "Source" = character(),
+                                 stringsAsFactors = FALSE)
+    
+    # STRING Analysis
+    if (gene_name != "") {
+      mapped_protein <- tryCatch({
+        rba_string_map_ids(gene_name, species = 9606, echo_query = FALSE, limit = NULL)
+      }, error = function(e) NULL)  # Catch errors and set NULL
+      
+      if (!is.null(mapped_protein) && nrow(mapped_protein) > 0) {
+        interaction_partners <- tryCatch({
+          rba_string_interaction_partners(ids = mapped_protein$stringId,
+                                          species = 9606,
+                                          required_score = 300)
+        }, error = function(e) NULL)
+        
+        if (!is.null(interaction_partners) && nrow(interaction_partners) > 0) {
+          interaction_partners <- as.data.frame(interaction_partners)
+          names(interaction_partners)[names(interaction_partners) == "preferredName_A"] <- "ProteinA"
+          names(interaction_partners)[names(interaction_partners) == "preferredName_B"] <- "ProteinB"
+          names(interaction_partners)[names(interaction_partners) == "escore"] <- "Score"
+          
+          interaction_partners <- interaction_partners[, c("ProteinA", "ProteinB", "Score")]
+          interaction_partners$Source <- "STRING"
+          
+          # Append to merged_results
+          merged_results <- rbind(merged_results, interaction_partners)
+        } else {
+          showNotification("No STRING interactions found for the given gene.", type = "warning")
+        }
+      } else {
+        showNotification("Gene not found in STRING database. Please check the gene name.", type = "error")
+      }
+    }
+    
+    # BioGRID Analysis
+    bg_get_key("AJ", "Keefe", "aj.keefe007612@gmail.com", "Neuromix")
+    
+    zB <- tryCatch({
+      bg("interactions") %>%
+        bg_constrain(geneList = gene_name) %>%
+        bg_get_results()
+    }, error = function(e) NULL)
+    
+    if (!is.null(zB) && is.data.frame(zB)) {
+      if (all(c("organism_id_for_interactor_a", "quantitative_score") %in% colnames(zB))) {
+        filtered_zB <- zB %>%
+          dplyr::filter(
+            organism_id_for_interactor_a %in% c("9606", "10090", "10116") &
+              quantitative_score > 0.001
+          ) %>%
+          dplyr::select(8, 9, 19)
+        
+        if (nrow(filtered_zB) > 0) {
+          names(filtered_zB) <- c("ProteinA", "ProteinB", "Score")
+          filtered_zB$Source <- "BioGRID"
+          
+          # Append to merged_results
+          merged_results <- rbind(merged_results, filtered_zB)
+        } else {
+          showNotification("No BioGRID interactions found for the given gene.", type = "warning")
+        }
+      }
+    } else {
+      showNotification("Error retrieving BioGRID data.", type = "error")
+    }
+    
+    # Combined Results
+    if (nrow(merged_results) > 0) {
+      merged_results <- merged_results[order(merged_results$Score, decreasing = TRUE), ]
+      
+      output$interaction_results <- renderDT({
+        datatable(merged_results,
+                  options = list(pageLength = 50, autoWidth = TRUE),
+                  rownames = FALSE,
+                  class = 'interaction-table')
+      })
+    } else {
+      output$interaction_results <- renderDT({
+        datatable(data.frame(Message = "No interaction partners found. Is gene name correct?"),
+                  options = list(pageLength = 1, autoWidth = TRUE),
+                  rownames = FALSE)
+      })
+    }
+  })
+  
+  ###################################################ENRICHR
+  
+  ################################ ENRICHR GENE LIST ANALYSIS
+  
+  
+  plot_enrichrgraph <- function(enriched) {
+    
+    enrichrgraph <- enriched %>%
+      dplyr::select(contains("Score"), contains("Term"), contains("Genes"), contains("Adjusted"))
+    
+    enrichrgraph <- enrichrgraph %>%
+      arrange(desc(enrichrgraph[,1])) %>%
+      slice_head(n = 6) %>%
+      mutate(xpos = 0)
+    
+    p <- ggplot(enrichrgraph, aes(x = enrichrgraph[,1], y = reorder(enrichrgraph[,2], enrichrgraph[,1]))) +
+      geom_col(aes(fill = enrichrgraph[,4]), color = "black", size = .8) +  
+      scale_fill_gradient(low = alpha("blue", 1), high = alpha("blue", .1)) +  # Adjust colors for p-value
+      
+      geom_label(aes(x = xpos, label = enrichrgraph[,2]), alpha = 0.5, vjust = 0.1, color = "black", hjust = -0.001, fill = "lightgreen", size = 4.5) +
+      geom_label(aes(x = xpos, label = enrichrgraph[,3]), alpha = 0.5, vjust = 1.4, color = "black", hjust = -0.001, fill = "lightgreen", size = 3) +
+      labs(
+        x = "Score",
+        fill = "P-value"  
+      ) +
+      ggtitle("    Top 6 Terms") +
+      theme(
+        strip.background = element_rect(fill = "blue"),
+        strip.text = element_text(size = 12, colour = "white"),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        panel.background = element_rect(fill = "#e4ebf0"),
+        plot.background = element_rect(fill = "#e4ebf0", color = "black", size = 1),
+        axis.text.x = element_text(size = 10),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        text = element_text(family = "Helvetica"),
+        plot.margin = margin(t = 20, r = 10, b = 20, l = 20)
+      )
+    
+    return(p)
+  }
+  
+  get_enriched_data <- function(selected_genes, db) {
+    # Perform Enrichr analysis
+    # Conditionally load enrichR only if not already loaded
+    if (!requireNamespace("enrichR", quietly = TRUE)) {
+      BiocManager::install("enrichR", update = FALSE, ask = FALSE)
+    }
+    library(enrichR)
+    
+    enriched <- as.data.frame(enrichr(selected_genes, db))
+    
+    # Remove underlines from columns
+    colnames(enriched) <- gsub("[_.]", " ", colnames(enriched))
+    
+    # Round all the values to conserve space
+    enriched[] <- lapply(enriched, function(x) {
+      if (is.numeric(x)) round(x, 4) else x
+    })
+    
+    # Remove unwanted columns
+    columns_to_keep <- !grepl("Old | 2023 P value| Odds Ratio", colnames(enriched))
+    
+    # Subset the data frame to keep only the desired columns
+    enriched <- enriched[, columns_to_keep]
+    
+    return(enriched)
+  }
+  
+  
+  observeEvent(input$NeurOmix_analysis, {
+    
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    selected_genes <- trimws(toupper(selected_genes)) # Convert to lowercase and remove any leading/trailing whitespace
+    
+    count_and_get_shared_genes <- function(selected_genes, column_genes) {
+      shared_genes <- intersect(selected_genes, toupper(column_genes)) # Convert column_genes to lowercase
+      return(list(count = length(shared_genes), genes = paste(shared_genes, collapse = ", ")))
+    }
+    
+    shared_genes_count <- numeric(ncol(data))
+    shared_genes_list <- character(ncol(data))
+    
+    for (i in 1:ncol(data)) {
+      result <- count_and_get_shared_genes(selected_genes, as.character(data[[i]]))
+      shared_genes_count[i] <- result$count
+      shared_genes_list[i] <- result$genes
+    }
+    
+    results <- data.frame(Experiment = colnames(data), SharedGenesCount = shared_genes_count, GeneList = shared_genes_list)
+    
+    results <- results %>% filter(SharedGenesCount > 1) %>% arrange(desc(SharedGenesCount))
+    
+    output$gofunction_results <- renderDT({
+      datatable(results, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+    })
+    
+    # Generate word plot using ggplot2
+    all_shared_genes <- unlist(strsplit(shared_genes_list, ", "))
+    all_shared_genes_df <- as.data.frame(table(all_shared_genes))
+    # Keep only the top 30 most frequent genes
+    top_shared_genes_df <- all_shared_genes_df %>% 
+      arrange(desc(Freq)) %>% 
+      head(20)
+    
+    output$gofunction_graph = renderPlot({
+      ggplot(top_shared_genes_df, aes(x = reorder(all_shared_genes, Freq), y = Freq)) +
+        geom_line(color = "red", size = 2) +  # Create a line plot
+        geom_point(color = "steelblue", size = 2) +  # Add points to the line
+        coord_flip() +  # Flip coordinates for horizontal bars
+        labs(x = "Gene", y = "Shared Gene Frequency", title = "Gene Frequency") +
+        theme_minimal() +
+        theme(text = element_text(size = 11))
+    })  
+    
+    
+  })
+  
+  
+  observeEvent(input$interactome_analysis, {
+    
+    interactome_data <- fread("interactome_data.csv")
+    
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    selected_genes <- trimws(toupper(selected_genes)) # Convert to lowercase and remove any leading/trailing whitespace
+    
+    # Convert ProteinA and ProteinB to lowercase
+    interactome_data <- interactome_data %>%
+      mutate(ProteinA = toupper(ProteinA), ProteinB = toupper(ProteinB))
+    
+    # Find PPIs for all proteins from the selected gene list
+    interactome1 <- interactome_data %>%
+      filter(ProteinA %in% selected_genes | ProteinB %in% selected_genes) %>%
+      dplyr::select(ProteinA, ProteinB)
+    
+    # Create a combined data frame of interactions
+    interactome1 <- as.data.frame(cbind(interactome1$ProteinA, interactome1$ProteinB))
+    colnames(interactome1) <- c("ProteinA", "ProteinB")
+    
+    # Count the interactions for each protein in the list
+    interactome1 <- interactome1 %>%
+      mutate(Co_Interactor = as.character(ifelse(ProteinA %in% selected_genes, ProteinB, ProteinA))) %>%
+      filter(!Co_Interactor %in% selected_genes) %>%
+      group_by(Co_Interactor) %>%
+      summarize(Interacting.Protein.Count = n_distinct(ifelse(ProteinA %in% selected_genes, ProteinA, ProteinB)),
+                Interacting.Proteins.From.Gene.List = paste(unique(ifelse(ProteinA %in% selected_genes, ProteinA, ProteinB)), collapse = ", ")) %>%
+      arrange(desc(Interacting.Protein.Count))
+    
+    # Calculate the total number of interactions for each Co_Interactor across the entire interactome_data dataset
+    total_interactions <- interactome_data %>%
+      mutate(Co_Interactor = ifelse(ProteinA %in% selected_genes, ProteinB, ProteinA)) %>%
+      group_by(Co_Interactor) %>%
+      summarize(Total.Interaction.Count.Of.Co_Interactor = n()) %>%
+      ungroup()
+    
+    # Merge the two data frames to include the total number of interactions
+    interactome1 <- interactome1 %>%
+      left_join(total_interactions, by = "Co_Interactor") %>%
+      mutate(Percent.Of.Co_Interactor.Interactions.in.Gene.List = round((Interacting.Protein.Count / Total.Interaction.Count.Of.Co_Interactor * 100),3)) %>% 
+      filter(Interacting.Protein.Count > 2) %>%
+      arrange(desc(Percent.Of.Co_Interactor.Interactions.in.Gene.List)) %>% 
+      rename_with(~ gsub("\\.", " ", .)) 
+    
+    output$gofunction_results <- renderDT({
+      datatable(interactome1, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE, columnDefs = list(list(width = '200px', targets = c(1, 3)))
+      ), rownames = FALSE)
+    })
+    
+    output$gofunction_graph <- renderPlot({
+      ggplot(interactome1 %>% slice_head(n = 20), aes(x = reorder(Co_Interactor, `Percent Of Co_Interactor Interactions in Gene List`), y = `Percent Of Co_Interactor Interactions in Gene List`)) +
+        geom_point(color = "blue", size = 3) +
+        geom_text(aes(label = `Total Interaction Count Of Co_Interactor`), vjust = -.7, size = 4) +
+        labs(
+          x = "Co-Interacting Protein (Top 20 Hits Displayed)",
+          y = "Percent Of Co_Interactor's Interactions in Gene List"
+        ) +
+        ggtitle("Percent of co interactor's interactions identified in gene list. The total number of co interactor interactions in text") +  # Add the title here
+        
+        theme(
+          strip.background = element_rect(fill = "darkblue"), 
+          strip.text = element_text(size = 12, colour = "white"),
+          panel.border = element_rect(color = "black", fill = NA, size = .5),  # Add border to the panel
+          panel.background = element_rect(fill = "#e4ebf0"),
+          plot.background = element_rect(fill = "#e4ebf0", color = "black", size = 1),  # Add border to the entire plot
+          axis.text.x = element_text(size = 10, angle = 20, vjust = .7),
+          axis.text.y = element_text(size = 10, angle = 90),
+          axis.title.y = element_text(angle = 90),  # Rotate Y-axis title
+          text = element_text(family = "Helvetica"),  # Set the default font family
+          plot.margin = margin(t = 20, r = 20, b = 20, l = 20),  # Add padding around the plot
+          legend.position = "none"
+        )
+    })
+    
+  })
+  
+  
+  observeEvent(input$gobiological_analysis, {
+    
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "GO_Biological_Process_2023"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        gc()
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$gocellular_analysis, {
+    
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "GO_Cellular_Component_2023"
+        enriched <- get_enriched_data(selected_genes, db)
+        # Trigger garbage collection
+        gc()
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$gomolecular_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "GO_Molecular_Function_2023"
+        enriched <- get_enriched_data(selected_genes, db)
+        # Trigger garbage collection
+        gc()
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+      
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$syngo_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "SynGO_2024"
+        enriched <- get_enriched_data(selected_genes, db)
+        # Trigger garbage collection
+        gc()
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$pfamdomain_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "Pfam_InterPro_Domains"
+        enriched <- get_enriched_data(selected_genes, db)
+        # Trigger garbage collection
+        gc()
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  
+  observeEvent(input$Kinasecoexp_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "ARCHS4_Kinases_Coexp"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$MGIphenotype_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "MGI_Mammalian_Phenotype_Level_4_2021"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$phengen_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "PhenGenI_Association_2021"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$fantom6lnc_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "FANTOM6_lncRNA_KD_DEGs"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$humanphenotype_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "Human_Phenotype_Ontology"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$chea_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "ChEA_2022"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$drugatlas_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "Proteomics_Drug_Atlas_2023"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  
+  observeEvent(input$gtextissue_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "GTEx_Tissues_V8_2023"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  
+  
+  observeEvent(input$aba_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "Allen_Brain_Atlas_10x_scRNA_2021"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$disgenet_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "DisGeNET"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  
+  observeEvent(input$miRNA_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "TargetScan_microRNA"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$kinaselibrary_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "The_Kinase_Library_2023"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$cellsub_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "SubCell_BarCode"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$CORUM_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "CORUM"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$geodrugdown_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "Drug_Perturbations_from_GEO_down"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$geodrugup_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "Drug_Perturbations_from_GEO_up"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$LINCScrispr_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "LINCS_L1000_CRISPR_KO_Consensus_Sigs"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$LINCSdrugdown_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "LINCS_L1000_Chem_Pert_down"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$LINCSdrugup_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "LINCS_L1000_Chem_Pert_up"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$genepertup_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        db <- "Gene_Perturbations_from_GEO_up"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        # Trigger garbage collection
+        gc()
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  observeEvent(input$genepertdown_analysis, {
+    selected_genes <- unlist(strsplit(input$textbox_genes, ","))
+    if (length(selected_genes) > 0) {
+      withProgress(message = "ENRICHR analysis is underway, please wait...", value = 0.3, {
+        
+        
+        db <- "Gene_Perturbations_from_GEO_down"
+        enriched <- get_enriched_data(selected_genes, db)
+        
+        
+        output$gofunction_results <- renderDT({
+          datatable(enriched, class = 'custom-datatable', options = list(pageLength = 50, autoWidth = TRUE), rownames = FALSE)
+        })
+        output$gofunction_graph <- renderPlot({  
+          plot_enrichrgraph(enriched)
+        })
+        
+      })
+    } else {
+      output$go_results <- renderDT({
+        NULL
+      })
+    }
+  })
+  
+  
+}
+
+
+
+
+# Run the application
+shinyApp(ui = ui, server = server)

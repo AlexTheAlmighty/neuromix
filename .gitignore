@@ -1,0 +1,12 @@
+node_modules/
+
+# Built from "NeurOmics Database.csv" by neuromix-web/tools/build-data.mjs.
+# The CSV is the single source of truth; CI rebuilds this on every deploy.
+neuromix-web/public/data/neuromix.json
+
+# Unpublished manuscript, deliberately kept out of the public repo.
+Huntingtons-methyl-donor-hypothesis.pdf
+
+*.log
+.DS_Store
+Thumbs.db

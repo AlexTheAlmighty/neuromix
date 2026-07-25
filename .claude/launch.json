@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "neuromix",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["neuromix-web/server.js"],
+      "port": 4173,
+      "autoPort": true
+    }
+  ]
+}

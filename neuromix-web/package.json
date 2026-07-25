@@ -1,0 +1,12 @@
+{
+  "name": "neuromix-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NeurOmix: a searchable web front end for the NeurOmics ranked gene list database",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.js",
+    "build:data": "node tools/build-data.mjs"
+  }
+}

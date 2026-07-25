@@ -1,0 +1,54 @@
+# Rebuilds neuromix.json from the CSV and publishes public/ to GitHub Pages.
+# Updating the database means committing a new "NeurOmics Database.csv", which you can
+# do by dragging the file onto the repo in the GitHub web UI. Everything else is this.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; queue them and keep the newest.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # The build script prints list, article and gene counts. If a CSV edit quietly
+      # breaks the parse, the numbers in this log are where it shows up first.
+      - name: Build data
+        run: node neuromix-web/tools/build-data.mjs
+
+      # enablement turns Pages on for the repo on the first run, so there is no
+      # manual step in the repo settings.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: neuromix-web/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
