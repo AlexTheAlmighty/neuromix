@@ -47,6 +47,52 @@ export function toast(message, { error = false, ms = 4200 } = {}) {
   setTimeout(() => node.remove(), ms)
 }
 
+/* ---------- hover card ---------- */
+
+// A single shared panel, reused by every anchor. Native title tooltips cannot wrap,
+// cannot be styled and arrive after a delay, which is no use for a paragraph of text.
+let card = null
+
+export function hideHoverCard() {
+  if (card) card.hidden = true
+}
+
+export function hoverCard(anchor, build) {
+  const show = () => {
+    if (!card) {
+      card = el('div', { class: 'hovercard' })
+      document.body.append(card)
+    }
+    clear(card)
+    build(card)
+    card.hidden = false
+    place(anchor)
+  }
+  anchor.addEventListener('mouseenter', show)
+  anchor.addEventListener('focus', show)
+  anchor.addEventListener('mouseleave', hideHoverCard)
+  anchor.addEventListener('blur', hideHoverCard)
+  return anchor
+}
+
+// Prefer the right of the anchor, fall back to the left, then clamp into view.
+function place(anchor) {
+  const a = anchor.getBoundingClientRect()
+  const width = Math.min(400, window.innerWidth - 24)
+  card.style.width = `${width}px`
+
+  let left = a.right + 12
+  if (left + width > window.innerWidth - 12) left = a.left - width - 12
+  if (left < 12) left = Math.max(12, Math.min(a.left, window.innerWidth - width - 12))
+
+  const height = card.offsetHeight
+  const top = Math.max(12, Math.min(a.top - 6, window.innerHeight - height - 12))
+  card.style.left = `${left}px`
+  card.style.top = `${top}px`
+}
+
+window.addEventListener('scroll', hideHoverCard, { passive: true })
+
 /* ---------- drawer ---------- */
 
 const drawer = () => document.getElementById('drawer')

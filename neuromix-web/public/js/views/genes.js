@@ -119,7 +119,7 @@ function showEmptyState() {
   ]))
 }
 
-// The NCBI summary is fetched per gene and cached by the server, so it arrives after
+// The NCBI summary is fetched per gene and held for the session, so it arrives after
 // the local results rather than holding them up.
 const summaryCache = new Map()
 

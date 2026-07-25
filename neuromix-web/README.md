@@ -95,8 +95,8 @@ app decided the row colour.
 | Experiment summary modal | Study drawer: abstract, tissue, method, data source, full ranked list, CSV download |
 | `Compare to NeurOmix Database` | Gene list analysis, ranked by shared genes plus coverage of your list |
 | Gene frequency plot | Most widely shared genes bar chart |
-| 24 Enrichr buttons | Same libraries, grouped, run through `/api/enrich` |
-| BioGRID and STRING button | Fetch interactions, merged and sorted by score |
+| 24 Enrichr buttons | All of them plus 34 more, in 10 collapsible groups. Library ids and the sizes quoted in the tooltips are checked against Enrichr's `datasetStatistics` endpoint |
+| BioGRID and STRING button | Fetch interactions, STRING only, sorted by score. BioGRID needs an access key that a static site cannot hold |
 | `Download Database` | About tab: study metadata CSV, long format CSV, raw JSON |
 
 Not carried over: the `interactome_data.csv` co-interactor analysis, which was already
@@ -122,16 +122,27 @@ each are flagged as context dependent.
 
 **Consensus signatures.** Filter the study browser to any set of lists and press Build
 consensus signature. Each list scores its genes from 1 at the top to 0 at the bottom, and
-the total is discounted by the gene's database wide frequency so ubiquitous genes cannot
-win by turning up everywhere. Filtering to Huntington plus downregulated returns SCN4B,
-PDE10A, ADCY5, PENK and RGS9, the classic striatal identity module.
+the total is discounted by the gene's frequency in the chosen background so ubiquitous
+genes cannot win by turning up everywhere. Filtering to Huntington plus downregulated
+returns SCN4B, ADCY5, PENK, ADORA2A and RGS9, the striatal identity module.
+
+**58 enrichment libraries, described accurately.** The R app offered 24. Pathway analysis
+was missing entirely and is now its own group (KEGG, Reactome, WikiPathways, MSigDB
+hallmarks, BioPlanet), alongside new groups for cell type and tissue, transcription
+factors, and expanded disease, kinase, protein complex, ageing, drug and microRNA
+coverage. Groups collapse so the panel stays navigable. Every library id and every term
+and gene count quoted in a tooltip is verified against Enrichr's own `datasetStatistics`
+endpoint rather than copied from a paper, and the GO, MGI, Kinase Library and TargetScan
+buttons were moved to their current releases. Tooltips say what a library is, when to
+reach for it, its known weakness, and how many gene sets and genes it holds.
 
 **Gene function summaries.** Searching a single gene leads with its official name, the
 curated NCBI description of what it does, its locus and its aliases. This restores the
-`get_gene_details` function that was written but commented out in the R app. Lookups go
-through `/api/gene`, which queries NCBI Entrez, falls back to MyGene.info, and caches for
-24 hours, so repeat searches are instant. Set `NCBI_EMAIL` and `NCBI_API_KEY` to identify
-yourself to NCBI and lift the anonymous rate limit; neither is required.
+`get_gene_details` function that was written but commented out in the R app. The lookup
+queries NCBI Entrez from the browser and falls back to MyGene.info when NCBI is
+unreachable or rate limiting, so a summary still appears either way. Results are held for
+the session, so returning to a gene is instant. Symbols NCBI does not recognise, such as
+clone identifiers, get a plain explanation rather than an error.
 
 **One vote per article.** A single paper contributing 15 of 55 lists was casting 27
 percent of the votes in a consensus. Every set analysis now counts articles as well as
