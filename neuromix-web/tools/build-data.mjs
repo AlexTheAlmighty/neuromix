@@ -4,6 +4,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { loadHgnc, resolveSymbol, isAccession } from './symbols.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const CSV = process.argv[2] ?? resolve(here, '../../NeurOmics Database.csv')
@@ -142,6 +143,28 @@ const articles = []
 const studies = []
 const methodCounts = new Map()
 
+// Symbol bookkeeping, so the build can report exactly what it changed and what it could not.
+const hgnc = loadHgnc()
+if (!hgnc) {
+  console.warn('No tools/hgnc.json found, so gene symbols will not be checked.')
+  console.warn('Run: node tools/update-hgnc.mjs')
+}
+const symbolLog = new Map()
+const renamedInPlace = new Map()
+
+function track(raw, description) {
+  const result = resolveSymbol(raw, hgnc)
+  const key = `${String(raw).trim().toUpperCase()}`
+  const entry = symbolLog.get(key)
+  if (entry) {
+    entry.count++
+    if (entry.lists.length < 5 && !entry.lists.includes(description)) entry.lists.push(description)
+  } else {
+    symbolLog.set(key, { raw: key, ...result, count: 1, lists: [description] })
+  }
+  return result
+}
+
 for (let c = 1; c < width; c++) {
   const description = at(0, c)
   const title = at(1, c)
@@ -165,11 +188,29 @@ for (let c = 1; c < width; c++) {
   for (let r = 8; r < rows.length; r++) {
     const cell = clean(rows[r]?.[c]).toUpperCase()
     if (!cell) continue
-    const members = cell.split(/[;,]/).map((m) => m.trim()).filter(Boolean)
-    if (!members.length || seen.has(members[0])) continue
-    seen.add(members[0])
-    if (members.length > 1) groups.push([genes.length, members.join('|')])
-    genes.push(members[0])
+    // A pipe separates members just as a semicolon does. Some studies file their genes
+    // as "SYMBOL|ACCESSION", and since the pipe is also this file's own separator,
+    // leaving it in place split one gene into two and shifted every rank below it.
+    let members = cell.split(/[;,|]/).map((m) => m.trim()).filter(Boolean)
+    if (!members.length) continue
+
+    // "AKAP5|P24588" is one protein written two ways, not a two-protein group, so the
+    // accession is dropped whenever a real symbol sits beside it.
+    if (members.length > 1 && members.some((m) => !isAccession(m))) {
+      members = members.filter((m) => !isAccession(m))
+    }
+
+    // Check every symbol against HGNC. Repairs that are safe are applied here, once,
+    // so the site never has to reason about stale names.
+    const resolved = members.map((m) => track(m, description))
+    const kept = resolved.filter((r_) => r_.status !== 'dropped')
+    if (!kept.length) continue
+    if (seen.has(kept[0].symbol)) continue
+    seen.add(kept[0].symbol)
+
+    if (kept.length > 1) groups.push([genes.length, kept.map((k) => k.symbol).join('|')])
+    genes.push(kept[0].symbol)
+    if (kept[0].from) renamedInPlace.set(kept[0].from, kept[0].symbol)
   }
   if (!genes.length) continue
 
@@ -226,8 +267,46 @@ for (const s of studies) {
   }
 }
 
+// ---------- gene symbol report ----------
+const byStatus = { approved: [], renamed: [], recovered: [], dropped: [], review: [] }
+for (const entry of symbolLog.values()) byStatus[entry.status].push(entry)
+
+const shapeCounts = new Map()
+for (const entry of byStatus.review) {
+  const shape = entry.shape ?? 'unrecognised'
+  shapeCounts.set(shape, (shapeCounts.get(shape) ?? 0) + 1)
+}
+
+const entriesFor = (list) => list.reduce((n, e) => n + e.count, 0)
+const distinct = symbolLog.size
+const symbolReport = {
+  generated: new Date().toISOString().slice(0, 10),
+  hgncRetrieved: hgnc?.retrieved ?? null,
+  hgncApprovedSymbols: hgnc?.counts?.approved ?? null,
+  distinctSymbols: distinct,
+  summary: Object.fromEntries(Object.entries(byStatus).map(([k, v]) =>
+    [k, { symbols: v.length, entries: entriesFor(v), share: distinct ? Number((v.length / distinct * 100).toFixed(1)) : 0 }])),
+  reviewByShape: Object.fromEntries([...shapeCounts].sort((a, b) => b[1] - a[1])),
+  renamed: byStatus.renamed.map((e) => ({ from: e.raw, to: e.symbol, entries: e.count })).sort((a, b) => b.entries - a.entries),
+  recovered: byStatus.recovered.map((e) => ({ from: e.raw, to: e.symbol, entries: e.count, note: e.note })),
+  dropped: byStatus.dropped.map((e) => ({ symbol: e.raw, entries: e.count, note: e.note, lists: e.lists })),
+  review: byStatus.review
+    .map((e) => ({ symbol: e.raw, entries: e.count, shape: e.shape, note: e.note, suggestion: e.suggestion ?? null, lists: e.lists }))
+    .sort((a, b) => b.entries - a.entries),
+}
+
 const payload = {
   generated: new Date().toISOString().slice(0, 10),
+  // Every symbol this build rewrote, so a search for the old name still finds the data.
+  renamedSymbols: Object.fromEntries(renamedInPlace),
+  symbolCheck: {
+    hgncRetrieved: symbolReport.hgncRetrieved,
+    approved: symbolReport.summary.approved.symbols,
+    renamed: symbolReport.summary.renamed.symbols,
+    recovered: symbolReport.summary.recovered.symbols,
+    dropped: symbolReport.summary.dropped.symbols,
+    review: symbolReport.summary.review.symbols,
+  },
   stats: {
     lists: studies.length,
     articles: articles.length,
@@ -249,3 +328,22 @@ console.log(`${studies.length} gene lists, ${articles.length} articles, ${geneEn
 console.log(`direction tagged ${directional}, topic tagged ${tagged}, year parsed ${studies.filter((s) => s.y).length}`)
 console.log(`assay classified ${studies.filter((s) => s.as).length}, species inferred ${studies.filter((s) => s.sp).length}, likely truncated ${studies.filter((s) => s.tr).length}`)
 console.log(`protein groups split out ${groupMembers} extra searchable symbols`)
+
+const REPORT = resolve(dirname(OUT), 'symbol-report.json')
+writeFileSync(REPORT, JSON.stringify(symbolReport, null, 1))
+
+const s = symbolReport.summary
+console.log('\n--- gene symbols against HGNC'
+  + (symbolReport.hgncRetrieved ? ` (retrieved ${symbolReport.hgncRetrieved})` : ' (no HGNC file)') + ' ---')
+console.log(`  approved as written  ${String(s.approved.symbols).padStart(6)}  ${s.approved.share}%`)
+console.log(`  renamed to current   ${String(s.renamed.symbols).padStart(6)}  ${s.renamed.share}%`)
+console.log(`  recovered from dates ${String(s.recovered.symbols).padStart(6)}  ${s.recovered.share}%`)
+console.log(`  dropped, not genes   ${String(s.dropped.symbols).padStart(6)}  ${s.dropped.share}%`)
+console.log(`  needs review         ${String(s.review.symbols).padStart(6)}  ${s.review.share}%`)
+for (const [shape, n] of Object.entries(symbolReport.reviewByShape)) {
+  console.log(`      ${shape.padEnd(30)} ${String(n).padStart(5)}`)
+}
+if (symbolReport.dropped.length) {
+  console.log('  dropped values:', symbolReport.dropped.map((d) => `${d.symbol} (${d.entries})`).join(', '))
+}
+console.log(`  full report: ${REPORT}`)

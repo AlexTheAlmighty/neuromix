@@ -2,6 +2,7 @@
 // co-occur with them across the lists that contain them.
 import {
   store, parseGeneQuery, searchGenes, summariseHits, coOccurringGenes, suggestGenes, geneProfile,
+  currentSymbol,
 } from '../store.js'
 import { el, clear, fmt, pct, sci, escapeHtml, DataTable, toast, debounce } from '../ui.js'
 import { on } from '../bus.js'
@@ -270,6 +271,17 @@ function renderSearch(genes) {
       el('p', { text: `${genes.join(', ')} was not found${exact ? ' as an exact symbol' : ''}. Try turning exact match off, or check the symbol.` }),
     ]))
     return
+  }
+
+  // Say so when a search was redirected, rather than quietly answering a different question.
+  const redirects = genes.map((g) => [g, currentSymbol(g)]).filter(([, to]) => to)
+  if (redirects.length) {
+    results.append(el('div', { class: 'callout', style: 'margin-bottom:14px' }, [
+      redirects.map(([from, to]) => `${from} is now ${to}`).join(', '),
+      '. HGNC has retired ',
+      redirects.length > 1 ? 'those symbols' : 'that symbol',
+      ', so the results below are for the current name. Papers that used the old name are still included.',
+    ]))
   }
 
   // One queried symbol means we can lead with the profile rather than raw rows.

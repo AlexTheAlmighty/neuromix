@@ -28,6 +28,39 @@ Then open http://localhost:4173. Node 18 or newer, no dependencies to install.
 `server.js` is only for local development. It serves `public/` the way GitHub Pages
 does and nothing else, so dev and production run the same code path.
 
+## Gene symbols are checked against HGNC on every build
+
+`tools/hgnc.json` is a compact lookup built from the HGNC complete set. It is committed,
+so a deploy never depends on genenames.org being reachable and a symbol check is
+reproducible months later. Refresh it when you want current nomenclature:
+
+```bash
+node tools/update-hgnc.mjs
+```
+
+Every build then resolves each symbol and prints a summary, with the detail written to
+`public/data/symbol-report.json` (published, so it is readable at
+`/data/symbol-report.json`). The rules are deliberately conservative, because renaming a
+gene wrongly moves data from one gene to another, which is worse than leaving a stale
+name in place:
+
+| Outcome | What happens |
+| --- | --- |
+| Approved | Already current, left alone |
+| Renamed | An unambiguous previous HGNC symbol, rewritten. The old name still finds it in the app |
+| Recovered | An Excel date serial that decodes to a real gene, for example `45541` to `SEPTIN6` |
+| Dropped | Not a gene: `NA`, `None`, `#N/A` and similar. `NA` is a retired symbol for XK, so missing values would otherwise become real observations |
+| Review | Ambiguous, an alias, or unrecognised. Left unchanged and listed in the report |
+
+Aliases are reported as suggestions but never applied: HGNC lists `HBA` as an alias of
+the keratin pseudogene `KRT90P`, so applying aliases blindly would rewrite haemoglobin as
+a keratin. Mouse and rat symbols are flagged rather than converted, since an ortholog is
+a different gene, not a different name for the same one.
+
+A pipe is treated as a member separator alongside a semicolon and comma. Some studies
+file genes as `SYMBOL|ACCESSION`, and since the pipe is also this project's own storage
+separator, leaving it in place split one gene into two and shifted every rank below it.
+
 ## Updating the database
 
 `NeurOmics Database.csv` is the single source of truth. Commit a new copy of it (you

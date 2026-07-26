@@ -11,6 +11,10 @@ export const store = {
   geneIndex: new Map(),
   geneArticles: new Map(),
   geneNames: [],
+  // Symbols the build rewrote to their current HGNC name, so a search for the name a
+  // paper used still finds the data.
+  renamed: new Map(),
+  symbolCheck: null,
   articleCount: 0,
   facets: { journals: [], methods: [], tissues: [], topics: [], years: [], stats: [], assays: [], species: [] },
 }
@@ -22,6 +26,8 @@ export async function loadDatabase() {
 
   store.stats = payload.stats
   store.articles = payload.articles
+  store.renamed = new Map(Object.entries(payload.renamedSymbols ?? {}))
+  store.symbolCheck = payload.symbolCheck ?? null
   store.studies = payload.studies.map((s, i) => {
     const article = payload.articles[s.ar]
     const genes = s.g.split('|')
@@ -175,9 +181,21 @@ export function backgroundFor(id, reference = [], { perArticle = false } = {}) {
   return makeBackground(store.studies, { perArticle })
 }
 
+/**
+ * If a query uses a symbol HGNC has retired, return the current one. Papers keep the
+ * name they were published under, so someone searching that name should still arrive.
+ */
+export const currentSymbol = (query) => (store.geneIndex.has(query) ? null : store.renamed.get(query) ?? null)
+
 /** Gene symbols matching one query term: exact hit, or every symbol containing it. */
 export function matchSymbols(query, exact) {
-  if (exact) return store.geneIndex.has(query) ? [query] : []
+  if (exact) {
+    if (store.geneIndex.has(query)) return [query]
+    const current = store.renamed.get(query)
+    return current && store.geneIndex.has(current) ? [current] : []
+  }
+  const redirect = currentSymbol(query)
+  if (redirect) return [redirect, ...store.geneNames.filter((n) => n !== redirect && n.includes(query))]
   const out = []
   for (const name of store.geneNames) if (name.includes(query)) out.push(name)
   return out
