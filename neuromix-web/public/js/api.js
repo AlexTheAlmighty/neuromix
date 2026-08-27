@@ -1,7 +1,8 @@
-// Live lookups against Enrichr, STRING and NCBI. All three send permissive CORS
+// Live lookups against Enrichr, STRING and NCBI, which all send permissive CORS
 // headers, so the browser calls them directly and the site stays a static bundle.
-// BioGRID is absent by design: its webservice needs an access key, and a static site
-// has nowhere to keep one. STRING covers the interaction panel.
+// BioGRID interactions come from a bundled snapshot served as static files (see
+// interactions below): BioGRID's own webservice sends no CORS headers and needs an
+// access key, so it cannot be called from a browser at all.
 
 const ENRICHR = 'https://maayanlab.cloud/Enrichr'
 const STRING = 'https://string-db.org/api/json'
@@ -108,24 +109,57 @@ export async function geneSummary(gene) {
   return value
 }
 
+/**
+ * Interaction partners from the bundled BioGRID snapshot: no webservice, no access
+ * key, no network beyond this site's own static files. tools/update-biogrid.mjs
+ * refreshes the snapshot; tools/build-biogrid.mjs shards it into
+ * /data/biogrid/<bucket>.json so one small fetch answers one gene.
+ *
+ * The bucket function here and in tools/build-biogrid.mjs must stay identical.
+ */
+const BIOGRID_BUCKETS = 128
+const biogridBucket = (symbol) => {
+  let h = 5381
+  for (let i = 0; i < symbol.length; i++) h = ((h * 33) ^ symbol.charCodeAt(i)) >>> 0
+  return (h % BIOGRID_BUCKETS).toString(16).padStart(2, '0')
+}
+let biogridMeta = null
+
 export async function interactions(gene) {
+  const symbol = cleanSymbol(gene)
+  const [shardRes, meta] = await Promise.all([
+    fetch(`/data/biogrid/${biogridBucket(symbol)}.json`),
+    biogridMeta ?? fetch('/data/biogrid/meta.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
+  ])
+  biogridMeta = meta
+  if (!shardRes.ok) throw new Error(`The BioGRID data files are missing (HTTP ${shardRes.status}). Run: node tools/build-biogrid.mjs`)
+  const shard = await shardRes.json()
+  return {
+    gene: symbol,
+    release: meta?.release ?? '',
+    retrieved: meta?.retrieved ?? '',
+    partners: (shard[symbol] ?? []).map(([partner, physical, genetic, pubs]) => ({ partner, physical, genetic, pubs })),
+  }
+}
+
+/** Live STRING lookup, every partner STRING holds, sorted by the caller. */
+export async function stringInteractions(gene) {
   const symbol = cleanSymbol(gene)
   const mapped = await fetch(`${STRING}/get_string_ids?identifiers=${encodeURIComponent(symbol)}&species=9606&limit=1`)
   if (!mapped.ok) throw new Error(`STRING lookup failed (HTTP ${mapped.status})`)
   const ids = await mapped.json()
-  if (!ids.length) return { gene: symbol, string: [] }
+  if (!ids.length) return { gene: symbol, partners: [] }
 
-  const res = await fetch(`${STRING}/interaction_partners?identifiers=${encodeURIComponent(ids[0].stringId)}&species=9606&required_score=300&limit=200`)
+  // required_score=1 asks for everything STRING holds (it stores nothing below 150
+  // anyway) and the explicit limit defeats STRING's default of 10 partners; left
+  // out, STRING would apply its own cutoff of 400.
+  const res = await fetch(`${STRING}/interaction_partners?identifiers=${encodeURIComponent(ids[0].stringId)}&species=9606&required_score=1&limit=100000`)
   if (!res.ok) throw new Error(`STRING interaction lookup failed (HTTP ${res.status})`)
   const partners = await res.json()
   return {
     gene: symbol,
-    string: partners.map((p) => ({
-      a: p.preferredName_A,
-      b: p.preferredName_B,
-      score: Number(p.score),
-      evidence: Number(p.escore ?? 0),
-      source: 'STRING',
-    })),
+    partners: partners
+      .map((p) => ({ partner: p.preferredName_A === symbol ? p.preferredName_B : p.preferredName_A, score: Number(p.score) }))
+      .filter((p) => p.partner),
   }
 }

@@ -8,8 +8,12 @@ neuromix-web/public/data/neuromix.json
 # is readable at /data/symbol-report.json after a deploy.
 neuromix-web/public/data/symbol-report.json
 
-# Unpublished manuscript, deliberately kept out of the public repo.
+# Sharded from the committed tools/biogrid.json by neuromix-web/tools/build-biogrid.mjs.
+neuromix-web/public/data/biogrid/
+
+# Unpublished manuscripts, deliberately kept out of the public repo.
 Huntingtons-methyl-donor-hypothesis.pdf
+NeurOmix Manuscript.docx
 
 *.log
 .DS_Store

@@ -21,63 +21,108 @@ export function mount(root) {
     el('div', { class: 'panel-body prose' }, [
       el('h1', { text: 'About NeurOmix' }),
       el('p', {
-        text: 'NeurOmix is a manually curated collection of ranked gene lists from high throughput omics '
-          + 'experiments in neuroscience and neurological disease: transcriptomics, proteomics, CRISPR screens and more. '
-          + 'Each list is ranked by a statistic from the original paper, such as fold change, p value or correlation '
-          + 'coefficient, so a gene\'s position in a list carries meaning.',
+        text: 'NeurOmix is a manually curated database of ranked gene lists from high-throughput studies. '
+          + 'The database is oriented towards neuroscience and brings together datasets from transcriptomics, '
+          + 'proteomics, CRISPR screens, interactomics, and many other large-scale experimental approaches.',
+      }),
+      el('p', {
+        text: 'Each gene list preserves the ranking used in the original study, such as fold change, P value, '
+          + 'or correlation coefficient. This means a gene\'s position within a list retains its biological '
+          + 'meaning from the original experiment.',
+      }),
+      el('p', {
+        text: 'Every gene symbol is checked against HGNC when the database is built. Retired symbols are '
+          + 'updated to their current names where the mapping is unambiguous, and searching for the name a '
+          + 'paper used still finds the data.',
       }),
 
       el('h2', { text: 'Gene analysis' }),
       el('p', {
-        text: 'Search one gene or a comma separated list. Every row of the result is one experiment that '
-          + 'reported the gene, showing where it ranked in that experiment\'s list.',
+        text: 'Search for a single gene or enter multiple genes separated by commas. NeurOmix searches across '
+          + 'all curated experiments and returns every gene list containing the queried gene. Each result '
+          + 'represents one gene to experiment match and includes:',
       }),
       el('ul', {}, [
-        el('li', {}, [el('strong', { text: 'Article' }), ' links to the original publication.']),
-        el('li', {}, [el('strong', { text: 'Experiment' }), ' opens the abstract, the tissue source, the method, and the full ranked gene list.']),
-        el('li', {}, [el('strong', { text: 'Rank' }), ' is the gene\'s position in that experiment\'s ranked list, and the sorting statistic is named in the experiment description.']),
-        el('li', {}, ['Rows carry a labelled chip and a coloured edge for lists of upregulated or downregulated genes.']),
-        el('li', {}, [el('strong', { text: 'Co-occurring genes' }), ' takes every list containing your gene and reports the other genes that show up in two or more of them.']),
+        el('li', {}, [el('strong', { text: 'Article' }), ': links directly to the original publication.']),
+        el('li', {}, [el('strong', { text: 'Experiment' }), ': opens a detailed description containing the study abstract, tissue source, experimental method, and complete ranked gene list.']),
+        el('li', {}, [el('strong', { text: 'Rank' }), ': shows the gene\'s position within the original ranked list. The statistic used to rank the list is provided in the experiment description.']),
+        el('li', {}, [el('strong', { text: 'Direction' }), ': gene lists representing upregulated or downregulated genes are visually labelled.']),
+        el('li', {}, [el('strong', { text: 'Co-occurring genes' }), ': identifies genes that repeatedly appear in the same curated gene lists as the queried gene.']),
       ]),
       el('p', {
-        text: 'Exact match restricts results to the symbol you typed. With it off, a search for KIF also returns '
-          + 'KIF1A, KIF5B and every other symbol containing those letters.',
+        text: 'Exact match restricts the search to the gene symbol entered. When exact matching is disabled, '
+          + 'partial symbols are also returned; for example, searching KIF can retrieve KIF1A, KIF5B, and '
+          + 'other symbols containing those characters.',
       }),
 
       el('h2', { text: 'Gene list analysis' }),
       el('p', {
-        text: 'Load any NeurOmix list from the study picker or paste your own. Compare to NeurOmix ranks every '
-          + 'other list by how many genes it shares with yours, and shows which of your genes are the most widely shared.',
+        text: 'NeurOmix can also analyse complete gene lists. Select any curated list from the built-in study '
+          + 'picker, send one over from the study browser, or paste a custom list.',
       }),
       el('p', {
-        text: 'The enrichment buttons pass your list to Enrichr and return the enriched terms for that library, '
-          + 'with the strongest hits charted by combined score and shaded by adjusted p value.',
+        text: 'Compare to NeurOmix compares the input list with every curated gene list in the database, ranks '
+          + 'experiments by the number of shared genes, and identifies which genes from the input list occur '
+          + 'most broadly across the database.',
+      }),
+      el('p', {
+        text: 'Gene lists can also be analysed using Enrichr. NeurOmix submits the selected genes to the chosen '
+          + 'Enrichr library and returns enriched terms, associated genes, statistical results, and a graphical '
+          + 'summary of the strongest hits ranked by combined score and shaded by adjusted p value.',
+      }),
+
+      el('h2', { text: 'Study browser' }),
+      el('p', {
+        text: 'The study browser lists every curated experiment, with filters for topic, assay type, species, '
+          + 'journal, method, publication year, and direction. Three analyses run on whatever the filters leave '
+          + 'behind. Consensus signature asks the selected experiments to vote for their most consistently '
+          + 'top-ranked genes, discounted by how common each gene is in a chosen background. Evidence '
+          + 'convergence ranks genes by how many distinct experimental approaches support them. Pinning a '
+          + 'filtered set as set A allows a second filtered set to be compared against it gene by gene, with '
+          + 'corrected p values. By default each article casts one vote per gene, so a single paper that '
+          + 'contributed many lists cannot dominate a result.',
       }),
 
       el('h2', { text: 'Protein interactions' }),
       el('p', {
-        text: 'The gene analysis panel queries STRING live. Its scores combine several lines of evidence '
-          + '(experimental, co-expression, text mining) into a single likelihood between 0 and 1. Partners '
-          + 'below 0.3 are not shown.',
+        text: 'The gene analysis page can look up protein interaction partners of a selected gene from two '
+          + 'sources, side by side. BioGRID is read from a snapshot bundled with this site, so lookups are '
+          + 'instant and work offline: every experimentally observed human interaction is shown, with the '
+          + 'number of physical and genetic experiments and the number of distinct publications supporting '
+          + 'each pair. BioGRID curates only direct experimental evidence, so it contains nothing predicted '
+          + 'or text mined. STRING is queried live and integrates several forms of evidence, including '
+          + 'experimental data, co-expression, database annotations, and text mining, into a confidence '
+          + 'score ranging from 0 to 1, so it reaches further but includes predicted associations. Every '
+          + 'partner either source holds is shown.',
       }),
 
       el('h2', { text: 'Downloads' }),
+      el('p', { text: 'NeurOmix data are available for download in several formats:' }),
       el('div', { class: 'btn-row', style: 'margin-bottom:14px' }, [
         el('button', { class: 'btn btn-primary', type: 'button', onclick: downloadStudies }, ['Study metadata (CSV)']),
         el('button', { class: 'btn', type: 'button', onclick: downloadLong }, ['Full database, long format (CSV)']),
         el('a', { class: 'btn', href: '/data/neuromix.json', download: 'neuromix.json' }, ['Raw JSON']),
       ]),
       el('div', { class: 'callout' }, [
-        'The long format export writes one row per ranked gene, which is ',
+        'The long-format database contains one row for each ranked gene entry, which is ',
         el('strong', { text: fmt(s.geneEntries) }),
-        ' rows. It is built in your browser and takes a moment.',
+        ' rows. Because the file is generated directly in the browser, large exports may take a moment to prepare.',
       ]),
 
-      el('h2', { text: 'Citing the sources' }),
+      el('h2', { text: 'Citing the data' }),
       el('p', {
-        text: 'Every gene list belongs to its original publication. Follow the article link on any result and cite '
-          + 'that paper, not this interface. Enrichment results come from Enrichr (maayanlab.cloud), interaction data '
-          + 'from STRING, and gene summaries from NCBI Gene.',
+        text: 'Every gene list in NeurOmix originates from a published study. When using a gene list or '
+          + 'experimental result, follow the article link and cite the original publication rather than '
+          + 'NeurOmix alone. Additional analyses use external resources:',
+      }),
+      el('ul', {}, [
+        el('li', {}, [el('strong', { text: 'Enrichment analysis' }), ': Enrichr (maayanlab.cloud)']),
+        el('li', {}, [el('strong', { text: 'Protein interaction data' }), ': BioGRID (thebiogrid.org) and STRING (string-db.org)']),
+        el('li', {}, [el('strong', { text: 'Gene summaries' }), ': NCBI Gene']),
+      ]),
+      el('p', {
+        text: 'NeurOmix is intended to make these distributed experimental results easier to explore while '
+          + 'preserving a direct connection to the studies that generated them.',
       }),
     ]),
   ]))
