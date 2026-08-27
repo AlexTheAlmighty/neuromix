@@ -1,5 +1,5 @@
-// Horizontal bar chart, single series. Thin marks, 4px rounded data-end anchored
-// to the baseline, hairline gridlines, value at the tip, hover tooltip.
+// Horizontal bar chart, single series. Thin square-cornered marks anchored to the
+// baseline, hairline gridlines, value at the tip, hover tooltip.
 // An optional second value drives a sequential one-hue fill (light to dark).
 import { el } from './ui.js'
 
@@ -8,8 +8,8 @@ const NS = 'http://www.w3.org/2000/svg'
 // Blue ramp, low to high magnitude, stepped for each surface so the lightest
 // step still clears contrast against it.
 const RAMP = {
-  light: ['#86b6ef', '#5598e7', '#2a78d6', '#1c5cab', '#104281'],
-  dark: ['#184f95', '#256abf', '#3987e5', '#6da7ec', '#b7d3f6'],
+  light: ['#8fb4dd', '#5f92c7', '#356fae', '#22548b', '#153a63'],
+  dark: ['#1d4f86', '#2d6ab0', '#4585cd', '#78a7dd', '#b9d1ec'],
 }
 
 const svgEl = (tag, attrs = {}) => {
@@ -30,12 +30,7 @@ function niceTicks(max, count = 4) {
   return ticks
 }
 
-// Square at the baseline, 4px rounded at the data end.
-function barPath(x, y, w, h, r = 4) {
-  const radius = Math.max(0, Math.min(r, w, h / 2))
-  return `M${x},${y} H${x + w - radius} A${radius},${radius} 0 0 1 ${x + w},${y + radius} `
-    + `V${y + h - radius} A${radius},${radius} 0 0 1 ${x + w - radius},${y + h} H${x} Z`
-}
+const barPath = (x, y, w, h) => `M${x},${y} H${x + w} V${y + h} H${x} Z`
 
 /**
  * rows: [{ label, value, fillValue?, tooltip?: [[k, v], ...] }]

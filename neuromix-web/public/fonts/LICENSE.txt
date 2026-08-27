@@ -1,0 +1,9 @@
+TeX Gyre Schola and TeX Gyre Pagella
+Copyright 2007-2009 for the TeX Gyre extensions by B. Jackowski and J.M. Nowacki
+(on behalf of TeX Users Groups). Vietnamese characters were added by Han The Thanh.
+
+Licensed under the GUST Font License (GFL), a free license legally equivalent to
+the LaTeX Project Public License (LPPL), version 1.3c or later.
+See: https://www.gust.org.pl/projects/e-foundry/licenses
+
+Obtained from CTAN: https://ctan.org/pkg/tex-gyre
