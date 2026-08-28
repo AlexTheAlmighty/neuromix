@@ -61,6 +61,28 @@ A pipe is treated as a member separator alongside a semicolon and comma. Some st
 file genes as `SYMBOL|ACCESSION`, and since the pipe is also this project's own storage
 separator, leaving it in place split one gene into two and shifted every rank below it.
 
+## Protein interactions come from a bundled BioGRID snapshot
+
+`tools/biogrid.json` is a compact aggregation of every human interaction in BioGRID
+(whose data files are MIT licensed): for each gene pair, the number of physical and
+genetic experiments and the number of distinct publications supporting it. It is
+committed for the same reason `tools/hgnc.json` is: a deploy never depends on
+thebiogrid.org being reachable, and a lookup is reproducible months later. Refresh it
+when you want a newer release (the download is about 190 MB, so an already-downloaded
+zip can be passed as an argument):
+
+```bash
+node tools/update-biogrid.mjs
+```
+
+Every deploy then runs `tools/build-biogrid.mjs`, which shards the snapshot into
+`public/data/biogrid/` (128 files of around 250 KB, generated, not committed) so the
+interaction panel fetches only the shard holding the queried gene. The panel shows
+every experimentally observed partner. BioGRID curates only direct experimental
+evidence, so there are no predicted or text-mined interactions and no arbitrary
+confidence cut off to choose; a live STRING lookup sits next to it for the wider,
+prediction-inclusive view.
+
 ## Updating the database
 
 `NeurOmics Database.csv` is the single source of truth. Commit a new copy of it (you
@@ -80,8 +102,9 @@ When Pages builds from Actions rather than from a branch, the CNAME file in the
 artifact is ignored. It is kept only so a branch-based deploy would still work.
 
 Enrichr, STRING and NCBI are called straight from the browser, since all three send
-permissive CORS headers. BioGRID is not used: its webservice needs an access key, and
-a static site has nowhere to keep one.
+permissive CORS headers. BioGRID's webservice sends no CORS headers and needs an
+access key, so it cannot be called from a browser at all; BioGRID interactions come
+from a bundled snapshot instead (see below).
 
 ## What is where
 
@@ -89,10 +112,13 @@ a static site has nowhere to keep one.
 | --- | --- |
 | `server.js` | Local dev server. Serves `public/` and nothing else |
 | `tools/build-data.mjs` | Converts the wide CSV into the JSON payload |
-| `public/js/api.js` | Live calls to Enrichr, STRING and NCBI, straight from the browser |
+| `public/js/api.js` | Live calls to Enrichr and NCBI, plus the local BioGRID shard lookup |
+| `tools/update-biogrid.mjs` | Downloads a BioGRID release and writes the committed snapshot `tools/biogrid.json` |
+| `tools/build-biogrid.mjs` | Shards the snapshot into `public/data/biogrid/`, generated on every deploy |
 | `public/js/store.js` | Loads the data, builds the gene index, and implements every lookup |
 | `public/js/views/` | One module per tab |
 | `public/js/charts.js` | Hand-rolled SVG bar charts, no chart library |
+| `public/fonts/` | TeX Gyre Schola (text) and Pagella (headings), GUST Font License, self-hosted so the site stays dependency free |
 | `public/js/ui.js` | Element helper, sortable and paged table, drawer, CSV export |
 
 ## How the CSV is read
@@ -129,7 +155,7 @@ app decided the row colour.
 | `Compare to NeurOmix Database` | Gene list analysis, ranked by shared genes plus coverage of your list |
 | Gene frequency plot | Most widely shared genes bar chart |
 | 24 Enrichr buttons | All of them plus 34 more, in 10 collapsible groups. Library ids and the sizes quoted in the tooltips are checked against Enrichr's `datasetStatistics` endpoint |
-| BioGRID and STRING button | Fetch interactions, STRING only, sorted by score. BioGRID needs an access key that a static site cannot hold |
+| BioGRID and STRING button | Both, side by side: BioGRID from a bundled snapshot (experimental evidence counts, works offline), STRING queried live (likelihood scores, includes predictions) |
 | `Download Database` | About tab: study metadata CSV, long format CSV, raw JSON |
 
 Not carried over: the `interactome_data.csv` co-interactor analysis, which was already
@@ -218,6 +244,7 @@ symbols, and group members keep the rank of the cell they came from.
 ## Notes
 
 - Searches are shareable: `#/genes?q=HTT&exact=1`.
-- Enrichment and interaction lookups are the only features that need internet access.
+- Enrichment, STRING and gene summary lookups are the only features that need internet
+  access. BioGRID interaction lookups run against the bundled snapshot, so they work offline.
 - Colour is never the only signal. Direction is always spelled out on a labelled chip
   next to the coloured edge, and every chart has a table underneath it.

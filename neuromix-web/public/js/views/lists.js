@@ -403,15 +403,13 @@ function runComparison() {
   if (!genes) return
   clearActiveTool()
 
-  const { rows, topGenes, queried, matchedGenes, unmatched, significantCount, threshold } = compareToDatabase(genes)
+  const { rows, topGenes, queried, unmatched, significantCount, threshold } = compareToDatabase(genes)
   clear(results)
 
   results.append(el('div', { class: 'stats' }, [
     stat('Genes queried', fmt(queried), `${fmt(queried - unmatched.length)} known to NeurOmix`),
     stat('Matching gene lists', fmt(rows.length), 'sharing 2 or more genes'),
     stat('Statistically significant', fmt(significantCount), `of ${fmt(rows.length)} after correction`),
-    stat('Genes with a match', fmt(matchedGenes), pct(matchedGenes / queried, 0) + ' of the list'),
-    stat('Best overlap', rows.length ? `${fmt(rows[0].count)} genes` : 'none', rows.length ? pct(rows[0].coverage, 0) + ' of your list' : ''),
   ]))
 
   if (rows.length) {

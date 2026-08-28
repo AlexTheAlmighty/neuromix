@@ -6,7 +6,7 @@ import {
 } from '../store.js'
 import { el, clear, fmt, pct, sci, escapeHtml, DataTable, toast, debounce } from '../ui.js'
 import { on } from '../bus.js'
-import { geneSummary, interactions } from '../api.js'
+import { geneSummary, interactions, stringInteractions } from '../api.js'
 import { openStudy, studyLinkButton, articleLink, directionChip } from './shared.js'
 
 const EXAMPLES = [
@@ -47,7 +47,7 @@ export function mount(root) {
       ]),
       el('label', { class: 'field', for: 'gene-input' }, [el('span', { text: 'Gene symbols' }), input, suggestions]),
       el('label', { class: 'check', for: 'exact-match' }, [
-        exactBox, 'Exact match only (off matches any symbol containing the text)',
+        exactBox, 'Exact match only',
       ]),
       el('div', { class: 'btn-row' }, [
         el('button', { class: 'btn btn-primary', type: 'button', onclick: () => runSearch() }, ['Search database']),
@@ -56,15 +56,23 @@ export function mount(root) {
       el('hr', { class: 'divider' }),
       el('div', { class: 'section-title' }, [el('h2', { text: 'Protein interactions' })]),
       el('p', { class: 'hint', style: 'margin-bottom:10px' }, [
-        'Live lookup against STRING for a single gene symbol.',
+        'Partners for a single gene symbol: curated experimental evidence from BioGRID, '
+        + 'or scored associations from STRING.',
       ]),
-      el('button', { class: 'btn', type: 'button', onclick: () => fetchInteractions() }, ['Fetch interactions']),
+      el('div', { class: 'btn-row' }, [
+        el('button', { class: 'btn', type: 'button', onclick: () => fetchInteractions('biogrid') }, ['Fetch from BioGRID']),
+        el('button', { class: 'btn', type: 'button', onclick: () => fetchInteractions('string') }, ['Fetch from STRING']),
+      ]),
       interactionBox = el('div', { style: 'margin-top:12px' }),
       el('details', { style: 'margin-top:12px' }, [
-        el('summary', { class: 'hint', style: 'cursor:pointer', text: 'How the interaction scores are calculated' }),
+        el('summary', { class: 'hint', style: 'cursor:pointer', text: 'How the two sources differ' }),
         el('p', { class: 'hint', style: 'margin-top:8px' }, [
-          'STRING scores combine several lines of evidence (experimental, co-expression, text mining) '
-          + 'into one likelihood between 0 and 1. Partners are filtered at a score of 0.3 and capped at 200.',
+          'BioGRID curates only direct experimental evidence, read from a snapshot bundled with this '
+          + 'site: physical and genetic count the experiments supporting each pair, publications the '
+          + 'distinct papers reporting one. STRING is queried live and combines several lines of '
+          + 'evidence (experimental, co-expression, text mining) into one likelihood between 0 and 1, '
+          + 'so it reaches further but includes predicted associations. Every partner either source '
+          + 'holds is shown.',
         ]),
       ]),
     ]),
@@ -441,39 +449,43 @@ function runCoOccurrence() {
   results.append(table.node)
 }
 
-async function fetchInteractions() {
+async function fetchInteractions(source) {
   const genes = parseGeneQuery(input.value)
   if (genes.length !== 1) {
     toast('Interaction lookup takes exactly one gene symbol', { error: true })
     return
   }
+  const sourceName = source === 'string' ? 'STRING' : 'BioGRID'
   clear(interactionBox)
   interactionBox.append(el('div', { class: 'loading-row' }, [
-    el('div', { class: 'spinner' }), el('span', { text: `Querying STRING for ${genes[0]}` }),
+    el('div', { class: 'spinner' }), el('span', { text: `Looking up ${sourceName} partners for ${genes[0]}` }),
   ]))
 
   try {
-    const body = await interactions(genes[0])
-
-    const rows = body.string
-      .map((r) => ({ partner: r.b === genes[0] ? r.a : r.b, score: r.score, source: 'STRING' }))
-      .filter((r) => r.partner).sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+    const body = source === 'string' ? await stringInteractions(genes[0]) : await interactions(genes[0])
+    const rows = body.partners
+    if (source === 'string') rows.sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
 
     clear(interactionBox)
     if (!rows.length) {
-      interactionBox.append(el('p', { class: 'hint', text: `No interaction partners returned for ${genes[0]}.` }))
+      interactionBox.append(el('p', { class: 'hint', text: `${sourceName} holds no interaction partners for ${genes[0]}.` }))
       return
     }
     const inNeurOmix = (gene) => store.geneIndex.has(gene)
+    const release = source === 'string' ? 'STRING' : `BioGRID ${body.release}`
     interactionBox.append(el('p', { class: 'hint', style: 'margin-bottom:6px' }, [
-      `${fmt(rows.length)} partners. Bold symbols also appear somewhere in NeurOmix.`,
+      `${fmt(rows.length)} partners in ${release}. Bold symbols also appear somewhere in NeurOmix.`,
     ]))
+    const numCols = source === 'string'
+      ? [['Score', (r) => (r.score === null ? 'n/a' : r.score.toFixed(3))]]
+      : [['Publications', (r) => fmt(r.pubs)], ['Physical', (r) => fmt(r.physical)], ['Genetic', (r) => fmt(r.genetic)]]
     const wrap = el('div', { class: 'table-wrap', style: 'max-height:320px; overflow-y:auto' })
     wrap.append(el('table', { class: 'data' }, [
       el('thead', {}, [el('tr', {}, [
-        el('th', { text: 'Partner' }), el('th', { text: 'Score', class: 'num' }), el('th', { text: 'Source' }),
+        el('th', { text: 'Partner' }),
+        ...numCols.map(([label]) => el('th', { text: label, class: 'num' })),
       ])]),
-      el('tbody', {}, rows.slice(0, 100).map((r) => el('tr', {}, [
+      el('tbody', {}, rows.map((r) => el('tr', {}, [
         el('td', { class: 'gene' }, [
           inNeurOmix(r.partner)
             ? el('strong', {}, [el('button', {
@@ -482,8 +494,7 @@ async function fetchInteractions() {
             }, [r.partner])])
             : r.partner,
         ]),
-        el('td', { class: 'num', text: r.score === null ? 'n/a' : r.score.toFixed(3) }),
-        el('td', {}, [el('span', { class: 'chip chip-plain', text: r.source })]),
+        ...numCols.map(([, render]) => el('td', { class: 'num', text: render(r) })),
       ]))),
     ]))
     interactionBox.append(wrap)
