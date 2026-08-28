@@ -13,7 +13,7 @@ neuromix-web/public/data/biogrid/
 
 # Unpublished manuscripts, deliberately kept out of the public repo.
 Huntingtons-methyl-donor-hypothesis.pdf
-NeurOmix Manuscript.docx
+NeurOmix Manuscript*.docx
 
 *.log
 .DS_Store
