@@ -1,0 +1,4 @@
+{
+ "comment": "Every PMID the weekly sweep has ever seen, with its verdict, so nothing is nominated twice and human rejections teach the triage step. Verdicts: triaged-out | nominated | drafted | rejected-by-curator | merged.",
+ "swept": {}
+}
