@@ -14,6 +14,13 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 - (seed) Interactomes and screens outrank yet another differential-expression
   comparison of a well-covered condition (evidence: curator strategy discussion,
   2026-08-29).
+- Non-CNS material needs an anchor. In the first reviewed cycle the curator cut
+  every column from disease systems with no neuro connection (kidney, bone,
+  pancreas, eye) but kept both non-CNS papers that had one: a FUS knockout
+  transcriptome, where a neurodegeneration gene is the subject, and a
+  genome-scale Perturb-seq, where the coverage is every expressed gene. Read the
+  seed rule that way — for non-CNS work look for a neuro gene at the centre or
+  screen-scale generality, not just a well-made list (evidence: PR #2, 2026-w36).
 - Before nominating a paper for its headline screen or interactome, expect the
   *ranked* output to be deposited, not just downstream follow-up analyses. In
   2026-w36 the AMBRA1 genome-wide CRISPR screen (PMID 42548798) deposited only
@@ -23,8 +30,20 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 
 ## Triage: what the curator rejects
 
-(nothing recorded yet: no previous cycle had been reviewed when this file was
-written, so nothing here is curator-derived yet)
+- Whole papers cut in 2026-w36 (PR #2), all of them non-neuro disease systems:
+  lupus nephritis kidney cells (PMID 42616839), an osteosarcoma surfaceome
+  (42647168), pancreatic cancer master regulators (42649389), and a retinitis
+  pigmentosa retina screen (41962540). Do not nominate on list quality alone when
+  the system is this far from the brain.
+- A genome-wide screen does not carry a paper past the relevance bar by itself.
+  The retina screen (PMID 41962540) was genome-wide, in vivo, and in a
+  degeneration model, and was still cut. "Screens outrank DE comparisons" orders
+  candidates within scope; it does not widen the scope.
+- The one CNS paper cut was the hippocampal neurogenesis study in major
+  depression (PMID 42629468) — also the one place a nominal p value was
+  substituted for a mostly-failing adjusted p. Tentative reading, worth watching:
+  the pancreatic columns carried no significance filter and were cut, but the
+  macaque columns carried none either and were kept (evidence: PR #2, 2026-w36).
 
 ## Extraction: mistakes not to repeat
 
