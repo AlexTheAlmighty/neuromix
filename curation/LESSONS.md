@@ -77,37 +77,30 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 
 ## Process
 
-- Supplement access, learned by trial in 2026-w36. PubMed Central almost never
-  has papers from a 14-day window (5 of 25 had a PMC record; PMC also gates file
-  downloads behind a proof-of-work and reCAPTCHA that only a real browser
-  clears). The two routes that work from a plain HTTP client are:
-  - Elsevier and Cell Press: `https://ars.els-cdn.com/content/image/1-s2.0-<PII>-mmc<N>.xlsx`,
-    where `<PII>` is the Crossref `alternative-id` for the DOI.
-  - Nature family and Springer-hosted journals (including The EMBO Journal):
-    `https://media.springernature.com/original/springer-static/esm/art%3A<DOI>/MediaObjects/<journal>_<year>_<article>_MOESM<N>_ESM.xlsx`.
+- Supplement routes that work from a plain HTTP client (2026-w36 and the backlog
+  run). NCBI PMC gates downloads behind a proof-of-work and reCAPTCHA, and only
+  5 of 25 papers in a 14-day window had a PMC record at all, so it is the wrong
+  first stop for the weekly cycle.
+  - Elsevier and Cell Press: `ars.els-cdn.com/content/image/1-s2.0-<PII>-mmc<N>.xlsx`,
+    `<PII>` being the Crossref `alternative-id` for the DOI.
+  - Nature family and Springer-hosted (including The EMBO Journal):
+    `media.springernature.com/original/springer-static/esm/art%3A<DOI>/MediaObjects/<journal>_<year>_<article>_MOESM<N>_ESM.xlsx`.
     A 3,038-byte response is the "not found" placeholder, not a file.
-  Science family (science.org), PNAS and PMC block scripted requests; their
-  supplements have to be fetched through a browser session.
-- For anything old enough to be in PubMed Central, Europe PMC is the route that
-  works from a plain HTTP client:
-  `https://www.ebi.ac.uk/europepmc/webservices/rest/<PMCID>/supplementaryFiles`
-  returns every supplement as one zip, with no proof-of-work and no CAPTCHA, and
-  `/fullTextXML` gives the supplement legends. It answers 500 intermittently, so
-  retry. It refuses non-open-access records, and it lags by months, so it does
-  not help the weekly window (evidence: backlog run, 2026-w36, where it supplied
-  the eLife and PNAS supplements that NCBI PMC had gated).
-- Identifier-only gene columns block drafting whatever the identifier is. Ensembl
-  IDs (PMID 42620705) and UniProt accessions (PMID 37906643) both cost a paper.
-  This is the same pending question, not two.
+  - Anything already in PMC: `ebi.ac.uk/europepmc/webservices/rest/<PMCID>/supplementaryFiles`
+    returns every supplement as one zip, ungated, and `/fullTextXML` gives the
+    legends. Retry on 500. Open access only, and months behind.
+  Science family and PNAS block scripted requests; use a browser session.
 - Some papers cannot be drafted no matter how good the science, and should be
   triaged as nomination-only rather than chased:
   - the only tabular supplement is a PDF (PNAS publishes Dataset S1 as PDF;
-    PMID 42640795, 42425084, 42611703 in 2026-w36);
-  - the journal publishes per-figure "Source Data" but no supplementary tables,
-    so no ranked list exists (PMID 42649291, 42608571);
+    PMID 42640795, 42425084, 42611703);
+  - the journal publishes per-figure "Source Data" but no supplementary tables
+    (PMID 42649291, 42608571), or only cluster-level statistics with no gene
+    table at all (PMID 42457956);
   - the deposited table gives only raw per-sample intensities with no summary
     statistic (PMID 42629502, 42616903);
-  - the gene column holds Ensembl IDs rather than symbols (PMID 42620705).
+  - the gene column holds identifiers rather than symbols, whether Ensembl
+    (PMID 42620705) or UniProt (37906643).
 - A 14-day sweep of the current allowlist returns ~2,500 candidates, not the
   ~1,000 the runbook assumes. PLOS ONE and iScience alone are 45% of the volume
   and almost none of the yield. Title-pass triage is therefore the expensive
@@ -118,6 +111,7 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 - Teach the sweep or a small helper to resolve supplement URLs from the two CDN
   patterns above and download them, so drafting does not depend on ad-hoc
   browser work each week. Proposed in the 2026-w36 PR body.
-- Decide whether mapping Ensembl gene IDs to HGNC symbols during extraction is
-  allowed. The standing rule is "record symbols as published", which currently
-  makes any Ensembl-only table undraftable. Proposed in the 2026-w36 PR body.
+- Decide whether mapping stable identifiers to HGNC symbols during extraction is
+  allowed. "Record symbols as published" currently makes any Ensembl-only or
+  UniProt-only table undraftable; that has now cost two papers (PMID 42620705,
+  37906643). Proposed in the 2026-w36 and backlog PR bodies.
