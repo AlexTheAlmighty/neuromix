@@ -104,7 +104,7 @@
    "t": "Oxygen toxicity causes cyclic damage by destabilizing specific Fe-S cluster-containing protein complexes."
   },
   "36931259": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Molecular cell",
    "t": "A central chaperone-like role for 14-3-3 proteins in human cells."
@@ -200,13 +200,13 @@
    "t": "Subcellular proteomics and iPSC modeling uncover reversible mechanisms of axonal pathology in Alzheimer's disease."
   },
   "40067829": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Cell reports",
    "t": "ALS molecular subtypes are a combination of cellular and pathological features learned by deep multiomics classifiers."
   },
   "40087396": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
    "t": "Endothelial TDP-43 depletion disrupts core blood-brain barrier pathways in neurodegeneration."
@@ -260,7 +260,7 @@
    "t": "Spatially Resolved Panoramic in vivo CRISPR Screen via Perturb-DBiT."
   },
   "40404995": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
    "t": "Microglia activation orchestrates CXCL10-mediated CD8+ T cell recruitment to promote aging-related white matter degeneration."
@@ -296,7 +296,7 @@
    "t": "Ultradeep N-glycoproteome atlas of mouse reveals spatiotemporal signatures of brain aging and neurodegenerative diseases."
   },
   "40713954": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Neuron",
    "t": "G-protein-coupled receptor ADGRG1 drives a protective microglial state in Alzheimer's disease through MYC activation."
@@ -338,7 +338,7 @@
    "t": "CRISPR screening by AAV episome-sequencing (CrAAVe-seq): a scalable cell-type-specific in vivo platform uncovers neuronal essential genes."
   },
   "40858618": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Nature communications",
    "t": "ALS/FTD-linked TBK1 deficiency in microglia induces an aged-like microglial signature and drives social recognition deficits in mice."
@@ -404,13 +404,13 @@
    "t": "Enhanced hybridization-proximity labeling discovers protein interactomes of single RNA molecules."
   },
   "41120750": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
    "t": "TDP-43 nuclear loss in FTD/ALS causes widespread alternative polyadenylation changes."
   },
   "41120751": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
    "t": "TDP-43 loss induces cryptic polyadenylation in ALS/FTD."
@@ -506,7 +506,7 @@
    "t": "Extracellular matrix proteolysis maintains synapse plasticity during brain development."
   },
   "41461932": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
    "t": "Dynamic subtype- and context-specific subcellular RNA regulation in growth cones of developing neurons of the cerebral cortex."
@@ -518,7 +518,7 @@
    "t": "CRISPR knockout screens reveal genes and pathways essential for neuronal differentiation and implicate PEDS1 in neurodevelopment."
   },
   "41493270": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "The Journal of cell biology",
    "t": "A Rab1 interactome illuminates a dual role in autophagy and membrane trafficking."
@@ -560,7 +560,7 @@
    "t": "Global mapping of circRNA-target RNA interactions reveal P-body-mediated translational repression."
   },
   "41720097": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Developmental cell",
    "t": "Insolubilome profiling defines molecular features that influence protein insolubility with aging."
@@ -584,7 +584,7 @@
    "t": "A proteome-wide dependency map of protein interaction motifs."
   },
   "41819099": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Neuron",
    "t": "Brain-engrafted monocyte-derived macrophages from blood and skull-bone marrow exhibit distinct properties."
@@ -614,7 +614,7 @@
    "t": "NAC promotes co-translational protein folding at the ribosomal tunnel exit."
   },
   "41912662": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
    "t": "UBQLN2 links proteotoxicity with lipid metabolism in neurodegeneration."
@@ -698,7 +698,7 @@
    "t": "NAT10 maintains stem cell homeostasis by mitigating mRNA decay through an ac4C-independent mechanism."
   },
   "42105234": {
-   "v": "nominated",
+   "v": "drafted",
    "cycle": "backlog-2026-w36",
    "j": "Cell reports",
    "t": "Proximity labeling proteomics maps radial glial ciliary proteins across the developing telencephalon."
