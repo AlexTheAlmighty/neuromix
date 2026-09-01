@@ -11,6 +11,9 @@ neuromix-web/public/data/symbol-report.json
 # Sharded from the committed tools/biogrid.json by neuromix-web/tools/build-biogrid.mjs.
 neuromix-web/public/data/biogrid/
 
+# Weekly curation scratch: sweep candidates and downloaded supplements.
+curation/work/
+
 # Unpublished manuscripts, deliberately kept out of the public repo.
 Huntingtons-methyl-donor-hypothesis.pdf
 NeurOmix Manuscript*.docx
