@@ -1,5 +1,5 @@
 {
- "comment": "Every PMID the weekly sweep has ever seen, with its verdict, so nothing is nominated twice and human rejections teach the triage step. Verdicts: triaged-out | nominated | drafted | rejected-by-curator | merged.",
+ "comment": "Every PMID the weekly sweep has ever seen, with its verdict, so nothing is nominated twice and human rejections teach the triage step. Verdicts: triaged-out | nominated | drafted | rejected-by-curator | withdrawn-in-audit | merged.",
  "swept": {
   "19955087": {
    "v": "nominated",
@@ -206,10 +206,11 @@
    "t": "ALS molecular subtypes are a combination of cellular and pathological features learned by deep multiomics classifiers."
   },
   "40087396": {
-   "v": "drafted",
+   "v": "withdrawn-in-audit",
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
-   "t": "Endothelial TDP-43 depletion disrupts core blood-brain barrier pathways in neurodegeneration."
+   "t": "Endothelial TDP-43 depletion disrupts core blood-brain barrier pathways in neurodegeneration.",
+   "note": "Supplementary table 3 names no comparison and carries only a raw p value; the paper spans AD, ALS, FTD and TDP-43 knockdown, so the contrast could not be confirmed. Two columns withdrawn 2026-08-31."
   },
   "40105103": {
    "v": "nominated",
