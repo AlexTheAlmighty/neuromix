@@ -30,6 +30,16 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 
 ## Triage: what the curator rejects
 
+- Interactions must be measured, not inferred. The backlog run drafted two
+  interactome columns the same way — collapse a pairwise table to each partner's
+  best score and rank descending. The AP-MS network of autism risk proteins
+  (PMID 42658940) was kept; the protein-coabundance association atlas
+  (PMID 40316700) was cut, and it was the only backlog column cut. The difference
+  is that one measures pulldowns and the other predicts association from
+  co-abundance across proteomic samples. Treat computational association or
+  co-expression networks as out of scope, however large. Alternative reading to
+  watch, since this is one data point: the atlas column was also the only one
+  with no significance filter available (evidence: PR #3, backlog 2026-w36).
 - Whole papers cut in 2026-w36 (PR #2), all of them non-neuro disease systems:
   lupus nephritis kidney cells (PMID 42616839), an osteosarcoma surfaceome
   (42647168), pancreatic cancer master regulators (42649389), and a retinitis
