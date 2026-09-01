@@ -30,36 +30,43 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 
 ## Triage: what the curator rejects
 
-- Interactions must be measured, not inferred. The backlog run drafted two
-  interactome columns the same way — collapse a pairwise table to each partner's
-  best score and rank descending. The AP-MS network of autism risk proteins
-  (PMID 42658940) was kept; the protein-coabundance association atlas
-  (PMID 40316700) was cut, and it was the only backlog column cut. The difference
-  is that one measures pulldowns and the other predicts association from
-  co-abundance across proteomic samples. Treat computational association or
-  co-expression networks as out of scope, however large. Alternative reading to
-  watch, since this is one data point: the atlas column was also the only one
-  with no significance filter available (evidence: PR #3, backlog 2026-w36).
-- Whole papers cut in 2026-w36 (PR #2), all of them non-neuro disease systems:
-  lupus nephritis kidney cells (PMID 42616839), an osteosarcoma surfaceome
-  (42647168), pancreatic cancer master regulators (42649389), and a retinitis
-  pigmentosa retina screen (41962540). Do not nominate on list quality alone when
-  the system is this far from the brain.
-- A genome-wide screen does not carry a paper past the relevance bar by itself.
-  The retina screen (PMID 41962540) was genome-wide, in vivo, and in a
-  degeneration model, and was still cut. "Screens outrank DE comparisons" orders
-  candidates within scope; it does not widen the scope.
-- The one CNS paper cut was the hippocampal neurogenesis study in major
-  depression (PMID 42629468) — also the one place a nominal p value was
-  substituted for a mostly-failing adjusted p. Tentative reading, worth watching:
-  the pancreatic columns carried no significance filter and were cut, but the
-  macaque columns carried none either and were kept (evidence: PR #2, 2026-w36).
+- Interactions must be measured, not inferred. Two interactome columns were built
+  the same way — collapse a pairwise table to each partner's best score, rank
+  descending. The AP-MS network of autism risk proteins (42658940) was kept; the
+  protein-coabundance association atlas (40316700) was cut, and was the only
+  backlog column cut. Treat computational association and co-expression networks
+  as out of scope however large. One data point, so watch an alternative reading:
+  the atlas was also the only column with no significance filter (PR #3).
+- Non-neuro disease systems are cut on relevance whatever the list quality:
+  lupus nephritis kidney (42616839), an osteosarcoma surfaceome (42647168),
+  pancreatic cancer master regulators (42649389), and a retinitis pigmentosa
+  retina screen (41962540). That last one was genome-wide and in vivo and was
+  still cut, so "screens outrank DE comparisons" orders candidates within scope
+  rather than widening it (PR #2).
+- The one CNS paper cut was hippocampal neurogenesis in major depression
+  (42629468) — also the one place a nominal p value was substituted for a
+  mostly-failing adjusted p. Tentative: the pancreatic columns had no
+  significance filter and were cut, the macaque columns had none and were kept.
 
 ## Extraction: mistakes not to repeat
 
 - Read the comparison direction off the raw counts, not the column name. A sheet
   named "control vs KO" makes a positive fold change mean *lower* in the knockout
   (evidence: PMID 42548798, sheet "UNT tom vs Ambra1", 2026-w36).
+- The decisive direction check is the perturbed gene itself. In a knockout or
+  knockdown table, find the target: Tbk1 sits at rank 3 of the down list
+  (PMID 40858618), Adgrg1 at -0.74 (40713954), and the bait tops its own pulldown
+  (Dync1h1 in 26598648, PLD3 in 40065072, UBQLN2 in 41912662). Where no such
+  anchor exists, nominate rather than infer the sign — a direction error inverts
+  the biology, which is the worst failure this pipeline can ship. That is why the
+  LRRK2 cilia paper (39088390) and the C9orf72 microglia paper (41087751) were
+  left undrafted despite clean tables (evidence: backlog round 2).
+- A sheet named for a comparison does not guarantee the rows are genes. Two
+  TREM2 sheets named `stats_high_disease_vs_low_disease` held lipids and
+  metabolites (PMID 41580393). Read the first data rows before trusting a name.
+- Do not re-filter an already-curated candidate list. The region-specific ciliary
+  candidates (PMID 42105234) are the authors' filtered finding; applying p<=0.05
+  again cut 67 proteins to 8.
 - When a table carries both a nominal p value and an FDR, check how many genes
   survive each before choosing. The retina CRISPR screen (PMID 41962540) had 5
   genes at FDR 0.05 and 1,088 at p 0.05; the FDR cut would have produced a
@@ -90,21 +97,19 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
     returns every supplement as one zip, ungated, and `/fullTextXML` gives the
     legends. Retry on 500. Open access only, and months behind.
   Science family and PNAS block scripted requests; use a browser session.
-- Some papers cannot be drafted no matter how good the science, and should be
-  triaged as nomination-only rather than chased:
-  - the only tabular supplement is a PDF (PNAS publishes Dataset S1 as PDF;
-    PMID 42640795, 42425084, 42611703);
-  - the journal publishes per-figure "Source Data" but no supplementary tables
-    (PMID 42649291, 42608571), or only cluster-level statistics with no gene
-    table at all (PMID 42457956);
-  - the deposited table gives only raw per-sample intensities with no summary
-    statistic (PMID 42629502, 42616903);
-  - the gene column holds identifiers rather than symbols, whether Ensembl
-    (PMID 42620705) or UniProt (37906643).
-- A 14-day sweep of the current allowlist returns ~2,500 candidates, not the
-  ~1,000 the runbook assumes. PLOS ONE and iScience alone are 45% of the volume
-  and almost none of the yield. Title-pass triage is therefore the expensive
-  step; budget for it (evidence: 2026-w36 sweep, 2,523 candidates, 54 journals).
+- Undraftable shapes, to be triaged nomination-only rather than chased: PDF-only
+  supplements (42640795, 42425084, 42611703, 19955087); per-figure source data
+  with no supplementary tables (42649291, 42608571, 41224995, 41430470) or only
+  cluster-level statistics (42457956); raw per-sample intensities with no summary
+  statistic (42629502, 42616903, 40053453); identifier-only gene columns, Ensembl
+  (42620705) or UniProt (37906643); annotation matrices and pairwise crosslink or
+  interaction lists rather than a ranked list (41005307, 41315310); nested
+  multi-row instrument-export headers (40738907); and anything whose tables run to
+  hundreds of megabytes (41285799, 40593524), which is also what stalls a bulk
+  download.
+- A 14-day sweep returns ~2,500 candidates, not the ~1,000 the runbook assumes;
+  PLOS ONE and iScience are 45% of the volume and almost none of the yield, so
+  title-pass triage is the expensive step (evidence: 2026-w36, 54 journals).
 
 ### Proposed tool changes awaiting curator approval
 
