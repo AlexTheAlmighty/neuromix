@@ -388,6 +388,10 @@ table.data .desc-cell { max-width: 520px; }
 .cell-link { background: none; border: 0; padding: 0; font: inherit; color: var(--accent-ink); cursor: pointer; text-align: left; }
 .cell-link:hover { text-decoration: underline; }
 .genes-inline { font-size: 0.8rem; letter-spacing: 0.03em; color: var(--ink-2); word-break: break-word; }
+.genes-toggle { max-width: 320px; }
+.genes-toggle > summary { cursor: pointer; font-size: 0.8rem; color: var(--accent-ink); white-space: nowrap; }
+.genes-toggle > summary:hover { text-decoration: underline; }
+.genes-toggle[open] > summary { margin-bottom: 6px; }
 
 .table-toolbar {
   display: flex; gap: 10px; align-items: center; flex-wrap: wrap;

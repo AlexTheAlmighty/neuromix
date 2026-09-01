@@ -3,10 +3,9 @@ import { loadDatabase } from './store.js'
 import { el, clear, initDrawer, toast } from './ui.js'
 import * as genes from './views/genes.js'
 import * as lists from './views/lists.js'
-import * as studies from './views/studies.js'
 import * as about from './views/about.js'
 
-const VIEWS = { genes, lists, studies, about }
+const VIEWS = { genes, lists, about }
 const ROUTES = Object.keys(VIEWS)
 
 /* ---------- theme ---------- */
@@ -44,7 +43,7 @@ function show(name) {
     else link.removeAttribute('aria-current')
   }
   VIEWS[name].onShow?.()
-  document.title = `NeurOmix ${{ genes: 'gene analysis', lists: 'gene list analysis', studies: 'study browser', about: 'about' }[name]}`
+  document.title = `NeurOmix ${{ genes: 'gene analysis', lists: 'gene list analysis', about: 'about' }[name]}`
 }
 
 window.addEventListener('hashchange', () => show(routeName()))
