@@ -1,11 +1,635 @@
 {
  "comment": "Every PMID the weekly sweep has ever seen, with its verdict, so nothing is nominated twice and human rejections teach the triage step. Verdicts: triaged-out | nominated | drafted | rejected-by-curator | merged.",
  "swept": {
+  "19955087": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular & cellular proteomics : MCP",
+   "t": "Axonal transport proteomics reveals mobilization of translation machinery to the lesion site in injured sciatic nerve."
+  },
+  "23396283": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature methods",
+   "t": "Proteome-wide mapping of cholesterol-interacting proteins in mammalian cells."
+  },
+  "24695223": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature",
+   "t": "Quantitative proteomics identifies NCOA4 as the cargo receptor mediating ferritinophagy."
+  },
+  "26598648": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular & cellular proteomics : MCP",
+   "t": "Proteomic Analysis of Dynein-Interacting Proteins in Amyotrophic Lateral Sclerosis Synaptosomes Reveals Alterations in the RNA-Binding Prote"
+  },
+  "30104359": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "Proteomic analysis of monolayer-integrated proteins on lipid droplets identifies amphipathic interfacial &#x3b1;-helical membrane anchors."
+  },
+  "31412257": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell reports",
+   "t": "The Retinal Ganglion Cell Transportome Identifies Proteins Transported to Axons and Presynaptic Compartments in the Visual System In&#xa0;Vi"
+  },
+  "33509301": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Acta neuropathologica communications",
+   "t": "Tau-proximity ligation assay reveals extensive previously undetected pathology prior to neurofibrillary tangles in preclinical Alzheimer's d"
+  },
+  "34670838": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "The translatome of neuronal cell bodies, dendrites, and axons."
+  },
+  "35081342": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell reports",
+   "t": "Proteomic screen reveals diverse protein transport between connected neurons in the visual system."
+  },
+  "35259089": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "eLife",
+   "t": "Quantitative transportomics identifies Kif5a as a major regulator of neurodegeneration."
+  },
+  "35288716": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Integrating whole-genome sequencing with multi-omic data reveals the impact of structural variants on gene regulation in the human brain."
+  },
+  "35767995": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Neuron",
+   "t": "Core transcription programs controlling injury-induced neurodegeneration of retinal ganglion cells."
+  },
+  "36171428": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "The three-dimensional landscape of cortical chromatin accessibility in Alzheimer's disease."
+  },
+  "36215465": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "Proximity proteomics of synaptopodin provides insight into the molecular composition of the spine apparatus of dendritic spines."
+  },
+  "36504281": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "EMBO molecular medicine",
+   "t": "The genetic regulation of protein expression in cerebrospinal fluid."
+  },
+  "36823318": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature genetics",
+   "t": "Brain expression quantitative trait locus and network analyses reveal downstream effects and putative drivers for brain-related diseases."
+  },
+  "36893757": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "Oxygen toxicity causes cyclic damage by destabilizing specific Fe-S cluster-containing protein complexes."
+  },
+  "36931259": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "A central chaperone-like role for 14-3-3 proteins in human cells."
+  },
+  "37020029": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature",
+   "t": "Tracking chromatin state changes using nanoscale photo-proximity labelling."
+  },
+  "37906643": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "Shift of the insoluble content of the proteome in the aging mouse brain."
+  },
+  "38244545": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "SATB2 organizes the 3D genome architecture of cognition in cortical neurons."
+  },
+  "38328045": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "bioRxiv : the preprint server for biology",
+   "t": "Spatial proteomics of ER tubules reveals CLMN, an ER-actin tether at focal adhesions that promotes cell migration."
+  },
+  "38446668": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell reports",
+   "t": "Mosaic deletion of claudin-5 reveals rapid non-cell-autonomous consequences of blood-brain barrier leakage."
+  },
+  "38902234": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Gliovascular transcriptional perturbations in Alzheimer's disease reveal molecular mechanisms of blood brain barrier dysfunction."
+  },
+  "39088390": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "Loss of primary cilia and dopaminergic neuroprotection in pathogenic LRRK2-driven and idiopathic Parkinson's disease."
+  },
+  "39187705": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Proteomic changes in Alzheimer's disease associated with progressive A&#x3b2; plaque and tau tangle pathologies."
+  },
+  "39303720": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "C2H2-zinc-finger transcription factors bind RNA and function in diverse post-transcriptional regulatory processes."
+  },
+  "39327538": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature protocols",
+   "t": "Droplet-based functional CRISPR screening of cell-cell interactions by SPEAC-seq."
+  },
+  "39609567": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature methods",
+   "t": "A proteome-wide quantitative platform for nanoscale spatially resolved extraction of membrane proteins into native nanodiscs."
+  },
+  "39674175": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Developmental cell",
+   "t": "An amino acid-resolution interactome for motile cilia identifies the structure and function of ciliopathy protein complexes."
+  },
+  "39779912": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature aging",
+   "t": "EBP1 potentiates amyloid &#x3b2; pathology by regulating &#x3b3;-secretase."
+  },
+  "40053453": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell reports",
+   "t": "PRC1 and PRC2 proximal interactome in mouse embryonic stem cells."
+  },
+  "40065072": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature aging",
+   "t": "Subcellular proteomics and iPSC modeling uncover reversible mechanisms of axonal pathology in Alzheimer's disease."
+  },
+  "40067829": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell reports",
+   "t": "ALS molecular subtypes are a combination of cellular and pathological features learned by deep multiomics classifiers."
+  },
+  "40087396": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Endothelial TDP-43 depletion disrupts core blood-brain barrier pathways in neurodegeneration."
+  },
+  "40105103": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Journal of cell science",
+   "t": "Definition of the human mitochondrial TOM interactome reveals TRABD as a new interacting protein."
+  },
+  "40121201": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Brain 5-hydroxymethylcytosine alterations are associated with Alzheimer's disease neuropathology."
+  },
+  "40140585": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature",
+   "t": "Genome-wide CRISPR screen in human T cells reveals regulators of FOXP3."
+  },
+  "40312568": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature aging",
+   "t": "Aging promotes reactivation of the Barr body at distal chromosome regions."
+  },
+  "40316700": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature biotechnology",
+   "t": "A tissue-specific atlas of protein-protein associations enables prioritization of candidate disease genes."
+  },
+  "40317322": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Acta neuropathologica",
+   "t": "The interactome of tau phosphorylated at T217 in Alzheimer's disease human brain tissue."
+  },
+  "40378823": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell chemical biology",
+   "t": "Spatiotemporally resolved GPCR interactome uncovers unique mediators of receptor agonism."
+  },
+  "40386382": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Research square",
+   "t": "Spatially Resolved Panoramic in vivo CRISPR Screen via Perturb-DBiT."
+  },
+  "40404995": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Microglia activation orchestrates CXCL10-mediated CD8+ T cell recruitment to promote aging-related white matter degeneration."
+  },
+  "40480969": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Aging and diet alter the protein ubiquitylation landscape in the mouse brain."
+  },
+  "40514588": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Myelin-axon interface vulnerability in Alzheimer's disease revealed by subcellular proteomics and imaging of human and mouse brain."
+  },
+  "40516524": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell systems",
+   "t": "The molecular landscape of cellular metal ion biology."
+  },
+  "40588516": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "A CRISPR/Cas9 screen reveals proteins at the endosome-Golgi interface that modulate cellular anti-sense oligonucleotide activity."
+  },
+  "40593524": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Ultradeep N-glycoproteome atlas of mouse reveals spatiotemporal signatures of brain aging and neurodegenerative diseases."
+  },
+  "40713954": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Neuron",
+   "t": "G-protein-coupled receptor ADGRG1 drives a protective microglial state in Alzheimer's disease through MYC activation."
+  },
+  "40738907": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Mapping of endosomal proximity proteomes reveals Retromer as a hub for RAB GTPase regulation."
+  },
+  "40743395": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "Neuronal processes contain the essential components for the late steps of ribosome biogenesis."
+  },
+  "40768357": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "Time-resolved photocatalytic proximity labeling uncovers ER proteome dynamics underlying UPR-to-apoptosis transition."
+  },
+  "40770507": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Hypoxia ameliorates neurodegeneration and movement disorder in a mouse model of Parkinson's disease."
+  },
+  "40775047": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature chemical biology",
+   "t": "In situ proximity labeling of proteins associated with circRNA and RNA G-quadruplexes."
+  },
+  "40847019": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "CRISPR screening by AAV episome-sequencing (CrAAVe-seq): a scalable cell-type-specific in vivo platform uncovers neuronal essential genes."
+  },
+  "40858618": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "ALS/FTD-linked TBK1 deficiency in microglia induces an aged-like microglial signature and drives social recognition deficits in mice."
+  },
+  "40876456": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell",
+   "t": "Proximity-specific ribosome profiling reveals the logic of localized mitochondrial translation."
+  },
+  "40921733": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature cell biology",
+   "t": "RNA-binding proteins mediate the maturation of chromatin topology during differentiation."
+  },
+  "40970386": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "eLife",
+   "t": "Maintenance of neuronal TDP-43 expression requires axonal lysosome transport."
+  },
+  "40985903": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Journal of extracellular vesicles",
+   "t": "Genome-Wide CRISPR/Cas9 Screening Identifies the COMMANDER Recycling Complex as a Key Player in EV Uptake."
+  },
+  "41005307": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell",
+   "t": "Intrinsic heterogeneity of primary cilia revealed through spatial proteomics."
+  },
+  "41028912": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature metabolism",
+   "t": "DDHD2 provides a flux of saturated fatty acids for neuronal energy and function."
+  },
+  "41083601": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature cell biology",
+   "t": "MAPL regulates gasdermin-mediated release of mtDNA from lysosomes to drive pyroptotic cell death."
+  },
+  "41087751": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "C9orf72 hexanucleotide repeat expansions impair microglial response in ALS."
+  },
+  "41109213": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Neuron",
+   "t": "The gain-of-function TREM2-T96K mutation increases risk for Alzheimer's disease by impairing microglial function."
+  },
+  "41115859": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Enhanced hybridization-proximity labeling discovers protein interactomes of single RNA molecules."
+  },
+  "41120750": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "TDP-43 nuclear loss in FTD/ALS causes widespread alternative polyadenylation changes."
+  },
+  "41120751": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "TDP-43 loss induces cryptic polyadenylation in ALS/FTD."
+  },
+  "41174170": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "TDP-43-dependent mis-splicing of KCNQ2 triggers intrinsic neuronal hyperexcitability in ALS/FTD."
+  },
+  "41193816": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature",
+   "t": "Secretome translation shaped by lysosomes and lunapark-marked ER junctions."
+  },
+  "41213943": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Systematic characterization of the composition and dynamics of processing body-associated mRNAs."
+  },
+  "41224995": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature",
+   "t": "iPEX enables micrometre-resolution deep spatial proteomics via tissue expansion."
+  },
+  "41232526": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "Monitoring the complexity and dynamics of mitochondrial translation."
+  },
+  "41272323": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Astrocytic Sox9 overexpression in Alzheimer's disease mouse models promotes A&#x3b2; plaque phagocytosis and preserves cognitive function."
+  },
+  "41285799": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Single-nucleus and spatial transcriptomic profiling of human temporal cortex and white matter reveals key associations with AD pathology."
+  },
+  "41290593": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Synaptic proteome diversity is shaped by the levels of glutamate receptors and their regulatory proteins."
+  },
+  "41315310": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "In-situ cross-linking mass spectrometry reveals compartment-specific proteasomal interactions and structural heterogeneity."
+  },
+  "41331142": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "The regulatory code of injury-responsive enhancers enables precision cell-state targeting in the CNS."
+  },
+  "41398476": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "A fully iPS-cell-derived 3D model of the human blood-brain barrier for exploring neurovascular disease mechanisms and therapeutic interventi"
+  },
+  "41413662": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "CRISPRi screening in cultured human astrocytes uncovers distal enhancers controlling genes dysregulated in Alzheimer's disease."
+  },
+  "41418757": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "Cell-surface RNA forms ternary complex with RNA-binding proteins and heparan sulfate to recruit immune receptors."
+  },
+  "41430470": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Axonal Eif5a hypusination controls local translation and mitigates defects in FUS-ALS."
+  },
+  "41430471": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Extracellular matrix proteolysis maintains synapse plasticity during brain development."
+  },
+  "41461932": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Dynamic subtype- and context-specific subcellular RNA regulation in growth cones of developing neurons of the cerebral cortex."
+  },
+  "41491239": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "CRISPR knockout screens reveal genes and pathways essential for neuronal differentiation and implicate PEDS1 in neurodevelopment."
+  },
+  "41493270": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "The Journal of cell biology",
+   "t": "A Rab1 interactome illuminates a dual role in autophagy and membrane trafficking."
+  },
+  "41501183": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature chemical biology",
+   "t": "Membrane editing with proximity labeling reveals regulators of lipid homeostasis."
+  },
+  "41565805": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature",
+   "t": "Common variation in meiosis genes shapes human recombination and aneuploidy."
+  },
+  "41580393": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "TREM2 expression level is critical for microglial state, metabolic capacity and efficacy of TREM2 agonism."
+  },
+  "41604267": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "In situ NMR and integrative proteomics reveal the interaction signature of serum &#x3b1;-synuclein."
+  },
+  "41652064": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature chemical biology",
+   "t": "Photosensitizer proximity labeling captures the lipid and protein interactomes."
+  },
+  "41702405": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "Global mapping of circRNA-target RNA interactions reveal P-body-mediated translational repression."
+  },
+  "41720097": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Developmental cell",
+   "t": "Insolubilome profiling defines molecular features that influence protein insolubility with aging."
+  },
+  "41735662": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature biomedical engineering",
+   "t": "Single-nucleus transcriptomics of an engineered pig model reveals microglia-T cell interactions driving Huntington's disease neurodegenerati"
+  },
+  "41792114": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Native chromatome profiling reveals hundreds of metabolic enzymes in the nucleus across tissues."
+  },
+  "41792279": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature structural & molecular biology",
+   "t": "A proteome-wide dependency map of protein interaction motifs."
+  },
+  "41819099": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Neuron",
+   "t": "Brain-engrafted monocyte-derived macrophages from blood and skull-bone marrow exhibit distinct properties."
+  },
+  "41819104": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell",
+   "t": "Cell-type-specific transposon demethylation and TAD remodeling in aging mouse brain."
+  },
+  "41832957": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell reports",
+   "t": "Single-nucleus multiome analysis in the human prefrontal cortex identifies gene expression and cis-regulatory elements associated with aging"
+  },
   "41865756": {
    "v": "triaged-out",
    "cycle": "2026-w36",
    "j": "Lancet (London, England)",
    "t": "Learning from swine influenza, Ebola virus disease, and Legionnaires' disease in 1976."
+  },
+  "41875886": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "NAC promotes co-translational protein folding at the ribosomal tunnel exit."
+  },
+  "41912662": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "UBQLN2 links proteotoxicity with lipid metabolism in neurodegeneration."
+  },
+  "41932327": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Neuron",
+   "t": "2P-NucTag: On-demand phototagging for molecular analysis of functionally identified cortical neurons."
+  },
+  "41943580": {
+   "v": "drafted",
+   "cycle": "backlog-2026-w36",
+   "j": "Neuron",
+   "t": "DCPS modulates TDP-43-linked neurodegeneration through P-body-mediated RNA decay."
   },
   "41946358": {
    "v": "triaged-out",
@@ -49,6 +673,12 @@
    "j": "Neuron",
    "t": "SARM1 executes neuronal parthanatos and promotes excitotoxic cell death."
   },
+  "41998286": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature cell biology",
+   "t": "SLC33A1 exports oxidized glutathione to maintain endoplasmic reticulum redox homeostasis."
+  },
   "42030932": {
    "v": "triaged-out",
    "cycle": "2026-w36",
@@ -61,11 +691,65 @@
    "j": "Neuron",
    "t": "Macrophage-mediated refinement of the dural lymphatic regulates social behavior."
   },
+  "42082761": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature cell biology",
+   "t": "NAT10 maintains stem cell homeostasis by mitigating mRNA decay through an ac4C-independent mechanism."
+  },
+  "42105234": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell reports",
+   "t": "Proximity labeling proteomics maps radial glial ciliary proteins across the developing telencephalon."
+  },
   "42140183": {
    "v": "triaged-out",
    "cycle": "2026-w36",
    "j": "Neuron",
    "t": "Cell-type-specific APOE4 cascade across the Alzheimer's disease continuum."
+  },
+  "42151483": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Spatial proteomic analysis in human Alzheimer's disease brains enables identification of microenvironment-dependent microglial cell states."
+  },
+  "42160336": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "OptoRibo-seq for spatiotemporally resolved mapping of the local protein translatome."
+  },
+  "42161970": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Dual platform spatial transcriptomics reveals parvalbumin interneuron subtype vulnerability in mouse models of Alzheimer's disease."
+  },
+  "42162381": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature aging",
+   "t": "Peroxisomes orchestrate metabolic flexibility and longevity via an interorganelle cascade."
+  },
+  "42192197": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature neuroscience",
+   "t": "Microglial mitochondria transfer to astrocytes via GPNMB-enriched extracellular vesicles alleviates cognitive deficits in tauopathy mice."
+  },
+  "42214342": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell",
+   "t": "Physiological brain clearance architecture revealed by neuronal protein tracing."
+  },
+  "42225061": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "Deacetylated PCBP1 licenses PARP1 activity for DNA damage repair."
   },
   "42235510": {
    "v": "triaged-out",
@@ -91,6 +775,36 @@
    "j": "Cell",
    "t": "Prion-based protein self-assembly tunes mutagenesis to enable rapid adaptation."
   },
+  "42270660": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "A mitochondria-driven quality control mechanism for peroxisomal membrane proteins."
+  },
+  "42270976": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature cell biology",
+   "t": "Mitochondria-ER contacts function as an iron supply hub."
+  },
+  "42275220": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell reports",
+   "t": "Cell size-dependent mRNA transcription drives proteome remodeling."
+  },
+  "42275473": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "A protective role for APP in nuclear waste clearance via lysosomal exocytosis."
+  },
+  "42285981": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "NPJ Parkinson's disease",
+   "t": "Reactive astrocytes mediate toxicity in iPSC derived dopaminergic neurons."
+  },
   "42296961": {
    "v": "triaged-out",
    "cycle": "2026-w36",
@@ -103,11 +817,23 @@
    "j": "Neuron",
    "t": "The oracle and the didact: Orbitofrontal influences on learning and dopaminergic error signaling."
   },
+  "42308038": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Proceedings of the National Academy of Sciences of the United States of America",
+   "t": "ENO1 couples HDAC1 to regulate histone lactylation and gene transcription."
+  },
   "42309053": {
    "v": "triaged-out",
    "cycle": "2026-w36",
    "j": "Cell",
    "t": "Chloroplast sunscreening by protein condensates confers high-light tolerance."
+  },
+  "42310298": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Cell death & disease",
+   "t": "Sex-linked helicases DDX3X and DDX3Y regulate G-quadruplex-associated stress in neurons."
   },
   "42320470": {
    "v": "triaged-out",
@@ -138,6 +864,12 @@
    "cycle": "2026-w36",
    "j": "Lancet (London, England)",
    "t": "New responses required to address rapidly changing needs: a Lancet Commission on adolescent health and wellbeing in China."
+  },
+  "42349405": {
+   "v": "triaged-out",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "Longitudinal monitoring of cytoplasmic RBP-RNA interactions and transcriptome in living cells by engineered protein nanocages."
   },
   "42361792": {
    "v": "triaged-out",
@@ -223,6 +955,12 @@
    "j": "Cell reports. Medicine",
    "t": "Targeted DNA triplex-forming oligonucleotide liposome for pulmonary fibrosis gene therapy."
   },
+  "42386990": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature biotechnology",
+   "t": "A genome-scale CRISPRi perturbation atlas of human induced pluripotent stem cells."
+  },
   "42391324": {
    "v": "triaged-out",
    "cycle": "2026-w36",
@@ -300,6 +1038,12 @@
    "cycle": "2026-w36",
    "j": "Molecular cell",
    "t": "SMD2 reads pseudouridines to regulate mRNA splicing and promote tumorigenesis."
+  },
+  "42457956": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature",
+   "t": "Cell-type signatures of Alzheimer's disease shared across population groups."
   },
   "42461984": {
    "v": "triaged-out",
@@ -613,6 +1357,12 @@
    "j": "iScience",
    "t": "Quantifying vegetation canopy interception drivers and runoff effects using a coupled RS-Gash-WEP model."
   },
+  "42476128": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Molecular cell",
+   "t": "Structures of dynamic interactors at native proteasomes by PhIX-MS and cryo-electron microscopy."
+  },
   "42476130": {
    "v": "triaged-out",
    "cycle": "2026-w36",
@@ -661,6 +1411,12 @@
    "j": "Cell reports. Medicine",
    "t": "Association of residential greenness and Life's Essential 8 with cardiovascular disease in China."
   },
+  "42481807": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature aging",
+   "t": "Senescent cells cluster CTCF on nuclear speckles to instruct an alternative splicing program."
+  },
   "42486095": {
    "v": "triaged-out",
    "cycle": "2026-w36",
@@ -708,6 +1464,12 @@
    "cycle": "2026-w36",
    "j": "Cell reports. Medicine",
    "t": "Combination of exosome vaccines, lenvatinib, and anti-PD-1 eradicates tumor in autochthonous hepatocellular carcinoma mice."
+  },
+  "42493509": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "Activity-dependent ribosome profiling reveals the landscape of canonical and non-canonical translation in brain tissue."
   },
   "42495520": {
    "v": "triaged-out",
@@ -2136,6 +2898,12 @@
    "cycle": "2026-w36",
    "j": "Lancet (London, England)",
    "t": "[177Lu]Lu-PSMA-617 in metastatic androgen pathway modulator-sensitive prostate cancer."
+  },
+  "42562827": {
+   "v": "nominated",
+   "cycle": "backlog-2026-w36",
+   "j": "Nature communications",
+   "t": "&#x3b1;-Synuclein blocks endoplasmic reticulum co-translational protein translocation early in Parkinson's disease."
   },
   "42564426": {
    "v": "triaged-out",

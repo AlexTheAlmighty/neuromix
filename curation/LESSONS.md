@@ -54,6 +54,12 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   survive each before choosing. The retina CRISPR screen (PMID 41962540) had 5
   genes at FDR 0.05 and 1,088 at p 0.05; the FDR cut would have produced a
   five-gene column (evidence: 2026-w36 cycle).
+- Check for ties before ranking by a permutation p value. Screens that report only
+  p and FDR often bottom out at the permutation floor, so a "top 100" is an
+  arbitrary alphabetical slice of a much larger tied block. The neuronal
+  differentiation screens (PMID 41491239) had 163 and 371 genes tied at the
+  minimum p, with no effect size deposited; both columns were dropped
+  (evidence: backlog run, 2026-w36).
 - Aging DE tables from single-cell data are often topped by mitochondrial genes
   and ribosomal pseudogenes. Prefer a cell-state contrast from the same paper
   when one exists (evidence: PMID 42664052 cerebellum aging list, dropped in
@@ -72,6 +78,17 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
     A 3,038-byte response is the "not found" placeholder, not a file.
   Science family (science.org), PNAS and PMC block scripted requests; their
   supplements have to be fetched through a browser session.
+- For anything old enough to be in PubMed Central, Europe PMC is the route that
+  works from a plain HTTP client:
+  `https://www.ebi.ac.uk/europepmc/webservices/rest/<PMCID>/supplementaryFiles`
+  returns every supplement as one zip, with no proof-of-work and no CAPTCHA, and
+  `/fullTextXML` gives the supplement legends. It answers 500 intermittently, so
+  retry. It refuses non-open-access records, and it lags by months, so it does
+  not help the weekly window (evidence: backlog run, 2026-w36, where it supplied
+  the eLife and PNAS supplements that NCBI PMC had gated).
+- Identifier-only gene columns block drafting whatever the identifier is. Ensembl
+  IDs (PMID 42620705) and UniProt accessions (PMID 37906643) both cost a paper.
+  This is the same pending question, not two.
 - Some papers cannot be drafted no matter how good the science, and should be
   triaged as nomination-only rather than chased:
   - the only tabular supplement is a PDF (PNAS publishes Dataset S1 as PDF;
