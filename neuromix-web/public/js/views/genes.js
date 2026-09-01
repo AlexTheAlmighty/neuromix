@@ -233,10 +233,9 @@ function profileCard(p) {
         el('div', {}, [
           el('div', { class: 'k', text: 'Topics' }),
           el('div', { class: 'btn-row', style: 'margin-top:5px' },
-            p.topics.slice(0, 8).map(([name, n]) => el('button', {
-              class: 'chip chip-plain chip-btn', type: 'button',
-              title: `Browse the ${name} studies`,
-              onclick: () => { location.hash = `#/studies?topic=${encodeURIComponent(name)}` },
+            p.topics.slice(0, 8).map(([name, n]) => el('span', {
+              class: 'chip chip-plain',
+              title: `${n} of this gene's lists come from ${name} studies`,
             }, [`${name} (${n})`]))),
         ]),
       ]),

@@ -494,7 +494,10 @@ function runComparison() {
       },
       {
         key: 'shared', label: 'Shared genes', sortable: false,
-        render: (r) => el('span', { class: 'genes-inline', text: r.shared.join(', ') }),
+        render: (r) => el('details', { class: 'genes-toggle' }, [
+          el('summary', { text: `${fmt(r.shared.length)} gene${r.shared.length === 1 ? '' : 's'}` }),
+          el('span', { class: 'genes-inline', text: r.shared.join(', ') }),
+        ]),
         csv: (r) => r.shared.join(' '),
       },
     ],

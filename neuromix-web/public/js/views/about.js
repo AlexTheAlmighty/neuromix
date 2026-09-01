@@ -58,7 +58,7 @@ export function mount(root) {
       el('h2', { text: 'Gene list analysis' }),
       el('p', {
         text: 'NeurOmix can also analyse complete gene lists. Select any curated list from the built-in study '
-          + 'picker, send one over from the study browser, or paste a custom list.',
+          + 'picker or paste a custom list.',
       }),
       el('p', {
         text: 'Compare to NeurOmix compares the input list with every curated gene list in the database, ranks '
@@ -69,18 +69,6 @@ export function mount(root) {
         text: 'Gene lists can also be analysed using Enrichr. NeurOmix submits the selected genes to the chosen '
           + 'Enrichr library and returns enriched terms, associated genes, statistical results, and a graphical '
           + 'summary of the strongest hits ranked by combined score and shaded by adjusted p value.',
-      }),
-
-      el('h2', { text: 'Study browser' }),
-      el('p', {
-        text: 'The study browser lists every curated experiment, with filters for topic, assay type, species, '
-          + 'journal, method, publication year, and direction. Three analyses run on whatever the filters leave '
-          + 'behind. Consensus signature asks the selected experiments to vote for their most consistently '
-          + 'top-ranked genes, discounted by how common each gene is in a chosen background. Evidence '
-          + 'convergence ranks genes by how many distinct experimental approaches support them. Pinning a '
-          + 'filtered set as set A allows a second filtered set to be compared against it gene by gene, with '
-          + 'corrected p values. By default each article casts one vote per gene, so a single paper that '
-          + 'contributed many lists cannot dominate a result.',
       }),
 
       el('h2', { text: 'Protein interactions' }),
