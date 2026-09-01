@@ -8,25 +8,19 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 
 ## Triage: what the curator wants
 
-- (seed) Neuroscience relevance is a tiebreaker, not a gate. A ranked list from an
-  unrelated field belongs here if the list itself could matter to anyone
-  (evidence: curator's founding instruction, 2026-08-29).
-- (seed) Interactomes and screens outrank yet another differential-expression
-  comparison of a well-covered condition (evidence: curator strategy discussion,
-  2026-08-29).
-- Non-CNS material needs an anchor. In the first reviewed cycle the curator cut
-  every column from disease systems with no neuro connection (kidney, bone,
-  pancreas, eye) but kept both non-CNS papers that had one: a FUS knockout
-  transcriptome, where a neurodegeneration gene is the subject, and a
-  genome-scale Perturb-seq, where the coverage is every expressed gene. Read the
-  seed rule that way — for non-CNS work look for a neuro gene at the centre or
-  screen-scale generality, not just a well-made list (evidence: PR #2, 2026-w36).
-- Before nominating a paper for its headline screen or interactome, expect the
-  *ranked* output to be deposited, not just downstream follow-up analyses. In
-  2026-w36 the AMBRA1 genome-wide CRISPR screen (PMID 42548798) deposited only
-  24 DEGs from a knockout line, and the FUS screen (PMID 42647599) deposited only
-  a rank summary for hand-picked tumour suppressors; both had to fall back to
-  ordinary DE tables (evidence: 2026-w36 cycle).
+- (seed) Neuroscience relevance is a tiebreaker, not a gate; interactomes and
+  screens outrank another differential-expression comparison of a well-covered
+  condition (curator's founding instruction and strategy discussion, 2026-08-29).
+- Non-CNS material needs an anchor. The first reviewed cycle cut every column from
+  systems with no neuro connection (kidney, bone, pancreas, eye) but kept both
+  non-CNS papers that had one: a FUS knockout transcriptome, where a
+  neurodegeneration gene is the subject, and a genome-scale Perturb-seq, where the
+  coverage is every expressed gene. For non-CNS work look for a neuro gene at the
+  centre or screen-scale generality, not just a well-made list (PR #2).
+- Expect a paper's headline screen or interactome to be deposited as a *ranked*
+  output, not just downstream analyses. The AMBRA1 screen (42548798) deposited 24
+  knockout DEGs and the FUS screen (42647599) a rank summary for hand-picked
+  genes; both fell back to ordinary DE tables.
 
 ## Triage: what the curator rejects
 
@@ -43,6 +37,16 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   retina screen (41962540). That last one was genome-wide and in vivo and was
   still cut, so "screens outrank DE comparisons" orders candidates within scope
   rather than widening it (PR #2).
+- Saturation, not quality, appears to drive the small cuts. Backlog round two lost
+  both ADGRG1 microglial-knockout columns (40713954) and one of two near-twin
+  ciliary columns (42105234, ventral cut, dorsal kept). I first assumed the cut
+  lists were noisier and checked: they are not. Predicted or clone identifiers run
+  38% in a kept column (als_glia) against 3-11% in the cut ones, and the two
+  ciliary columns are 12% versus 15% ribosomal. The reading that survives is
+  redundancy — the database holds 88 microglial lists and gained eleven this
+  cycle, and one region of a two-region comparison usually suffices. Prefer one
+  column per finding, and weigh microglial perturbations against what is already
+  there. Unconfirmed: ask before drafting the second half of a symmetric pair.
 - The one CNS paper cut was hippocampal neurogenesis in major depression
   (42629468) — also the one place a nominal p value was substituted for a
   mostly-failing adjusted p. Tentative: the pancreatic columns had no
@@ -67,20 +71,16 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 - Do not re-filter an already-curated candidate list. The region-specific ciliary
   candidates (PMID 42105234) are the authors' filtered finding; applying p<=0.05
   again cut 67 proteins to 8.
-- When a table carries both a nominal p value and an FDR, check how many genes
-  survive each before choosing. The retina CRISPR screen (PMID 41962540) had 5
-  genes at FDR 0.05 and 1,088 at p 0.05; the FDR cut would have produced a
-  five-gene column (evidence: 2026-w36 cycle).
-- Check for ties before ranking by a permutation p value. Screens that report only
-  p and FDR often bottom out at the permutation floor, so a "top 100" is an
-  arbitrary alphabetical slice of a much larger tied block. The neuronal
-  differentiation screens (PMID 41491239) had 163 and 371 genes tied at the
-  minimum p, with no effect size deposited; both columns were dropped
-  (evidence: backlog run, 2026-w36).
+- Inspect the ranking statistic's distribution before trusting it. Count how many
+  genes survive a nominal p versus an FDR (the retina screen, 41962540, had 1,088
+  against 5); count ties at a permutation floor or a fold-change ceiling, since
+  those make the top of a column an arbitrary slice (163 and 371 tied in the
+  differentiation screens, 41491239, both dropped; 54 of 100 at a ceiling in the
+  14-3-3 BioID2 arm, 36931259, dropped; 159 of 227 tied in cryptic
+  polyadenylation, 41120751, trimmed to the 68 that are genuinely ranked).
 - Aging DE tables from single-cell data are often topped by mitochondrial genes
   and ribosomal pseudogenes. Prefer a cell-state contrast from the same paper
-  when one exists (evidence: PMID 42664052 cerebellum aging list, dropped in
-  favour of the DAM and IRM state signatures, 2026-w36).
+  when one exists (evidence: PMID 42664052, dropped for the DAM and IRM states).
 
 ## Process
 
