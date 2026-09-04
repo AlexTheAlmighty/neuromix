@@ -1,0 +1,38 @@
+# Guards the database on every pull request.
+#
+# Two failure modes this catches. First, a CSV that no longer parses, which the build
+# surfaces as a collapsed count. Second, and the reason this workflow exists, a pull
+# request that quietly REMOVES gene lists: every branch holds a whole copy of the CSV,
+# so a branch cut before an earlier merge reverts everything added since, and the diff
+# looks like an ordinary edit. Deploy only runs after a merge, which is too late.
+name: Check database
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      # Need both sides of the comparison, so fetch the base commit too.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # The build must succeed before the counts mean anything.
+      - name: Build data
+        run: node neuromix-web/tools/build-data.mjs
+
+      - name: Compare list count against the base branch
+        run: |
+          git show "origin/${{ github.base_ref }}:NeurOmics Database.csv" > /tmp/base.csv
+          node neuromix-web/tools/check-no-loss.mjs /tmp/base.csv "NeurOmics Database.csv"
