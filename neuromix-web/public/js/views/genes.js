@@ -116,7 +116,7 @@ function showEmptyState() {
   ]))
   results.append(el('div', { class: 'empty' }, [
     el('h3', { text: 'Search a gene to begin' }),
-    el('p', { text: 'Every hit tells you which experiment found the gene and where it ranked in that experiment.' }),
+    el('p', { text: 'Search NeurOmix to find experiments that identified your gene(s) of interest.' }),
     el('p', { class: 'hint', style: 'margin-bottom:4px', text: 'Try one of these:' }),
     ...EXAMPLES.map((ex) => el('div', { style: 'margin-bottom:8px' }, [
       el('button', {
@@ -368,11 +368,9 @@ function runCoOccurrence() {
   ]))
 
   results.append(el('div', { class: 'callout', style: 'margin-bottom:14px' }, [
-    el('strong', { text: 'Two ways to read this. ' }),
     'Shared lists counts how often a gene turns up with your query. Specificity divides that by how often the gene '
-    + 'appears anywhere in NeurOmix, so genes that are in everything (heat shock proteins, actin) stop crowding out '
-    + 'partners that appear almost exclusively alongside your query. The default sort is by p value, which balances '
-    + 'the two: a gene sharing 5 of its only 5 lists beats one sharing 2 of 2. Sort by any column.',
+    + 'appears anywhere in NeurOmix, so genes that are in everything (heat shock proteins, actin) do not crowd out '
+    + 'partners that appear almost exclusively alongside your query. The default sort is by p value.',
   ]))
 
   const table = new DataTable({
@@ -423,23 +421,14 @@ function runCoOccurrence() {
         render: (r) => sci(r.pValue), csv: (r) => r.pValue,
       },
       {
-        key: 'articlePValue', label: 'P (by article)', className: 'num', sortValue: (r) => r.articlePValue,
-        render: (r) => el('span', {
-          title: 'The same test counting articles rather than lists, which is the honest one when '
-            + 'a single paper contributed many of the lists containing your gene',
-          text: sci(r.articlePValue),
-        }),
-        csv: (r) => r.articlePValue,
-      },
-      {
         key: 'bestRank', label: 'Best rank', className: 'num', sortValue: (r) => r.bestRank,
         render: (r) => `#${fmt(r.bestRank)}`, csv: (r) => r.bestRank,
       },
       {
         key: 'experiments', label: 'Experiments', className: 'desc-cell', sortable: false,
-        render: (r) => el('div', {}, [
-          ...r.lists.slice(0, 4).map((study, i) => el('div', { style: i ? 'margin-top:4px' : '' }, [studyLinkButton(study)])),
-          r.lists.length > 4 && el('div', { class: 'hint', text: `and ${fmt(r.lists.length - 4)} more` }),
+        render: (r) => el('details', { class: 'genes-toggle' }, [
+          el('summary', { text: `${fmt(r.lists.length)} experiment${r.lists.length === 1 ? '' : 's'}` }),
+          el('div', {}, r.lists.map((study, i) => el('div', { style: i ? 'margin-top:4px' : '' }, [studyLinkButton(study)]))),
         ]),
         csv: (r) => r.lists.map((s) => s.description).join(' | '),
       },
