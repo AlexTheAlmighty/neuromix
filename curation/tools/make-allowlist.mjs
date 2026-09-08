@@ -9,7 +9,9 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 const DATA = resolve(here, '../../neuromix-web/public/data/neuromix.json')
 const OUT = resolve(here, '../allowlist.json')
-const MIN_LISTS = 2
+const MIN_LISTS = 3
+// Journals the curator has excluded by name regardless of count (2026-09-07).
+const EXCLUDE = new Set(['iScience'])
 
 const payload = JSON.parse(readFileSync(DATA, 'utf8'))
 const counts = new Map()
@@ -18,7 +20,7 @@ for (const s of payload.studies) {
   if (j) counts.set(j, (counts.get(j) ?? 0) + 1)
 }
 const journals = [...counts]
-  .filter(([, n]) => n >= MIN_LISTS)
+  .filter(([name, n]) => n >= MIN_LISTS && !EXCLUDE.has(name))
   .sort((a, b) => b[1] - a[1])
   .map(([name, lists]) => ({ name, lists }))
 

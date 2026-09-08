@@ -1,18 +1,18 @@
 {
- "generated": "2026-08-27",
- "rule": "journals contributing at least 2 gene lists to NeurOmix",
+ "generated": "2026-09-04",
+ "rule": "journals contributing at least 3 gene lists to NeurOmix",
  "journals": [
   {
    "name": "Nature Communications",
-   "lists": 188
+   "lists": 195
   },
   {
    "name": "Nature Neuroscience",
-   "lists": 166
+   "lists": 174
   },
   {
    "name": "Cell",
-   "lists": 86
+   "lists": 89
   },
   {
    "name": "Nature",
@@ -20,7 +20,7 @@
   },
   {
    "name": "Neuron",
-   "lists": 72
+   "lists": 75
   },
   {
    "name": "Nature Genetics",
@@ -28,19 +28,19 @@
   },
   {
    "name": "Cell Reports",
-   "lists": 46
+   "lists": 54
   },
   {
    "name": "PNAS",
-   "lists": 44
+   "lists": 45
   },
   {
    "name": "Molecular Cell",
-   "lists": 32
+   "lists": 33
   },
   {
    "name": "Nature Aging",
-   "lists": 23
+   "lists": 25
   },
   {
    "name": "Preprint",
@@ -48,6 +48,10 @@
   },
   {
    "name": "Journal of Cell Biology",
+   "lists": 15
+  },
+  {
+   "name": "Science",
    "lists": 14
   },
   {
@@ -55,8 +59,8 @@
    "lists": 13
   },
   {
-   "name": "Science",
-   "lists": 13
+   "name": "eLife",
+   "lists": 11
   },
   {
    "name": "Nature Methods",
@@ -79,10 +83,6 @@
    "lists": 9
   },
   {
-   "name": "eLife",
-   "lists": 9
-  },
-  {
    "name": "Nature Chemical Biology",
    "lists": 8
   },
@@ -99,11 +99,11 @@
    "lists": 7
   },
   {
-   "name": "iScience",
+   "name": "Nature Medicine",
    "lists": 7
   },
   {
-   "name": "PLOS Biology",
+   "name": "Developmental Cell",
    "lists": 6
   },
   {
@@ -115,7 +115,11 @@
    "lists": 5
   },
   {
-   "name": "Nature Medicine",
+   "name": "Cell Stem Cell",
+   "lists": 5
+  },
+  {
+   "name": "Science Translational Medicine",
    "lists": 5
   },
   {
@@ -131,8 +135,8 @@
    "lists": 5
   },
   {
-   "name": "Developmental Cell",
-   "lists": 4
+   "name": "PLOS Biology",
+   "lists": 5
   },
   {
    "name": "Cell Reports Medicine",
@@ -147,7 +151,15 @@
    "lists": 4
   },
   {
+   "name": "Molecular & Cellular Proteomics",
+   "lists": 4
+  },
+  {
    "name": "Molecular Neurodegeneration",
+   "lists": 4
+  },
+  {
+   "name": "The EMBO Journal",
    "lists": 4
   },
   {
@@ -163,10 +175,6 @@
    "lists": 3
   },
   {
-   "name": "Cell Stem Cell",
-   "lists": 3
-  },
-  {
    "name": "Cell Death and Disease",
    "lists": 3
   },
@@ -175,76 +183,8 @@
    "lists": 3
   },
   {
-   "name": "Science Translational Medicine",
-   "lists": 3
-  },
-  {
    "name": "Journal of Neuroscience",
    "lists": 3
-  },
-  {
-   "name": "Nature Structural and Molecular Biology",
-   "lists": 2
-  },
-  {
-   "name": "Cellular and Molecular Life Sciences",
-   "lists": 2
-  },
-  {
-   "name": "Journal of Neurochemistry",
-   "lists": 2
-  },
-  {
-   "name": "EMBO Molecular Medicine",
-   "lists": 2
-  },
-  {
-   "name": "Communications Biology",
-   "lists": 2
-  },
-  {
-   "name": "Cell Death & Disease",
-   "lists": 2
-  },
-  {
-   "name": "Genome Medicine",
-   "lists": 2
-  },
-  {
-   "name": "BioRxiv",
-   "lists": 2
-  },
-  {
-   "name": "Experimental Neurology",
-   "lists": 2
-  },
-  {
-   "name": "Stem Cell",
-   "lists": 2
-  },
-  {
-   "name": "Acta Neuropathologica Communications",
-   "lists": 2
-  },
-  {
-   "name": "Journal of Proteomics",
-   "lists": 2
-  },
-  {
-   "name": "Molecular & Cellular Proteomics",
-   "lists": 2
-  },
-  {
-   "name": "The EMBO Journal",
-   "lists": 2
-  },
-  {
-   "name": "Neurobiology of Aging",
-   "lists": 2
-  },
-  {
-   "name": "Journal of Neuroinflammation",
-   "lists": 2
   }
  ]
 }

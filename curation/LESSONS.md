@@ -23,6 +23,13 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   columns were accepted (41850723) from a journal contributing nothing before. A
   hand-nominated paper is judged on the list, not on where the sweep would have
   found it (curator, 2026-09-03).
+- Interactomes and human material travel furthest. Of twelve columns offered in
+  2026-w37 the curator took eight: two proximity interactomes (42551441, 42025167),
+  a brain AP-MS (42701130), and human atlas and organoid columns (42679819,
+  42552384). The three papers cut were all mouse perturbation transcriptomics or a
+  non-expression gene set: a Dravet model pair (42527551), an OCD exome TADA list
+  (42680906), and an ECS immediate-early time course (42675226). Tentative until a
+  second cycle tests it, but it orders drafting effort now.
 
 ## Triage: what the curator rejects
 
@@ -39,10 +46,13 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 - Saturation, not quality, drives the small cuts: both ADGRG1 microglial columns
   (40713954) and one of two near-twin ciliary columns (42105234, ventral). The cut
   lists are measurably no noisier; the reading is redundancy, with 88 microglial
-  lists already and eleven added that cycle. Prefer one column per finding.
-  Unconfirmed: ask before drafting the second half of a symmetric pair.
-- The one CNS paper cut was hippocampal neurogenesis in major depression
-  (42629468), also the one place a nominal p replaced a mostly-failing adjusted p.
+  lists already and eleven added that cycle. **Resolved 2026-09-07:** a symmetric
+  up/down pair is fine to draft in full. The curator took both halves of the
+  striatum dorsal/ventral pair (42679819) and both amyloid-beta proteome directions
+  (42552384). Saturation is about redundancy *against the existing database*, not
+  about the two directions of one contrast.
+- One CNS paper was cut for a nominal p standing in for a mostly-failing adjusted p
+  (42629468, hippocampal neurogenesis in major depression).
 
 ## Extraction: mistakes not to repeat
 
@@ -55,7 +65,11 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   Ensembl-only or UniProt-only table is no longer a blocker either (curator,
   2026-08-31); 42620705 and 37906643 are re-openable on that ground. None of this
   licenses a broken *ranking*: the ties and direction lessons below are about the
-  statistic, not the labels.
+  statistic, not the labels. This now extends to mass-spectrometry contaminants:
+  the p-Tau proximity column (42025167) was withheld over keratins in the top 100,
+  one of them a bare accession (P25690) at rank 12, and the curator took it anyway
+  (2026-09-07). **Flag a contaminated column in the report; do not withhold it.**
+  Withholding is for a broken ranking, not a dirty one.
 - Read the comparison direction off the raw counts, not the column name: a sheet
   named "control vs KO" makes a positive fold change mean *lower* in the knockout
   (42548798, sheet "UNT tom vs Ambra1").
@@ -103,9 +117,26 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   Article Link character for character. `build-data` keys articles on
   `title||url`, so one missing trailing period splits a paper into two article
   records and breaks one-vote-per-article weighting (42664052, caught in the build
-  check, 2026-09-03).
+  check, 2026-09-03). The URL half is the usual culprit and three splits predate
+  the automated cycles: a PNAS `doi/` against a `content/` link (articles 39, 354),
+  and two papers split by a PMC mirror or an `#Sec`/`#SD` anchor (256/319/320,
+  307/308). Reported to the curator 2026-09-07, unfixed. Run the normalised-title
+  duplicate check after every build, not just on papers you touched.
 
 ## Process
+
+- The pipeline no longer opens pull requests (curator, 2026-09-07). The cycle is:
+  sweep and triage, show the curator the extracted lists, take their approval, write
+  the approved columns and commit straight to `main` on the origin remote. New
+  columns are **inserted at column B, not appended**, so the newest entries read
+  first; column A holds the row labels. Keep it simple and do not reintroduce steps.
+- Ledger every paper you reason about, not only the ones you draft. The striatum
+  atlas (42679819) was discussed in a previous cycle and cited in this file, but
+  never written to `ledger.json`, so the sweep re-served it as new in 2026-w37.
+- The allowlist is a 3+ rule with iScience excluded by name (curator, 2026-09-07):
+  46 journals, 42 of them sweepable after aliasing. A 3+ threshold on its own would
+  have cut fourteen specialist neuro titles while leaving PLOS ONE and iScience, the
+  two highest-volume lowest-yield sources, in place; hence the by-name exclusion.
 
 - Supplement routes that work from a plain HTTP client. NCBI PMC gates downloads
   behind a proof-of-work and reCAPTCHA, and only 5 of 25 papers in a 14-day window
@@ -118,9 +149,13 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
     never grounds to file a Cell Press paper nomination-only: the Linville atlas
     (10.1016/j.cell.2026.08.006) has a gated full text and all fifteen supplements
     download anonymously.
-  - Nature family and Springer-hosted (including The EMBO Journal):
-    `media.springernature.com/original/springer-static/esm/art%3A<DOI>/MediaObjects/<journal>_<year>_<article>_MOESM<N>_ESM.xlsx`.
-    A 3,038-byte response is the "not found" placeholder, not a file.
+  - Nature family and Springer-hosted (including The EMBO Journal): the
+    `media.springernature.com/original/springer-static/...` route now 404s on every
+    file (2026-09-07). Use `static-content.springer.com/esm/art%3A<DOI>/MediaObjects/
+    <journal>_<year>_<article>_MOESM<N>_ESM.<ext>` with a browser user-agent, and
+    read the article page for the real file list and legends: extensions vary per
+    file and guessing `.xlsx` for a `.zip` loses the table. Never probe MOESM numbers
+    blindly; scrape `\d+_\d{4}_\d+_MOESM\d+_ESM\.\w+` off the page first.
   - Anything in PMC: `ebi.ac.uk/europepmc/webservices/rest/<PMCID>/supplementaryFiles`
     returns every supplement as one zip, ungated, and `/fullTextXML` gives the
     legends. Retry on 500. Open access only, and months behind.
@@ -137,13 +172,9 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   (42457956); raw per-sample intensities with no summary statistic (42629502,
   42616903, 40053453); annotation matrices and crosslink lists (41005307, 41315310);
   nested instrument headers (40738907); hundred-megabyte tables (41285799, 40593524).
-- A 14-day sweep returns ~2,500 candidates, not the ~1,000 the runbook assumes;
-  PLOS ONE and iScience are 45% of the volume and almost none of the yield, so
-  title-pass triage is the expensive step (2026-w36, 54 journals).
-
-### Proposed tool changes awaiting curator approval
-
-- Teach the sweep or a small helper to resolve supplement URLs from the CDN
-  patterns above and download them, so drafting does not depend on ad-hoc browser
-  work each week. Proposed in the 2026-w36 PR body; the curator is unsure, so it
-  stays open.
+- Sweep volume scales with the allowlist: 54 journals returned ~2,500 candidates in
+  2026-w36, the 42 sweepable journals of the 3+ allowlist returned 1,028 in w37.
+  Title-pass triage is still the expensive step, so keep the allowlist tight.
+- Excel COM is available on this machine (`New-Object -ComObject Excel.Application`,
+  `SaveAs(path, 51)`), which is the way to read the legacy `.xls` a few publishers
+  still deposit; the local xlsx reader handles only the zip-based format.
