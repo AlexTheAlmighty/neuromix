@@ -22075,6 +22075,13 @@
    "cycle": "2026-w37",
    "j": "eLife",
    "t": "Preserved cerebellar functions despite structural degeneration in older adults."
+  },
+  "10.1016/j.neuron.2026.08.006": {
+   "v": "merged",
+   "cycle": "hand-2026-09-09",
+   "j": "Neuron",
+   "t": "Mapping cell-type- and age-dependent neuronal vulnerability through genome-wide in vivo CRISPRi screens in the mouse brain",
+   "note": "Hand-nominated by the curator. Keyed by DOI: no PMID assigned at curation time (published 2026-09-09). Five columns merged."
   }
  }
 }
