@@ -23,13 +23,17 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   columns were accepted (41850723) from a journal contributing nothing before. A
   hand-nominated paper is judged on the list, not on where the sweep would have
   found it (curator, 2026-09-03).
-- Interactomes and human material travel furthest. Of twelve columns offered in
-  2026-w37 the curator took eight: two proximity interactomes (42551441, 42025167),
-  a brain AP-MS (42701130), and human atlas and organoid columns (42679819,
-  42552384). The three papers cut were all mouse perturbation transcriptomics or a
-  non-expression gene set: a Dravet model pair (42527551), an OCD exome TADA list
-  (42680906), and an ECS immediate-early time course (42675226). Tentative until a
-  second cycle tests it, but it orders drafting effort now.
+- Interactomes and human material travel furthest; mouse perturbation
+  transcriptomics does not. Confirmed over two cycles. 2026-w37: 8 of 12 taken
+  (interactomes 42551441, 42025167, 42701130; human atlas and organoid columns
+  42679819, 42552384), with the Dravet pair (42527551), an OCD exome list (42680906)
+  and an ECS time course (42675226) cut. 2026-w39: 28 of 42 taken, 12 of 17 papers,
+  including every human post mortem column (42785300, 42726290, 42551425) and every
+  interactome (42771525, 42772281, 42753704, 42752231). Cut outright: the Fmr1
+  translatome (42155452), 5xFAD bone marrow (42711429), a rat PC12 proteome
+  (42748150), human vs mouse progenitor proteomes (42594861), and human TSC2
+  organoid glia (42778607). Of a three-list vascular atlas only one was kept
+  (42537647).
 
 ## Triage: what the curator rejects
 
@@ -56,6 +60,14 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 
 ## Extraction: mistakes not to repeat
 
+- **Descriptions are one plain sentence plus the ranking sentence** (curator
+  directive, 2026-09-26: "vastly simplified... way too much baggage"):
+  `Author et al (YYYY) identify <up/downregulated genes or proteins> in <cells or
+  tissue> of <condition>. Genes are ranked by <P value | log fold change | fold
+  change from control | Z score>.` No parentheticals, cohort sizes, region codes,
+  pipeline names or caveats. Tissue, Method and Source get short labels (`Post
+  mortem human brain`, `snRNA-seq`, `Table S5`). Anchors and flags belong in the
+  review notes, never the database. Worked examples: `curation/work/w39/simplify.mjs`.
 - **Imperfect source data is not grounds to reject a list.** Messy symbols are the
   authors' doing, not ours: LOC identifiers, mixed-species protein groups and
   non-gene entries are recorded as published and the symbol report handles them.
@@ -69,7 +81,10 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   the p-Tau proximity column (42025167) was withheld over keratins in the top 100,
   one of them a bare accession (P25690) at rank 12, and the curator took it anyway
   (2026-09-07). **Flag a contaminated column in the report; do not withhold it.**
-  Withholding is for a broken ranking, not a dirty one.
+  Withholding is for a broken ranking, not a dirty one. 2026-w39 again: the curator
+  took an 18-gene ALS stressed-OPC column the pipeline had withheld and a locus
+  coeruleus column with 25 haemoglobin, mitochondrial and MALAT1 transcripts in its
+  top 100 (42551425, 42726290). Offer such columns as optional.
 - Read the comparison direction off the raw counts, not the column name: a sheet
   named "control vs KO" makes a positive fold change mean *lower* in the knockout
   (42548798, sheet "UNT tom vs Ambra1").
@@ -155,13 +170,20 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
     <journal>_<year>_<article>_MOESM<N>_ESM.<ext>` with a browser user-agent, and
     read the article page for the real file list and legends: extensions vary per
     file and guessing `.xlsx` for a `.zip` loses the table. Never probe MOESM numbers
-    blindly; scrape `\d+_\d{4}_\d+_MOESM\d+_ESM\.\w+` off the page first.
+    blindly; scrape `\d+_\d{4}_\d+_MOESM\d+_ESM\.\w+` off the page first. Since
+    2026-09-25 nature.com and link.springer.com serve scripts a JS client challenge,
+    so read the names in the browser pane (full legends at
+    `/articles/<id>/figures/<n>`); the files still download by plain fetch.
   - Anything in PMC: `ebi.ac.uk/europepmc/webservices/rest/<PMCID>/supplementaryFiles`
     returns every supplement as one zip, ungated, and `/fullTextXML` gives the
     legends. Retry on 500. Open access only, and months behind.
-  - Science family: the article page permits a same-origin `fetch` of
-    `/doi/suppl/<DOI>/suppl_file/<slug>_tables_s1_to_sN.zip` from a browser pane.
-    PNAS still needs manual browser work.
+  - Science family: the same-origin `fetch` of
+    `/doi/suppl/<DOI>/suppl_file/<slug>_tables_s1_to_sN.zip` now returns a
+    Cloudflare 403 even from the browser pane (2026-09-25); academic.oup.com (Brain,
+    HMG) and bioRxiv are gated the same way, and Synapse needs a login. Nominate
+    these; never try to pass the check. PNAS papers in PMC come through Europe PMC.
+  - Cell Press papers can carry more than 15 mmc files (42785300 had 28), and PDF
+    legends read with Git's `/mingw64/bin/pdftotext -layout`.
 - Store each column's extraction config beside its list. In the 2026-08-31 audit
   every column with a config re-derived byte-identically, and the one supplement
   saved from a gated site turned out to be a reCAPTCHA page. Check a download's
@@ -172,6 +194,8 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   (42457956); raw per-sample intensities with no summary statistic (42629502,
   42616903, 40053453); annotation matrices and crosslink lists (41005307, 41315310);
   nested instrument headers (40738907); hundred-megabyte tables (41285799, 40593524).
+  A figure that prints a ranked table is a source when nothing is deposited: the
+  OGT-ID top-50 lists were transcribed from Figure 7A/B and taken (42770280).
 - Sweep volume scales with the allowlist: 54 journals returned ~2,500 candidates in
   2026-w36, the 42 sweepable journals of the 3+ allowlist returned 1,028 in w37.
   Title-pass triage is still the expensive step, so keep the allowlist tight.
