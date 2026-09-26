@@ -34,6 +34,12 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   (42748150), human vs mouse progenitor proteomes (42594861), and human TSC2
   organoid glia (42778607). Of a three-list vascular atlas only one was kept
   (42537647).
+- Genetic association lists are welcome. From the 2026-09-26 Nature Genetics hand
+  scan the curator took all 11 recommended genetic and human columns: exome burden
+  (41917433), brain eQTL colocalization (41857317, 42706309), brain PWAS (40921788),
+  human microglia and PVM markers (42581323) and an hnRNPK IP-MS (42587094). They
+  passed on every optional column and on all six PLCG2 columns (42601455), including
+  a recommended 198-gene synapse screen.
 
 ## Triage: what the curator rejects
 

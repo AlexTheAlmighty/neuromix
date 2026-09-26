@@ -302,6 +302,13 @@
    "j": "Nature communications",
    "t": "Ultradeep N-glycoproteome atlas of mouse reveals spatiotemporal signatures of brain aging and neurodegenerative diseases."
   },
+  "40634707": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Decomposition of phenotypic heterogeneity in autism reveals underlying genetic programs.",
+   "note": "No gene-level list."
+  },
   "40713954": {
    "v": "rejected-by-curator",
    "cycle": "backlog-2026-w36",
@@ -361,6 +368,20 @@
    "cycle": "backlog-2026-w36",
    "j": "Nature cell biology",
    "t": "RNA-binding proteins mediate the maturation of chromatin topology during differentiation."
+  },
+  "40921788": {
+   "v": "merged",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Multiancestry brain pQTL fine-mapping and integration with genome-wide association studies of 21 neurologic and psychiatric conditions.",
+   "note": "Hand-nominated from a Nature Genetics scan. Three columns merged: AD, PD and ALS causal proteins from PWAS and SMR (Supplementary Table 11)."
+  },
+  "40962958": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Genome-wide association meta-analysis of childhood ADHD symptoms and diagnosis identifies new loci and potential effector genes.",
+   "note": "Psychiatric GWAS gene-based table. Not drafted, following the OCD exome cut."
   },
   "40970386": {
    "v": "drafted",
@@ -428,6 +449,13 @@
    "j": "Nature neuroscience",
    "t": "TDP-43 loss induces cryptic polyadenylation in ALS/FTD."
   },
+  "41125872": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Pathogenic UNC13A variants cause a neurodevelopmental syndrome by impairing synaptic function.",
+   "note": "No gene list."
+  },
   "41174170": {
    "v": "triaged-out",
    "cycle": "backlog-2026-w36",
@@ -457,6 +485,13 @@
    "cycle": "backlog-2026-w36",
    "j": "Molecular cell",
    "t": "Monitoring the complexity and dynamics of mitochondrial translation."
+  },
+  "41233554": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Genome-wide association analyses identify distinct genetic architectures for early-onset and late-onset depression.",
+   "note": "Psychiatric GWAS gene-based table. Not drafted, following the OCD exome cut."
   },
   "41272323": {
    "v": "nominated",
@@ -650,6 +685,13 @@
    "j": "Brain : a journal of neurology",
    "t": "ARX mutation-associated interneuron defects provide insights into mechanisms underlying developmental epilepsies."
   },
+  "41634414": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Genome-wide association study of major anxiety disorders in 122,341 European-ancestry cases identifies 58 loci and highlights GABAergic signaling.",
+   "note": "Psychiatric GWAS gene-based table. Not drafted, following the OCD exome cut."
+  },
   "41634441": {
    "v": "triaged-out",
    "cycle": "2026-w37",
@@ -782,6 +824,13 @@
    "j": "Cell",
    "t": "Cell-type-specific transposon demethylation and TAD remodeling in aging mouse brain."
   },
+  "41820575": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "A repeat expansion in GOLGA8A is a major risk factor for atypical frontotemporal lobar degeneration with ubiquitin-positive inclusions.",
+   "note": "No gene list."
+  },
   "41832957": {
    "v": "drafted",
    "cycle": "backlog-2026-w36",
@@ -793,6 +842,20 @@
    "cycle": "2026-w37",
    "j": "Nature chemical biology",
    "t": "Activation and regulation of the dynein-dynactin-NuMA complex."
+  },
+  "41857317": {
+   "v": "merged",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "A meta-analysis of single-nucleus expression quantitative trait loci linking genetic risk to brain disorders.",
+   "note": "Hand-nominated from a Nature Genetics scan. Three columns merged: AD, PD and MS eQTL colocalization (Supplementary Table 11)."
+  },
+  "41857318": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Single-cell expression QTL analyses of the human cerebellum reveal vulnerability of oligodendrocytes in essential tremor.",
+   "note": "No usable list: scQTL statistics only, and differential expression lists of 7 genes or fewer."
   },
   "41862658": {
    "v": "triaged-out",
@@ -836,6 +899,34 @@
    "j": "Nature neuroscience",
    "t": "UBQLN2 links proteotoxicity with lipid metabolism in neurodegeneration."
   },
+  "41912932": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Biallelic variants in RNU2-2 cause the most prevalent known recessive neurodevelopmental disorder.",
+   "note": "No gene list."
+  },
+  "41912933": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Biallelic variants in RNU2-2 cause a remarkably frequent developmental and epileptic encephalopathy.",
+   "note": "No gene list (OUTRIDER outliers only)."
+  },
+  "41912934": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Systematic analysis of snRNA genes reveals frequent RNU2-2 variants in dominant and recessive developmental and epileptic encephalopathies.",
+   "note": "Possible: 37 to 54 aberrantly spliced genes in patient blood (Supplementary Tables 12 to 14). Not drafted."
+  },
+  "41917433": {
+   "v": "merged",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Large-scale exome analyses reveal new rare variant contributions in amyotrophic lateral sclerosis.",
+   "note": "Hand-nominated from a Nature Genetics scan. One column merged: ultra-rare variant burden (Supplementary Data 3)."
+  },
   "41932327": {
    "v": "triaged-out",
    "cycle": "backlog-2026-w36",
@@ -872,6 +963,13 @@
    "j": "Neuron",
    "t": "Astrocytic glucose metabolism regulates the survival of newborn hippocampal neurons in the adult brain."
   },
+  "41951959": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Biallelic variants in the noncoding RNA gene RNU4-2 cause a recessive neurodevelopmental syndrome with distinct white matter changes.",
+   "note": "No gene list."
+  },
   "41957279": {
    "v": "triaged-out",
    "cycle": "2026-w37",
@@ -907,6 +1005,13 @@
    "cycle": "2026-w39",
    "j": "Brain : a journal of neurology",
    "t": "Data-driven modelling of tau pathology reveals distinct progressive supranuclear palsy subtypes."
+  },
+  "41986690": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Somatic mosaicism in ALS and FTD identifies focal mutations associated with widespread degeneration.",
+   "note": "No usable list: somatic variants from an 88-gene panel."
   },
   "41990745": {
    "v": "triaged-out",
@@ -1239,6 +1344,13 @@
    "j": "Neuron",
    "t": "A hypothalamic circuit for anticipating future changes in energy balance."
   },
+  "42237039": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Consensus meta-analysis of genome-wide association studies for Alzheimer's disease and related dementias.",
+   "note": "Possible: about 100 loci ranked by P (Supplementary Table 2), largely repeating the Bellenguez 2022 column. Not drafted."
+  },
   "42242210": {
    "v": "triaged-out",
    "cycle": "2026-w36",
@@ -1280,6 +1392,13 @@
    "cycle": "backlog-2026-w36",
    "j": "Nature cell biology",
    "t": "Mitochondria-ER contacts function as an iron supply hub."
+  },
+  "42271086": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Linking GWAS risk genes to transcriptional features of major depressive disorder via in vivo Perturb-seq.",
+   "note": "Possible: neuron DEGs per knocked-out MDD risk gene in mouse cortex (Supplementary Table 3-2). Not drafted."
   },
   "42275220": {
    "v": "triaged-out",
@@ -1382,6 +1501,13 @@
    "cycle": "2026-w37",
    "j": "The EMBO journal",
    "t": "mRAVE governs lysosomal catabolism through basal and mTORC1-regulated V-ATPase assembly."
+  },
+  "42332269": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Co-expression-based models improve eQTL predictions for transcriptome-wide association studies and highlight new schizophrenia-associated genes.",
+   "note": "Model-derived coTWAS list, treated like the co-expression networks the curator cuts."
   },
   "42335895": {
    "v": "triaged-out",
@@ -2145,6 +2271,13 @@
    "j": "Cell chemical biology",
    "t": "Aptamer targeting HMGB1 attenuates inflammatory disease via domain-specific antagonism."
   },
+  "42477112": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Genome-wide association analyses of borderline personality disorder identify 11 loci and highlight shared risk with mental and somatic disorders.",
+   "note": "Psychiatric GWAS gene-based table. Not drafted, following the OCD exome cut."
+  },
   "42477131": {
    "v": "triaged-out",
    "cycle": "2026-w37",
@@ -2246,6 +2379,13 @@
    "cycle": "2026-w36",
    "j": "Cell reports. Medicine",
    "t": "Association of residential greenness and Life's Essential 8 with cardiovascular disease in China."
+  },
+  "42481757": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "SUMOylation enhances DNMT1 function to repress mega-intergenic RNAs and viral mimicry.",
+   "note": "Cancer cell line screen and DNMT1 IP-MS; no neuro anchor."
   },
   "42481806": {
    "v": "triaged-out",
@@ -5099,6 +5239,13 @@
    "j": "Nature methods",
    "t": "Decoding mechanoregulation in immunological synapses using biomimetic artificial cells."
   },
+  "42581323": {
+   "v": "merged",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Plasticity of human microglia and brain perivascular macrophages in aging and Alzheimer's disease.",
+   "note": "Hand-nominated from a Nature Genetics scan. Two columns merged: GPNMB microglia and perivascular macrophage markers (Supplementary Table 1). The GPNMB AD column was not taken."
+  },
   "42584994": {
    "v": "triaged-out",
    "cycle": "2026-w36",
@@ -5278,6 +5425,13 @@
    "cycle": "2026-w36",
    "j": "Lancet (London, England)",
    "t": "Belzutifan plus lenvatinib versus cabozantinib in patients with previously treated advanced renal cell carcinoma (LITESPARK-011): an open-la"
+  },
+  "42587094": {
+   "v": "merged",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "hnRNPK condensates facilitate enhancer-promoter looping and RNA polymerase II recruitment.",
+   "note": "Hand-nominated from a Nature Genetics scan. One column merged: hnRNPK IP-MS (Supplementary Table 2)."
   },
   "42587148": {
    "v": "triaged-out",
@@ -5663,6 +5817,13 @@
    "cycle": "2026-w37",
    "j": "Molecular cell",
    "t": "Selective decay of interferon mRNAs controls antiviral immunity and innate memory."
+  },
+  "42601455": {
+   "v": "rejected-by-curator",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "PLCG2 downregulation impairs synaptic function and increases Alzheimer's disease hallmarks in neuronal cultures.",
+   "note": "Six columns drafted: the 198-gene synapse-density shRNA screen (both directions) and iPSC excitatory-neuron DEGs after PLCG2 knockdown and in R953*. The curator took none."
   },
   "42601458": {
    "v": "triaged-out",
@@ -22745,6 +22906,20 @@
    "cycle": "2026-w39",
    "j": "Nature communications",
    "t": "Ultrafast directional hot carrier transfer in bilayer perovskite heterojunctions."
+  },
+  "42706308": {
+   "v": "triaged-out",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Multiancestry genome-wide association and multiomics analyses elucidate spatiocellular features of multiple sclerosis genetics.",
+   "note": "No usable list: variant-level tables only."
+  },
+  "42706309": {
+   "v": "merged",
+   "cycle": "hand-2026-09-26",
+   "j": "Nature genetics",
+   "t": "Genome-wide association analyses highlight the neuronal contribution to multiple sclerosis susceptibility.",
+   "note": "Hand-nominated from a Nature Genetics scan. One column merged: MS colocalization in blood and brain cells (Supplementary Table 16). The brain-only subset was not taken."
   },
   "42706325": {
    "v": "triaged-out",
