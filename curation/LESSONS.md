@@ -208,3 +208,11 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 - Excel COM is available on this machine (`New-Object -ComObject Excel.Application`,
   `SaveAs(path, 51)`), which is the way to read the legacy `.xls` a few publishers
   still deposit; the local xlsx reader handles only the zip-based format.
+- Hand scan 2026-10-09 (10 papers, 14 columns drafted, 6 taken): the curator took every
+  organelle or proximity proteome (Lyso-IP, lipid droplet, Twinkle BioID and APEX, an SNCA
+  IP-MS) and passed on the mouse biofluid DE pair (R6/2 CSF, 10.1038/s41467-026-77474-4)
+  and a nominal-p PS19 proteome (42826098). Same pattern as 2026-w37/w39.
+- A bioRxiv PMID can hide a journal version: 40631216's PMC bundle held only a PDF, while
+  Crossref title search found the Cell Reports paper with eight xlsx tables (42826098).
+  Search Crossref by title before filing a preprint as nomination-only. Cell Press also
+  deposits `.xlsb` workbooks (celrep 118060); Excel COM converts them like legacy `.xls`.

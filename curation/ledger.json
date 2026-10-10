@@ -25,11 +25,25 @@
    "j": "Molecular & cellular proteomics : MCP",
    "t": "Proteomic Analysis of Dynein-Interacting Proteins in Amyotrophic Lateral Sclerosis Synaptosomes Reveals Alterations in the RNA-Binding Prote"
   },
+  "28238724": {
+   "v": "merged",
+   "j": "Cell chemical biology",
+   "t": "Proximity Biotinylation as a Method for Mapping Proteins Associated with mtDNA in Living Cells.",
+   "note": "Hand-nominated. One column merged: Twinkle-APEX2 nucleoid proteome, 36 proteins (Table S1, Tab 1).",
+   "cycle": "hand-2026-10-09"
+  },
   "30104359": {
    "v": "nominated",
    "cycle": "backlog-2026-w36",
    "j": "Proceedings of the National Academy of Sciences of the United States of America",
    "t": "Proteomic analysis of monolayer-integrated proteins on lipid droplets identifies amphipathic interfacial &#x3b1;-helical membrane anchors."
+  },
+  "30715486": {
+   "v": "merged",
+   "j": "Nucleic acids research",
+   "t": "Mitochondrial RNA granules are critically dependent on mtDNA replication factors Twinkle and mtSSB.",
+   "note": "Hand-nominated. One column merged: Twinkle BioID proximity proteome (Supplementary Table S1), 196 significant.",
+   "cycle": "hand-2026-10-09"
   },
   "31412257": {
    "v": "nominated",
@@ -114,6 +128,13 @@
    "cycle": "backlog-2026-w36",
    "j": "Nature",
    "t": "Tracking chromatin state changes using nanoscale photo-proximity labelling."
+  },
+  "37832546": {
+   "v": "nominated",
+   "j": "Molecular cell",
+   "t": "Mitochondrial DNA breaks activate an integrated stress response to reestablish homeostasis.",
+   "note": "Hand-nominated. Only unfiltered TFAM-BioID2 SILAC ratios deposited (Table S1, ARPE-19 cells); the authors filtering is not published, ranked column would be noise. Not drafted.",
+   "cycle": "hand-2026-10-09"
   },
   "37906643": {
    "v": "nominated",
@@ -301,6 +322,13 @@
    "cycle": "backlog-2026-w36",
    "j": "Nature communications",
    "t": "Ultradeep N-glycoproteome atlas of mouse reveals spatiotemporal signatures of brain aging and neurodegenerative diseases."
+  },
+  "40631216": {
+   "v": "triaged-out",
+   "j": "bioRxiv",
+   "t": "Progressive Remodeling of Global Protein Interaction Networks in a Mouse Model of Tauopathy.",
+   "note": "Preprint of 42826098; PMC bundle holds only a PDF supplement. See the journal version.",
+   "cycle": "hand-2026-10-09"
   },
   "40634707": {
    "v": "triaged-out",
@@ -30549,6 +30577,13 @@
    "j": "Nature communications",
    "t": "Cenozoic losses of tree diversity constrain climatic adaptation of Western and Central European forests."
   },
+  "42749735": {
+   "v": "merged",
+   "j": "Nature communications",
+   "t": "APOE genotypes differentially remodel the astrocytic lipid droplet proteome to shape lipid droplet dynamics.",
+   "note": "Hand-nominated. One column merged: astrocytic lipid droplet proteome (Supplementary Data 7). APOE genotype contrasts are presence/absence driven (log2FC about 11) and were not drafted.",
+   "cycle": "hand-2026-10-09"
+  },
   "42749737": {
    "v": "merged",
    "cycle": "2026-w39",
@@ -37089,12 +37124,54 @@
    "j": "eLife",
    "t": "Retinal curl as a functional signal for heading estimation beyond the focus of expansion."
   },
+  "42789391": {
+   "v": "merged",
+   "j": "Cell reports",
+   "t": "DDX39A unwinds viral RNA G-quadruplexes to limit alpha-Synuclein amyloidogenesis.",
+   "note": "Hand-nominated. One column merged: SNCA(DM)-EGFP IP-MS unique interactors in HEK293T (Data S3A, xlsb supplement converted with Excel COM). NLS/NES variants offered as optional and not taken; human brain Data S4 is unranked.",
+   "cycle": "hand-2026-10-09"
+  },
+  "42806047": {
+   "v": "nominated",
+   "j": "Nature structural & molecular biology",
+   "t": "Profiling extracellular vesicle glycoRNAs defines their function in vesicular communication.",
+   "note": "Hand-nominated. 273 glycoRNAs enriched in cancer-cell EVs (Source Data Fig. 2b) are snoRNA/miRNA with mixed nomenclature; non-neuro. Draftable on request, not recommended.",
+   "cycle": "hand-2026-10-09"
+  },
+  "42826098": {
+   "v": "rejected-by-curator",
+   "j": "Cell reports",
+   "t": "Progressive remodeling of global protein interaction networks in a mouse model of tauopathy.",
+   "note": "Hand-nominated (via bioRxiv PMID 40631216). PS19 9-month proteome up/down drafted as optional (nominal p only, about 7 survive BH); curator did not take them, 2026-10-10. Co-IP tables are a thin validation set and the complexes are inferred from co-fractionation.",
+   "cycle": "hand-2026-10-09"
+  },
+  "42826099": {
+   "v": "merged",
+   "j": "Cell reports",
+   "t": "Lysosomal multi-omics reveals altered sphingolipid catabolism associated with lysosomal dysfunction in the aging brain.",
+   "note": "Hand-nominated. Two columns merged: neuronal and microglial Lyso-IP proteomes (Tables S3, S4). Aging tables S1/S14 are raw abundances with no statistic.",
+   "cycle": "hand-2026-10-09"
+  },
   "10.1016/j.neuron.2026.08.006": {
    "v": "merged",
    "cycle": "hand-2026-09-09",
    "j": "Neuron",
    "t": "Mapping cell-type- and age-dependent neuronal vulnerability through genome-wide in vivo CRISPRi screens in the mouse brain",
    "note": "Hand-nominated by the curator. Keyed by DOI: no PMID assigned at curation time (published 2026-09-09). Five columns merged."
+  },
+  "10.1038/s41467-026-77474-4": {
+   "v": "rejected-by-curator",
+   "j": "Nature communications",
+   "t": "Huntington disease vasculopathy is barrier-type-selective and arteriolar-dominant with spatially-coupled astrogliosis and reversible by S1pr1 stimulation.",
+   "note": "Hand-nominated, no PMID yet. Four columns drafted (R6/2 CSF up/down, plasma up/down, Supplementary Data 3, permutation FDR<0.05); curator did not take them, 2026-10-10.",
+   "cycle": "hand-2026-10-09"
+  },
+  "10.1038/s43587-026-01240-w": {
+   "v": "nominated",
+   "j": "Nature aging",
+   "t": "Decline of chaperone-mediated autophagy in aging impairs macrophage clearance of senescent cells.",
+   "note": "Hand-nominated, no PMID yet. Proteome/degradome/secretome exist only as figure-level source data; supplementary tables are metabolome, antibodies, primers. Fibroblast and macrophage, non-CNS. Not drafted.",
+   "cycle": "hand-2026-10-09"
   }
  }
 }
