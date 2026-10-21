@@ -212,6 +212,16 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   organelle or proximity proteome (Lyso-IP, lipid droplet, Twinkle BioID and APEX, an SNCA
   IP-MS) and passed on the mouse biofluid DE pair (R6/2 CSF, 10.1038/s41467-026-77474-4)
   and a nominal-p PS19 proteome (42826098). Same pattern as 2026-w37/w39.
+- Hand scan 2026-10-20 (8 papers, 17 columns drafted, 7 new columns taken): from the APOE4
+  oligodendrocyte screen (42880287) the curator took both FDR-filtered screen columns (10 and
+  7 genes) and the high-lipid sorted RNA-seq column, and passed on its CHIR99021 and Dif3
+  drug-treatment pairs. They took an FDR-filtered mouse proteome pair (APOE3/4 vs APOE3/3 in
+  5xFAD, 10.1038/s41467-026-78407-x) and a KCl secondary-screen pair (42669708), and passed
+  on a Klf9 dentate gyrus DE pair (42881225).
+- A journal version of a paper already in the database as a preprint replaces the preprint
+  columns in place (description, title, abstract, journal, link and the published list), so
+  the paper stays one article record: Boggess (42669708) took over bioRxiv columns 868-869.
+  Check the database for the preprint title before drafting any 2024-2026 screen paper.
 - A bioRxiv PMID can hide a journal version: 40631216's PMC bundle held only a PDF, while
   Crossref title search found the Cell Reports paper with eight xlsx tables (42826098).
   Search Crossref by title before filing a preprint as nomination-only. Cell Press also

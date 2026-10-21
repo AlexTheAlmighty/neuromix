@@ -17721,6 +17721,13 @@
    "j": "Experimental neurology",
    "t": "Behavioral and spectral electroencephalographic biomarkers of epileptogenesis, disease progression, and drug resistance in a longitudinal li"
   },
+  "42669708": {
+   "v": "merged",
+   "j": "Nature communications",
+   "t": "A massively parallel CRISPR-based screening platform for modifiers of neuronal depolarization.",
+   "note": "Hand-nominated. Journal version of the bioRxiv preprint (10.1101/2024.02.28.582546) behind columns 868-869, which were replaced in place with the published primary glutamate-screen hits (Supplementary Data 1, 2 and 5; 16 decrease and 9 increase hits appear only in Data 5 and were called with the Fig. 2b cutoffs). KCl-evoked secondary screen pair added (Supplementary Data 5, FDR<0.1).",
+   "cycle": "hand-2026-10-20"
+  },
   "42669759": {
    "v": "triaged-out",
    "cycle": "2026-w37",
@@ -37152,6 +37159,34 @@
    "note": "Hand-nominated. Two columns merged: neuronal and microglial Lyso-IP proteomes (Tables S3, S4). Aging tables S1/S14 are raw abundances with no statistic.",
    "cycle": "hand-2026-10-09"
   },
+  "42843341": {
+   "v": "triaged-out",
+   "j": "Cell reports. Medicine",
+   "t": "Regional brain aging signatures predict mortality through neurovascular immune mechanisms.",
+   "note": "Hand-nominated. Plasma proteome correlations with brain age gaps (Tables S6 and S8, PDF only) use nominal p with no multiple-testing correction; 19 to 40 of 513 proteins pass p<0.05 per gap, about chance.",
+   "cycle": "hand-2026-10-20"
+  },
+  "42875585": {
+   "v": "triaged-out",
+   "j": "Nature aging",
+   "t": "Transcriptomic reprogramming screen identifies SRSF1 as a regulator of aging.",
+   "note": "Hand-nominated. No ranked list: aging-model gene weights (Supplementary Table 1), raw per-sample predicted ages for the overexpression screen (Table 4), unranked splicing events (Table 5). Fibroblasts, non-CNS.",
+   "cycle": "hand-2026-10-20"
+  },
+  "42880287": {
+   "v": "merged",
+   "j": "Cell stem cell",
+   "t": "Genome-wide CRISPR screen reveals that Wnt signaling regulates lipid accumulation in APOE4 oligodendrocytes.",
+   "note": "Hand-nominated. Three columns merged: genome-wide CRISPR screen hits for low and high BODIPY lipid droplets at FDR<0.05, the Methods' hit rule (Table S1 deposits 332 and 391 nominal-p hits; 10 and 7 pass FDR), and genes up in high-lipid sorted APOE4 oligodendrocytes (Table S4, 108 trimmed to 100). Curator passed on the CHIR99021 RNA-seq pair (Table S11) and the Dif3 pair (Table S9).",
+   "cycle": "hand-2026-10-20"
+  },
+  "42881225": {
+   "v": "rejected-by-curator",
+   "j": "Nature neuroscience",
+   "t": "An aging-sensitive secreted phospholipase confers neuroprotection and cognitive resilience.",
+   "note": "Hand-nominated. Klf9-induced synapse loss dentate gyrus DE pair (Supplementary Tables 2 and 3; Klf9 rank 1 and Pla2g2f rank 5 of the up list) drafted as optional; curator passed. Other tables are lipidomics, NanoString normalized counts and enrichment.",
+   "cycle": "hand-2026-10-20"
+  },
   "10.1016/j.neuron.2026.08.006": {
    "v": "merged",
    "cycle": "hand-2026-09-09",
@@ -37172,6 +37207,13 @@
    "t": "Decline of chaperone-mediated autophagy in aging impairs macrophage clearance of senescent cells.",
    "note": "Hand-nominated, no PMID yet. Proteome/degradome/secretome exist only as figure-level source data; supplementary tables are metabolome, antibodies, primers. Fibroblast and macrophage, non-CNS. Not drafted.",
    "cycle": "hand-2026-10-09"
+  },
+  "10.1038/s41467-026-78407-x": {
+   "v": "merged",
+   "j": "Nature communications",
+   "t": "APOE2 attenuates APOE4-associated amyloid pathology and related toxicity in a mouse model of Alzheimer’s disease.",
+   "note": "Hand-nominated, no PMID yet. APOE3/4 vs APOE3/3 5xFAD brain TMT proteome up and down merged (Supplementary Data 2, step-up FDR<0.05, 58 and 53 proteins; four keratins in the top 10 of the up list). The APOE2 contrasts have 15 and 0 FDR hits; the NanoString table's logFC and t disagree in sign for E34 vs E33.",
+   "cycle": "hand-2026-10-20"
   }
  }
 }
