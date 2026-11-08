@@ -234,3 +234,15 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   (42957846) the flag copies the mitochondrial flag, 707 rows against 121 by the stated rule.
   When a paper deposits no gene table, look for its analysis notebooks: saved outputs can
   print the figure's table (42950818, Figure 7E). Excel COM also opens `.ods` (42951976).
+- Audit of the oldest hand-entered columns, 2026-11 (224 entries, 98 papers; the rightmost
+  columns are the oldest, apart from later additions). Of 16 entries checked against source
+  tables, 6 held the wrong list: a neighbouring paper or cell type pasted in (Goodwin,
+  Ximerakis), every model term pooled (Carlyle), or the wrong sheet (Herbst). Method and
+  tissue cells were often filled down from a neighbour: 16 of 33 labelled TMT used another
+  method. Standard for a description error is a false fact; true simplifications stay.
+- Paper text alone over-calls list errors. Three suspected lists were correct once the table
+  was read (Bourdenx AMK, Tijms AHC, Wertz AQO), and three more had the right genes under a
+  wrong label. Never replace a list until it has been matched against its source sheet.
+  Cheap list-only checks found the strongest cases: identical lists across columns and the
+  same symbol in opposite-direction lists. The Europe PMC bundle route drops out for
+  minutes at a time with a 292-byte error; retry with curl before calling it blocked.
