@@ -246,3 +246,12 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   Cheap list-only checks found the strongest cases: identical lists across columns and the
   same symbol in opposite-direction lists. The Europe PMC bundle route drops out for
   minutes at a time with a 292-byte error; retry with curl before calling it blocked.
+- Second batch of the 2026-11 audit (349 entries, 100 papers). Of 40 entries checked against
+  source tables, 25 had the right genes under a wrong label, 5 needed repair or rebuilding
+  and 10 were correct. Labels drift more than lists: Li 2023 carried the wrong region and
+  disease on 14 columns, and Hall 2020 split up and down on the sign of the top GWAS SNP
+  rather than TWAS Z (compare a split against every signed column). In loss-of-function
+  screens, check "promote" against the knockdown phenotype (Bravo, Kanfer).
+- Find a column's source by brute force: try every sheet, sort column and direction, and
+  count identical positions. An exact match settles it, and it cleared 10 suspected lists.
+  PMC manuscript table numbers can differ from the journal's (Garcia Table 5 versus 4).
