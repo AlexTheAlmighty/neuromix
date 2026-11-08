@@ -163,9 +163,6 @@ export function mount(root) {
       el('div', { class: 'field' }, [
         el('span', { class: 'field-label', text: 'Pick a study to load its ranked list' }),
         studyPicker,
-        el('span', { class: 'hint', style: 'display:block; margin-top:5px' }, [
-          'Hover or arrow through a study to read its full description.',
-        ]),
       ]),
       el('label', { class: 'field', for: 'list-genes' }, [
         el('span', { text: 'Gene list (comma or space separated)' }), textarea,
@@ -403,7 +400,7 @@ function runComparison() {
   if (!genes) return
   clearActiveTool()
 
-  const { rows, topGenes, queried, unmatched, significantCount, threshold } = compareToDatabase(genes)
+  const { rows, topGenes, queried, unmatched, significantCount } = compareToDatabase(genes)
   clear(results)
 
   results.append(el('div', { class: 'stats' }, [
@@ -411,14 +408,6 @@ function runComparison() {
     stat('Matching gene lists', fmt(rows.length), 'sharing 2 or more genes'),
     stat('Statistically significant', fmt(significantCount), `of ${fmt(rows.length)} after correction`),
   ]))
-
-  if (rows.length) {
-    results.append(el('div', { class: 'callout', style: 'margin-bottom:14px' }, [
-      `Two long lists share genes by chance alone. Of the ${fmt(rows.length)} lists sharing at least two genes with `,
-      `yours, ${fmt(significantCount)} overlap more than chance predicts (p below ${sci(threshold)}, `,
-      'Bonferroni corrected). Use the toggle above the table to hide the rest.',
-    ]))
-  }
 
   if (!rows.length) {
     results.append(el('div', { class: 'empty' }, [

@@ -6,6 +6,7 @@ const RANK_SPAN = 1024
 export const store = {
   ready: false,
   stats: null,
+  overview: null,
   articles: [],
   studies: [],
   geneIndex: new Map(),
@@ -25,6 +26,7 @@ export async function loadDatabase() {
   const payload = await res.json()
 
   store.stats = payload.stats
+  store.overview = payload.overview ?? null
   store.articles = payload.articles
   store.renamed = new Map(Object.entries(payload.renamedSymbols ?? {}))
   store.symbolCheck = payload.symbolCheck ?? null

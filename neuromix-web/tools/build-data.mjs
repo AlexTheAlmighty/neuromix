@@ -133,6 +133,108 @@ function rankStat(description) {
   return hit ? hit[1] : ''
 }
 
+// The statistics panels on the About tab. The method column holds hundreds of free-text
+// spellings, so the chart groups them by what was actually done. Order matters: an "APEX
+// proximity labeling MS" is an interactome first and mass spectrometry second.
+const METHOD_FAMILIES = [
+  ['GWAS, genetics', /\bgwas\b|\bpwas\b|\btwas\b|exome|wide association|mendelian|\be?qtl\b|coloc/i],
+  ['Interactomics', /apex|bioid|turboid|proximity|biotinyl|immunoprecip|\bco-?ip\b|\bip[- ]?ms\b|\bap[- ]?ms\b|affinity[- ]purif|affinity[- ]capture|pull.?down|interactom|cross.?link|maple|\bmapit|\brip-?seq/i],
+  ['CRISPR, RNAi screens', /crispr|shrna|sirna|\bscreen|perturb-?seq|chymera/i],
+  ['Single-cell RNA-seq', /sc ?rna|sn ?rna|single[- ]?cell(?! ms)|single[- ]?nucle|multiome|drop-?seq|10x|smart-?seq/i],
+  ['Spatial', /spatial|merfish|visium|slide-?seq/i],
+  ['MS proteomics', /mass spec|\bms\b|\blc-|proteom|\btmt\b|\bdia\b|silac|spectrometry|peptidom|lysotag/i],
+  ['Epigenomics', /atac|chip-?seq|cut&|methyl|m6a|clip|tobias|hme-seal/i],
+  ['Bulk RNA-seq, arrays', /rna[- ]?seq|rna sequencing|microarray|\btrap\b|ribo[- ]?seq|transcriptom|array|qpcr|ncounter|end sequencing/i],
+]
+
+const DISEASE_TOPICS = ['Alzheimer', 'Huntington', 'ALS and FTD', 'Parkinson', 'Multiple sclerosis',
+  'Neurodevelopment', 'Prion', 'Psychiatric', 'Epilepsy']
+
+// Counted across article titles and abstracts. ALS and FTD are matched case sensitively,
+// since "als" and "ftd" turn up inside ordinary words and identifiers.
+const KEY_TERMS = [
+  ['Brain', /\bbrains?\b/i],
+  ['Neuron', /neuron/i],
+  ['Neurodegeneration', /neurodegenerat/i],
+  ['Alzheimer\'s', /alzheimer/i],
+  ['Synapse', /synap/i],
+  ['Cortex', /cortex|cortical/i],
+  ['Mitochondria', /mitochondri/i],
+  ['Aging', /\bag(e)?ing\b|\baged\b/i],
+  ['Microglia', /microglia/i],
+  ['Astrocyte', /astrocyt/i],
+  ['Lysosome', /lysosom/i],
+  ['Inflammation', /inflammat/i],
+  ['Aggregation', /aggregat/i],
+  ['Splicing', /splic/i],
+  ['Tau', /\btau\b/i],
+  ['ALS', /\bALS\b|amyotrophic lateral sclerosis/],
+  ['Autophagy', /autophag/i],
+  ['Huntington\'s', /huntington/i],
+  ['Amyloid', /amyloid/i],
+  ['Parkinson\'s', /parkinson/i],
+  ['Oligodendrocyte', /oligodendrocyt/i],
+  ['FTD', /\bFTD\b|frontotemporal/],
+  ['TDP-43', /tdp-?\s?43/i],
+  ['Hippocampus', /hippocamp/i],
+  ['Alpha-synuclein', /synuclein/i],
+  ['Multiple sclerosis', /multiple sclerosis/i],
+]
+
+const isJournal = (name) => Boolean(name) && !/^preprint$/i.test(name)
+
+function buildOverview(studies, articles) {
+  const count = (items) => {
+    const tally = new Map()
+    for (const item of items) tally.set(item, (tally.get(item) ?? 0) + 1)
+    return tally
+  }
+  const byCount = (a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0]))
+  const familyOf = (s) => METHOD_FAMILIES.find(([, re_]) => re_.test(s.mc || s.m))?.[0] ?? 'Other'
+
+  const ranked = [...count(studies.map(familyOf))].sort(byCount)
+  const families = ranked.filter(([name]) => name !== 'Other')
+  const methods = [...families, ...ranked.filter(([name]) => name === 'Other')]
+
+  const methodSpecies = families.map(([name]) => {
+    const lists = studies.filter((s) => familyOf(s) === name)
+    return [name, ...['Human', 'Mouse', 'Rat', ''].map((sp) => lists.filter((s) => s.sp === sp).length)]
+  })
+
+  const diseases = DISEASE_TOPICS.map((topic) => {
+    const lists = studies.filter((s) => s.tg.includes(topic))
+    return [topic, lists.length, new Set(lists.map((s) => s.ar)).size]
+  }).sort(byCount)
+
+  const keyTerms = KEY_TERMS
+    .map(([term, re_]) => [term, articles.filter((a) => re_.test(`${a.t} ${a.a}`)).length])
+    .sort(byCount)
+
+  const geneArticles = new Map()
+  const geneLists = new Map()
+  for (const s of studies) {
+    for (const gene of s.g.split('|')) {
+      geneLists.set(gene, (geneLists.get(gene) ?? 0) + 1)
+      if (!geneArticles.has(gene)) geneArticles.set(gene, new Set())
+      geneArticles.get(gene).add(s.ar)
+    }
+  }
+  const genes = [...geneArticles]
+    .map(([gene, ids]) => [gene, ids.size, geneLists.get(gene)])
+    .sort(byCount)
+    .slice(0, 10)
+
+  return {
+    years: [...count(studies.map((s) => s.y).filter(Boolean))].sort((a, b) => a[0] - b[0]),
+    methods,
+    methodSpecies,
+    diseases,
+    keyTerms,
+    genes,
+    journals: [...count(articles.map((a) => a.j).filter(isJournal))].sort(byCount).slice(0, 8),
+  }
+}
+
 const raw = readFileSync(CSV, 'utf8').replace(/^﻿/, '')
 const rows = parseCsv(raw)
 const width = Math.max(...rows.slice(0, 8).map((r) => r.length))
@@ -312,8 +414,9 @@ const payload = {
     articles: articles.length,
     geneEntries,
     uniqueGenes: uniqueGenes.size,
-    journals: new Set(articles.map((a) => a.j).filter(Boolean)).size,
+    journals: new Set(articles.map((a) => a.j).filter(isJournal)).size,
   },
+  overview: buildOverview(studies, articles),
   articles,
   studies,
 }

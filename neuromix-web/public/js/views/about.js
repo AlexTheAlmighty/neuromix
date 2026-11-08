@@ -1,6 +1,7 @@
 // About: what the database is, how to read the results, and the downloads.
 import { store } from '../store.js'
 import { el, fmt, downloadCsv, toast } from '../ui.js'
+import { barChart, columnChart } from '../charts.js'
 
 let mounted = false
 
@@ -16,6 +17,8 @@ export function mount(root) {
     tile('Gene entries', fmt(s.geneEntries)),
     tile('Unique gene symbols', fmt(s.uniqueGenes)),
   ]))
+
+  if (store.overview) root.append(overview(store.overview))
 
   root.append(el('div', { class: 'panel' }, [
     el('div', { class: 'panel-body prose' }, [
@@ -122,6 +125,109 @@ const tile = (label, value) => el('div', { class: 'stat' }, [
   el('div', { class: 'label', text: label }),
   el('div', { class: 'value', text: value }),
 ])
+
+/* ---------- database statistics ---------- */
+
+const geneHref = (gene) => `#/genes?q=${encodeURIComponent(gene)}&exact=1`
+
+const panel = (title, caption, body, wide = false) => el('section', { class: `panel${wide ? ' wide' : ''}` }, [
+  el('div', { class: 'panel-head' }, [
+    el('h2', { text: title }),
+    caption ? el('p', { text: caption }) : null,
+  ]),
+  el('div', { class: 'panel-body' }, body),
+])
+
+const dataTable = (header, rows, cell) => el('div', { class: 'table-wrap' }, [
+  el('table', { class: 'data' }, [
+    el('thead', {}, [el('tr', {}, header.map((h, i) => el('th', { text: h, class: i ? 'num' : null })))]),
+    el('tbody', {}, rows.map((row) => el('tr', {}, row.map(cell)))),
+  ]),
+])
+
+const plainCell = (value) => (typeof value === 'number'
+  ? el('td', { class: 'num', text: fmt(value) })
+  : el('td', {}, [value]))
+
+// Every chart keeps a readable table underneath it.
+const tableToggle = (header, rows) => el('details', { class: 'chart-table' }, [
+  el('summary', { text: 'Show table' }),
+  dataTable(header, rows, plainCell),
+])
+
+function speciesMatrix(rows) {
+  const peak = Math.max(...rows.flatMap(([, ...counts]) => counts), 1)
+  const cell = (value) => {
+    if (typeof value !== 'number') return el('td', { text: value })
+    const style = value
+      ? `background: color-mix(in srgb, var(--accent) ${Math.round(6 + (value / peak) * 44)}%, transparent)`
+      : 'color: var(--muted)'
+    return el('td', { class: 'num', text: fmt(value), style })
+  }
+  return dataTable(['Method', 'Human', 'Mouse', 'Rat', 'Not stated'], rows, cell)
+}
+
+function overview(o) {
+  const bars = (rows, valueLabel, options = {}) => barChart({
+    rows, valueLabel, axis: false, rowHeight: 26, labelWidth: 160, format: fmt, ...options,
+  })
+  const toRows = (pairs) => pairs.map(([label, value]) => ({ label, value }))
+
+  const termScale = o.keyTerms[0]?.[1] ?? 0
+  const termSplit = Math.ceil(o.keyTerms.length / 2)
+  const termChart = (terms) => bars(toRows(terms), 'Articles', { maxValue: termScale })
+
+  return el('div', { class: 'overview' }, [
+    panel('Gene lists by publication year', null, [
+      columnChart({
+        rows: o.years.map(([year, value]) => ({ label: String(year), value })),
+        valueLabel: 'Gene lists',
+        format: fmt,
+      }),
+      tableToggle(['Year', 'Gene lists'], o.years.map(([year, n]) => [String(year), n])),
+    ], true),
+
+    panel('Experimental method', null, [
+      bars(toRows(o.methods), 'Gene lists'),
+      tableToggle(['Method', 'Gene lists'], o.methods),
+    ]),
+
+    panel('Disease coverage', 'Gene lists per disease.', [
+      bars(o.diseases.map(([label, value, articles]) => ({
+        label,
+        value,
+        tooltip: [['Gene lists', fmt(value)], ['Articles', fmt(articles)]],
+      })), 'Gene lists'),
+      tableToggle(['Disease', 'Gene lists', 'Articles'], o.diseases),
+    ]),
+
+    panel('Key terms', 'Articles mentioning each term.', [
+      el('div', { class: 'split' }, [
+        termChart(o.keyTerms.slice(0, termSplit)),
+        termChart(o.keyTerms.slice(termSplit)),
+      ]),
+      tableToggle(['Term', 'Articles'], o.keyTerms),
+    ], true),
+
+    panel('Method by species', null, [speciesMatrix(o.methodSpecies)], true),
+
+    panel('Most recurrent genes', 'Number of independent articles.', [
+      bars(o.genes.map(([label, value, lists]) => ({
+        label,
+        value,
+        tooltip: [['Articles', fmt(value)], ['Gene lists', fmt(lists)]],
+      })), 'Articles', { onSelect: (row) => { location.hash = geneHref(row.label) } }),
+      tableToggle(['Gene', 'Articles', 'Gene lists'], o.genes.map(([gene, articles, lists]) => [
+        el('a', { href: geneHref(gene), text: gene }), articles, lists,
+      ])),
+    ]),
+
+    panel('Source journals', 'Articles per journal.', [
+      bars(toRows(o.journals), 'Articles'),
+      tableToggle(['Journal', 'Articles'], o.journals),
+    ]),
+  ])
+}
 
 function downloadStudies() {
   downloadCsv(

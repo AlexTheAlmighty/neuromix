@@ -426,6 +426,20 @@ table.data .desc-cell { max-width: 520px; }
 .ramp-legend { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
 .ramp-legend .ramp { height: 8px; width: 96px; border: 1px solid var(--border); }
 
+/* ---------- about: database statistics ---------- */
+.overview { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-bottom: 18px; }
+.overview .panel + .panel { margin-top: 0; }
+.overview .panel.wide { grid-column: 1 / -1; }
+.overview .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+.overview table.data { min-width: 0; }
+.overview table.data th.num { text-align: right; }
+.chart-table { margin-top: 10px; }
+.chart-table > summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
+.chart-table .table-wrap { margin-top: 8px; }
+@media (max-width: 760px) {
+  .overview, .overview .split { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* ---------- drawer ---------- */
 .drawer-scrim { position: fixed; inset: 0; background: rgba(15, 14, 12, 0.45); z-index: 40; }
 .drawer {

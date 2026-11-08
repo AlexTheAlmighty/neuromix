@@ -117,7 +117,7 @@ from a bundled snapshot instead (see below).
 | `tools/build-biogrid.mjs` | Shards the snapshot into `public/data/biogrid/`, generated on every deploy |
 | `public/js/store.js` | Loads the data, builds the gene index, and implements every lookup |
 | `public/js/views/` | One module per tab |
-| `public/js/charts.js` | Hand-rolled SVG bar charts, no chart library |
+| `public/js/charts.js` | Hand-rolled SVG bar and column charts, no chart library |
 | `public/fonts/` | TeX Gyre Schola (text) and Pagella (headings), GUST Font License, self-hosted so the site stays dependency free |
 | `public/js/ui.js` | Element helper, sortable and paged table, drawer, CSV export |
 
@@ -240,6 +240,12 @@ below the cut off.
 reduced and correlated, taking direction coverage from 465 to 734 lists. Protein group
 cells such as `H3-3A; H3-3B` are split so all members are searchable, recovering 317
 symbols, and group members keep the rank of the cell they came from.
+
+**Database statistics.** The About tab charts the database by publication year, method,
+disease, key terms, method by species, most recurrent genes and source journals. The
+numbers are computed by `tools/build-data.mjs` into the `overview` block of the JSON, so
+they update with every CSV commit. Method families and key terms are keyword rules at the
+top of that file. Preprints are not counted as a journal.
 
 ## Notes
 
