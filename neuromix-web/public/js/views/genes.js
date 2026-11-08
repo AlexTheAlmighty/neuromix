@@ -68,7 +68,7 @@ export function mount(root) {
         el('summary', { class: 'hint', style: 'cursor:pointer', text: 'How the two sources differ' }),
         el('p', { class: 'hint', style: 'margin-top:8px' }, [
           'BioGRID curates only direct experimental evidence, read from a snapshot bundled with this '
-          + 'site: physical and genetic count the experiments supporting each pair, publications the '
+          + 'site: physical counts the experiments supporting each pair, publications the '
           + 'distinct papers reporting one. STRING is queried live and combines several lines of '
           + 'evidence (experimental, co-expression, text mining) into one likelihood between 0 and 1, '
           + 'so it reaches further but includes predicted associations. Every partner either source '
@@ -466,7 +466,7 @@ async function fetchInteractions(source) {
     ]))
     const numCols = source === 'string'
       ? [['Score', (r) => (r.score === null ? 'n/a' : r.score.toFixed(3))]]
-      : [['Publications', (r) => fmt(r.pubs)], ['Physical', (r) => fmt(r.physical)], ['Genetic', (r) => fmt(r.genetic)]]
+      : [['Publications', (r) => fmt(r.pubs)], ['Physical', (r) => fmt(r.physical)]]
     const wrap = el('div', { class: 'table-wrap', style: 'max-height:320px; overflow-y:auto' })
     wrap.append(el('table', { class: 'data' }, [
       el('thead', {}, [el('tr', {}, [

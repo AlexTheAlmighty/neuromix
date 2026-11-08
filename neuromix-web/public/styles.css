@@ -439,6 +439,12 @@ table.data .desc-cell { max-width: 520px; }
 @media (max-width: 760px) {
   .overview, .overview .split { grid-template-columns: minmax(0, 1fr); }
 }
+@media (min-width: 1280px) {
+  .about-layout { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 18px; align-items: start; }
+  .about-text { grid-column: 1; grid-row: 1; }
+  .about-stats { grid-column: 2; grid-row: 1; min-width: 0; }
+  .about-stats .overview { margin-bottom: 0; }
+}
 
 /* ---------- drawer ---------- */
 .drawer-scrim { position: fixed; inset: 0; background: rgba(15, 14, 12, 0.45); z-index: 40; }

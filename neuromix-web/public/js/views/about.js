@@ -10,7 +10,13 @@ export function mount(root) {
   mounted = true
   const s = store.stats
 
-  root.append(el('div', { class: 'stats' }, [
+  // Text on the left and statistics on the right on wide screens. Narrower screens stack
+  // them, statistics first, which is the order they sit in here.
+  const statsColumn = el('div', { class: 'about-stats' })
+  const layout = el('div', { class: 'about-layout' }, [statsColumn])
+  root.append(layout)
+
+  statsColumn.append(el('div', { class: 'stats' }, [
     tile('Ranked gene lists', fmt(s.lists)),
     tile('Articles', fmt(s.articles)),
     tile('Journals', fmt(s.journals)),
@@ -18,9 +24,9 @@ export function mount(root) {
     tile('Unique gene symbols', fmt(s.uniqueGenes)),
   ]))
 
-  if (store.overview) root.append(overview(store.overview))
+  if (store.overview) statsColumn.append(overview(store.overview))
 
-  root.append(el('div', { class: 'panel' }, [
+  layout.append(el('div', { class: 'panel about-text' }, [
     el('div', { class: 'panel-body prose' }, [
       el('h1', { text: 'About NeurOmix' }),
       el('p', {
@@ -79,7 +85,7 @@ export function mount(root) {
         text: 'The gene analysis page can look up protein interaction partners of a selected gene from two '
           + 'sources, side by side. BioGRID is read from a snapshot bundled with this site, so lookups are '
           + 'instant and work offline: every experimentally observed human interaction is shown, with the '
-          + 'number of physical and genetic experiments and the number of distinct publications supporting '
+          + 'number of physical experiments and the number of distinct publications supporting '
           + 'each pair. BioGRID curates only direct experimental evidence, so it contains nothing predicted '
           + 'or text mined. STRING is queried live and integrates several forms of evidence, including '
           + 'experimental data, co-expression, database annotations, and text mining, into a confidence '
@@ -169,7 +175,7 @@ function speciesMatrix(rows) {
 
 function overview(o) {
   const bars = (rows, valueLabel, options = {}) => barChart({
-    rows, valueLabel, axis: false, rowHeight: 26, labelWidth: 160, format: fmt, ...options,
+    rows, valueLabel, axis: false, rowHeight: 26, labelWidth: 140, format: fmt, ...options,
   })
   const toRows = (pairs) => pairs.map(([label, value]) => ({ label, value }))
 
@@ -223,7 +229,7 @@ function overview(o) {
     ]),
 
     panel('Source journals', 'Articles per journal.', [
-      bars(toRows(o.journals), 'Articles'),
+      bars(toRows(o.journals), 'Articles', { labelWidth: 150 }),
       tableToggle(['Journal', 'Articles'], o.journals),
     ]),
   ])
