@@ -198,7 +198,7 @@ function buildOverview(studies, articles) {
 
   const methodSpecies = families.map(([name]) => {
     const lists = studies.filter((s) => familyOf(s) === name)
-    return [name, ...['Human', 'Mouse', 'Rat', ''].map((sp) => lists.filter((s) => s.sp === sp).length)]
+    return [name, ...['Human', 'Mouse', 'Rat'].map((sp) => lists.filter((s) => s.sp === sp).length)]
   })
 
   const diseases = DISEASE_TOPICS.map((topic) => {

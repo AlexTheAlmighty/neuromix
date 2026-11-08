@@ -170,7 +170,7 @@ function speciesMatrix(rows) {
       : 'color: var(--muted)'
     return el('td', { class: 'num', text: fmt(value), style })
   }
-  return dataTable(['Method', 'Human', 'Mouse', 'Rat', 'Not stated'], rows, cell)
+  return dataTable(['Method', 'Human', 'Mouse', 'Rat'], rows, cell)
 }
 
 function overview(o) {
