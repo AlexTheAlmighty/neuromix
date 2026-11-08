@@ -37187,6 +37187,41 @@
    "note": "Hand-nominated. Klf9-induced synapse loss dentate gyrus DE pair (Supplementary Tables 2 and 3; Klf9 rank 1 and Pla2g2f rank 5 of the up list) drafted as optional; curator passed. Other tables are lipidomics, NanoString normalized counts and enrichment.",
    "cycle": "hand-2026-10-20"
   },
+  "42919911": {
+   "v": "merged",
+   "cycle": "hand-2026-11-08",
+   "j": "Nature neuroscience",
+   "t": "Identification of candidate markers for the isolation of neuron-specific extracellular vesicles.",
+   "note": "Hand-nominated. Five columns merged: neuron, astrocyte and oligodendrocyte candidate markers (Table S7) and CSF and plasma EV proteomes (Table S1). SCimilarity attribution scores (Table S5) and GPI-anchored candidates (Table S8) not drafted."
+  },
+  "42950818": {
+   "v": "merged",
+   "cycle": "hand-2026-11-08",
+   "j": "Cell",
+   "t": "Multimodal spatial transcriptomics redefines cortical pathology in Huntington's disease.",
+   "note": "Hand-nominated. One column merged: 16 genes upregulated in inclusion-bearing excitatory neurons, printed in the authors public notebook for Figure 7E. No supplementary gene table; other comparisons need re-analysis of the Dryad h5ad files."
+  },
+  "42951976": {
+   "v": "merged",
+   "cycle": "hand-2026-11-08",
+   "j": "Nature",
+   "t": "Alzheimer's disease genetics converges on microglial and neuronal dysregulation.",
+   "note": "Hand-nominated. Five columns merged: effector genes at all loci and at new loci (Supplementary Data 2), and coloc+MR genes for microglia, neurons and all datasets (Supplementary Data 9)."
+  },
+  "42955945": {
+   "v": "merged",
+   "cycle": "hand-2026-11-08",
+   "j": "Cell reports",
+   "t": "ALS-linked FUS mutation impairs GEMIN5-dependent mRNA recruitment to neuronal late endosomes.",
+   "note": "Hand-nominated. Two columns merged: RAB7A APEX-seq enriched mRNAs in FUS wild type and P525L motor neurons (Table S1), Ensembl IDs mapped to HGNC."
+  },
+  "42957846": {
+   "v": "merged",
+   "cycle": "hand-2026-11-08",
+   "j": "Nature chemical biology",
+   "t": "In vivo-compatible spatial multi-omics via hydrogen peroxide-independent APEX2 labeling.",
+   "note": "Hand-nominated. Six columns merged: stress granule proteome and transcriptome, mitochondrial GPX4 basal and RSL3, hippocampal neuron mitochondria in vivo, and mitochondrial matrix. ER secretome and tumor xenograft lists not drafted."
+  },
   "10.1016/j.neuron.2026.08.006": {
    "v": "merged",
    "cycle": "hand-2026-09-09",

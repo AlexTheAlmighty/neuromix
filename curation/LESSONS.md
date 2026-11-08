@@ -226,3 +226,11 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   Crossref title search found the Cell Reports paper with eight xlsx tables (42826098).
   Search Crossref by title before filing a preprint as nomination-only. Cell Press also
   deposits `.xlsb` workbooks (celrep 118060); Excel COM converts them like legacy `.xls`.
+- Hand scan 2026-11-08 (5 papers, 19 columns drafted): the curator took all 19, optional
+  columns included: AD GWAS loci and cell-type QTL genes (42951976), EV proteomes and
+  candidate markers (42919911), Hi-APEX lists (42957846), an endosome APEX-seq pair
+  (42955945) and a 16-gene human HD list (42950818).
+- Check an enriched flag against the legend before filtering on it. In the mGPX4 basal tab
+  (42957846) the flag copies the mitochondrial flag, 707 rows against 121 by the stated rule.
+  When a paper deposits no gene table, look for its analysis notebooks: saved outputs can
+  print the figure's table (42950818, Figure 7E). Excel COM also opens `.ods` (42951976).
