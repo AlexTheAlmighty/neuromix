@@ -9,12 +9,7 @@ const VIEWS = { genes, lists, about }
 const ROUTES = Object.keys(VIEWS)
 
 /* ---------- theme ---------- */
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
-const savedTheme = localStorage.getItem('neuromix-theme')
-setTheme(savedTheme ?? (prefersDark.matches ? 'dark' : 'light'))
-prefersDark.addEventListener('change', (e) => {
-  if (!localStorage.getItem('neuromix-theme')) setTheme(e.matches ? 'dark' : 'light')
-})
+setTheme(localStorage.getItem('neuromix-theme') ?? 'light')
 
 function setTheme(theme) {
   document.documentElement.dataset.theme = theme
