@@ -198,7 +198,7 @@ function overview(o) {
       tableToggle(['Method', 'Gene lists'], o.methods),
     ]),
 
-    panel('Disease coverage', 'Gene lists per disease.', [
+    panel('Disease coverage', null, [
       bars(o.diseases.map(([label, value, articles]) => ({
         label,
         value,
