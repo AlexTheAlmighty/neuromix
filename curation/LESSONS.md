@@ -264,3 +264,10 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
   calling a list unreproducible. Automated year flags need a PubMed check, because the
   matched record can be a correction notice or a preprint. Compare journal names strictly,
   since a substring check passed "Nature" for Nature Methods.
+- Fourth batch of the 2026-11 audit (124 entries, 43 papers) closes the older entries. Of 31
+  grouped findings, 25 held, 2 were true simplifications and 4 were wrong. Check a claim
+  against the table's own caption: the agents read "six datasets" in the text while the
+  tables state 7. Table citations often used the Elsevier file number, not the table number
+  (mmc numbers run one ahead). A list can come from the control column of the right sheet
+  (Kisty FO was the no-biotin IMS column). "Proximity ligation" had been used for proximity
+  labeling throughout the method field.
