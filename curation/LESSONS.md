@@ -255,3 +255,12 @@ evidence (a PR, a PMID, or a curator comment) so it can be re-examined.
 - Find a column's source by brute force: try every sheet, sort column and direction, and
   count identical positions. An exact match settles it, and it cleared 10 suspected lists.
   PMC manuscript table numbers can differ from the journal's (Garcia Table 5 versus 4).
+- Third batch of the 2026-11 audit (325 entries, 100 papers). Most suspect lists were right
+  and only the label was wrong: 8 Tuddenham "microglial" lists were bulk cortex trait genes,
+  7 Liu lists were subtype markers, and QN, OC, RY and Binette NT and NU had the wrong group.
+  Gene content was a poor guide in both directions: odd-looking lists (Merkurjev microglial
+  genes, De Pace Y-linked genes, Saurat overlap) matched their tables exactly. Filters can
+  be tighter than stated (Saurat used AD FDR below 0.02), so test several thresholds before
+  calling a list unreproducible. Automated year flags need a PubMed check, because the
+  matched record can be a correction notice or a preprint. Compare journal names strictly,
+  since a substring check passed "Nature" for Nature Methods.
