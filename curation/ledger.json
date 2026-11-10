@@ -202,11 +202,39 @@
    "j": "Developmental cell",
    "t": "An amino acid-resolution interactome for motile cilia identifies the structure and function of ciliopathy protein complexes."
   },
+  "39773263": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Molecular neurodegeneration",
+   "t": "VCP regulates early tau seed amplification via specific cofactors.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supplemental Table 1)."
+  },
   "39779912": {
    "v": "triaged-out",
    "cycle": "backlog-2026-w36",
    "j": "Nature aging",
    "t": "EBP1 potentiates amyloid &#x3b2; pathology by regulating &#x3b3;-secretase."
+  },
+  "39843658": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Nature genetics",
+   "t": "In vivo CRISPR-Cas9 genome editing in mice identifies genetic modifiers of somatic CAG repeat instability in Huntington's disease.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supplementary Table 2). Curator did not take the other 1 drafted, which read as duplicates."
+  },
+  "39994794": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Acta neuropathologica communications",
+   "t": "Bridging the gap: investigating the role of phosphorylation at the serine 129 site of α-synuclein in VAPB-PTPIP51 interactions.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Table 9). Curator did not take the other 2 drafted, which read as duplicates."
+  },
+  "40045203": {
+   "v": "nominated",
+   "cycle": "hand-2026-11-09",
+   "j": "Molecular medicine (Cambridge, Mass.)",
+   "t": "A genome-wide association study identifies a novel East Asian-specific locus for dementia with Lewy bodies in Japanese subjects.",
+   "note": "Hand-nominated. Only 5 genes at gene level, mostly the APOE locus. Not drafted."
   },
   "40053453": {
    "v": "nominated",
@@ -226,6 +254,13 @@
    "j": "Cell reports",
    "t": "ALS molecular subtypes are a combination of cellular and pathological features learned by deep multiomics classifiers."
   },
+  "40082954": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Molecular neurodegeneration",
+   "t": "Probe-dependent Proximity Profiling (ProPPr) Uncovers Similarities and Differences in Phospho-Tau-Associated Proteomes Between Tauopathies.",
+   "note": "Hand-nominated. 4 columns merged 2026-11-10 (Supplementary Table 2). Curator did not take the other 4 drafted, which read as duplicates."
+  },
   "40087396": {
    "v": "withdrawn-in-audit",
    "cycle": "backlog-2026-w36",
@@ -244,6 +279,13 @@
    "cycle": "backlog-2026-w36",
    "j": "Nature communications",
    "t": "Brain 5-hydroxymethylcytosine alterations are associated with Alzheimer's disease neuropathology."
+  },
+  "40122840": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Acta neuropathologica communications",
+   "t": "Proximity proteomics reveals unique and shared pathological features between multiple system atrophy and Parkinson's disease.",
+   "note": "Hand-nominated. 2 columns merged 2026-11-10 (Additional file 4). Curator did not take the other 2 drafted, which read as duplicates."
   },
   "40140585": {
    "v": "nominated",
@@ -270,10 +312,18 @@
    "t": "A tissue-specific atlas of protein-protein associations enables prioritization of candidate disease genes."
   },
   "40317322": {
-   "v": "nominated",
-   "cycle": "backlog-2026-w36",
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
    "j": "Acta neuropathologica",
-   "t": "The interactome of tau phosphorylated at T217 in Alzheimer's disease human brain tissue."
+   "t": "The interactome of tau phosphorylated at T217 in Alzheimer's disease human brain tissue.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supplementary Table 3). Curator did not take the other 2 drafted, which read as duplicates."
+  },
+  "40346035": {
+   "v": "nominated",
+   "cycle": "hand-2026-11-09",
+   "j": "Nature communications",
+   "t": "Spatiotemporal deciphering of dynamic the FUS interactome during liquid-liquid phase separation in living cells.",
+   "note": "Hand-nominated. Data 1 to 3 are unranked symbol sets and the source-data volcano fails the FUS bait check. Not drafted."
   },
   "40378823": {
    "v": "triaged-out",
@@ -310,6 +360,20 @@
    "cycle": "backlog-2026-w36",
    "j": "Cell systems",
    "t": "The molecular landscape of cellular metal ion biology."
+  },
+  "40531987": {
+   "v": "nominated",
+   "cycle": "hand-2026-11-09",
+   "j": "Science advances",
+   "t": "Differential pathological dynamics triggered by distinct Parkinson patient-derived α-synuclein extracts in nonhuman primates.",
+   "note": "Hand-nominated. Data S1 is a table of individual monkeys against measurements, with no gene symbols. Not drafted."
+  },
+  "40545554": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Alzheimer's & dementia : the journal of the Alzheimer's Association",
+   "t": "Differences in the soluble and insoluble proteome between primary tauopathies.",
+   "note": "Hand-nominated. 2 columns merged 2026-11-10 (Table S10). Curator did not take the other 6 drafted, which read as duplicates."
   },
   "40588516": {
    "v": "nominated",
@@ -373,6 +437,20 @@
    "j": "Nature chemical biology",
    "t": "In situ proximity labeling of proteins associated with circRNA and RNA G-quadruplexes."
   },
+  "40790356": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "The EMBO journal",
+   "t": "Tau uptake by human neurons depends on receptor LRP1 and kinase LRRK2.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Dataset EV1). Curator did not take the other 1 drafted, which read as duplicates."
+  },
+  "40819080": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Nature communications",
+   "t": "Alpha-synuclein interacts with regulators of ATP homeostasis in mitochondria.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supplementary Data 2)."
+  },
   "40847019": {
    "v": "drafted",
    "cycle": "backlog-2026-w36",
@@ -435,6 +513,13 @@
    "j": "Nature metabolism",
    "t": "DDHD2 provides a flux of saturated fatty acids for neuronal energy and function."
   },
+  "41053297": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Communications biology",
+   "t": "Novel regulators of heparan sulfate proteoglycans modulate cellular uptake of α-synuclein fibrils.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Table S1). Curator did not take the other 1 drafted, which read as duplicates."
+  },
   "41077050": {
    "v": "triaged-out",
    "cycle": "2026-w37",
@@ -452,6 +537,13 @@
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
    "t": "C9orf72 hexanucleotide repeat expansions impair microglial response in ALS."
+  },
+  "41103078": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Autophagy",
+   "t": "Lysosomal proteomics reveals mechanisms of neuronal APOE4-associated lysosomal dysfunction.",
+   "note": "Hand-nominated. 2 columns merged 2026-11-10 (Table S1)."
   },
   "41109213": {
    "v": "nominated",
@@ -484,11 +576,32 @@
    "t": "Pathogenic UNC13A variants cause a neurodevelopmental syndrome by impairing synaptic function.",
    "note": "No gene list."
   },
+  "41142333": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "ACS central science",
+   "t": "Enzyme Activity-Based Genome-wide Screening for Modifiers of Lysosomal Glucocerebrosidase Uncovers Candidate Risk Factors for Parkinson's Disease.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supporting Table S4). Curator did not take the other 1 drafted, which read as duplicates."
+  },
+  "41174004": {
+   "v": "rejected-by-curator",
+   "cycle": "hand-2026-11-09",
+   "j": "Nature cell biology",
+   "t": "TDP-43 skein-like inclusions are formed by BAG3- and HSP70-guided co-aggregation with actin-binding proteins.",
+   "note": "Hand-nominated. 1 column drafted (Supplementary Table 1); curator did not take them, 2026-11-10."
+  },
   "41174170": {
    "v": "triaged-out",
    "cycle": "backlog-2026-w36",
    "j": "Nature neuroscience",
    "t": "TDP-43-dependent mis-splicing of KCNQ2 triggers intrinsic neuronal hyperexcitability in ALS/FTD."
+  },
+  "41188020": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Life science alliance",
+   "t": "Aberrant NSUN1 activity connects m&lt;sup&gt;5&lt;/sup&gt;C-RNA modification to TDP-43 neurotoxicity in ALS/FTD.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Table S1)."
   },
   "41193816": {
    "v": "nominated",
@@ -641,6 +754,13 @@
    "j": "Nature methods",
    "t": "Integration of imaging-based and sequencing-based spatial omics mapping on the same tissue section via DBiTplus."
   },
+  "41545426": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "NPJ Parkinson's disease",
+   "t": "Imaging spatial transcriptomics reveals molecular patterns underlying accumulation of p-Ser129 α-synuclein in a transgenic mouse model.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supplementary Table 5)."
+  },
   "41564007": {
    "v": "triaged-out",
    "cycle": "2026-w39",
@@ -768,6 +888,13 @@
    "j": "Brain : a journal of neurology",
    "t": "Penumbra-derived small extracellular vesicles carry pathogenic RNA driving remote damage after cortical infarction."
   },
+  "41671379": {
+   "v": "rejected-by-curator",
+   "cycle": "hand-2026-11-09",
+   "j": "Science advances",
+   "t": "VMAT2 dysfunction impairs vesicular dopamine uptake, driving its oxidation and α-synuclein pathology in DJ-1-linked Parkinson's neurons.",
+   "note": "Hand-nominated. 3 columns drafted (Table S1, Table S3); curator did not take them, 2026-11-10."
+  },
   "41684229": {
    "v": "triaged-out",
    "cycle": "2026-w39",
@@ -840,6 +967,13 @@
    "j": "Brain : a journal of neurology",
    "t": "Maternal microbiome-derived propionate regulates offspring myelination via histone lactylation."
   },
+  "41814068": {
+   "v": "rejected-by-curator",
+   "cycle": "hand-2026-11-09",
+   "j": "Molecular systems biology",
+   "t": "Structure-function relationship of alpha-synuclein fibrillar polymorphs derived from distinct synucleinopathies.",
+   "note": "Hand-nominated. 3 columns drafted (Dataset EV5); curator did not take them, 2026-11-10."
+  },
   "41819099": {
    "v": "drafted",
    "cycle": "backlog-2026-w36",
@@ -858,6 +992,13 @@
    "j": "Nature genetics",
    "t": "A repeat expansion in GOLGA8A is a major risk factor for atypical frontotemporal lobar degeneration with ubiquitin-positive inclusions.",
    "note": "No gene list."
+  },
+  "41832177": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Nature communications",
+   "t": "TYK2 mediates neuroinflammation in Alzheimer's disease brains with TDP-43 pathology.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supplementary Data 2). Curator did not take the other 1 drafted, which read as duplicates."
   },
   "41832957": {
    "v": "drafted",
@@ -884,6 +1025,13 @@
    "j": "Nature genetics",
    "t": "Single-cell expression QTL analyses of the human cerebellum reveal vulnerability of oligodendrocytes in essential tremor.",
    "note": "No usable list: scQTL statistics only, and differential expression lists of 7 genes or fewer."
+  },
+  "41861004": {
+   "v": "nominated",
+   "cycle": "hand-2026-11-09",
+   "j": "Science advances",
+   "t": "Membrane-associated Rhes-Slc4a7 complex orchestrates tunneling nanotube formation and mutant Huntingtin spread.",
+   "note": "Hand-nominated. Dataset S1 has no statistic and its order does not match the figure. Not drafted."
   },
   "41862658": {
    "v": "triaged-out",
@@ -1033,6 +1181,13 @@
    "cycle": "2026-w39",
    "j": "Brain : a journal of neurology",
    "t": "Data-driven modelling of tau pathology reveals distinct progressive supranuclear palsy subtypes."
+  },
+  "41986335": {
+   "v": "rejected-by-curator",
+   "cycle": "hand-2026-11-09",
+   "j": "Nature communications",
+   "t": "Single-nucleus brain transcriptomics reveals microglia dysfunction in multiple system atrophy.",
+   "note": "Hand-nominated. 4 columns drafted (Supplementary Dataset 9); curator did not take them, 2026-11-10."
   },
   "41986690": {
    "v": "triaged-out",
@@ -4314,10 +4469,11 @@
    "t": "[177Lu]Lu-PSMA-617 in metastatic androgen pathway modulator-sensitive prostate cancer."
   },
   "42562827": {
-   "v": "nominated",
-   "cycle": "backlog-2026-w36",
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
    "j": "Nature communications",
-   "t": "&#x3b1;-Synuclein blocks endoplasmic reticulum co-translational protein translocation early in Parkinson's disease."
+   "t": "α-Synuclein blocks endoplasmic reticulum co-translational protein translocation early in Parkinson's disease.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supplementary Data 1)."
   },
   "42563031": {
    "v": "triaged-out",
@@ -19095,6 +19251,13 @@
    "cycle": "2026-w37",
    "j": "Cell",
    "t": "Live-cell transcriptomics with engineered virus-like particles."
+  },
+  "42679933": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Neurobiology of disease",
+   "t": "Parkinson's disease-linked D620N mutation selectively alters the brain-specific protein interactome of VPS35.",
+   "note": "Hand-nominated. 2 columns merged 2026-11-10 (Table S1, Table S4). Curator did not take the other 1 drafted, which read as duplicates."
   },
   "42680205": {
    "v": "triaged-out",
@@ -37193,6 +37356,13 @@
    "j": "Nature neuroscience",
    "t": "Identification of candidate markers for the isolation of neuron-specific extracellular vesicles.",
    "note": "Hand-nominated. Five columns merged: neuron, astrocyte and oligodendrocyte candidate markers (Table S7) and CSF and plasma EV proteomes (Table S1). SCimilarity attribution scores (Table S5) and GPI-anchored candidates (Table S8) not drafted."
+  },
+  "42934224": {
+   "v": "merged",
+   "cycle": "hand-2026-11-09",
+   "j": "Nature communications",
+   "t": "Spatial multi-omics reveals disease-associated oligodendrocytes and metabolic dysregulation in male Parkinson's disease mouse models.",
+   "note": "Hand-nominated. 1 column merged 2026-11-10 (Supplementary Data 2)."
   },
   "42950818": {
    "v": "merged",
