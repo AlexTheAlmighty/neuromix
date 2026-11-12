@@ -150,8 +150,10 @@ const METHOD_FAMILIES = [
 const DISEASE_TOPICS = ['Alzheimer', 'Huntington', 'ALS and FTD', 'Parkinson', 'Multiple sclerosis',
   'Neurodevelopment', 'Prion', 'Psychiatric', 'Epilepsy']
 
-// Counted across article titles and abstracts. ALS and FTD are matched case sensitively,
-// since "als" and "ftd" turn up inside ordinary words and identifiers.
+// Keyword frequency in the source abstracts: every occurrence counts, and each abstract
+// is counted once even when an article has two records. The number of abstracts that
+// mention a term goes alongside. ALS and FTD are matched case sensitively, since "als"
+// and "ftd" turn up inside ordinary words and identifiers.
 const KEY_TERMS = [
   ['Brain', /\bbrains?\b/i],
   ['Neuron', /neuron/i],
@@ -206,8 +208,13 @@ function buildOverview(studies, articles) {
     return [topic, lists.length, new Set(lists.map((s) => s.ar)).size]
   }).sort(byCount)
 
+  const abstracts = [...new Set(articles.map((a) => (a.a ?? '').trim()).filter(Boolean))]
   const keyTerms = KEY_TERMS
-    .map(([term, re_]) => [term, articles.filter((a) => re_.test(`${a.t} ${a.a}`)).length])
+    .map(([term, re_]) => {
+      const every = new RegExp(re_.source, `${re_.flags}g`)
+      const hits = abstracts.map((text) => text.match(every)?.length ?? 0)
+      return [term, hits.reduce((sum, n) => sum + n, 0), hits.filter(Boolean).length]
+    })
     .sort(byCount)
 
   const geneArticles = new Map()
