@@ -353,7 +353,6 @@ export function geneProfile(gene) {
     journals: journals.size,
     // A gene in hundreds of lists is not telling you much about any one of them.
     ubiquity: hits.length / store.studies.length,
-    conflicted: up >= 3 && down >= 3,
   }
 }
 
@@ -408,12 +407,13 @@ export function coOccurringGenes(queries, { exact = false, minLists = 2 } = {}) 
 
 /* ---------- gene list comparison (Gene List Analysis tab) ---------- */
 
-export function compareToDatabase(genes, { minShared = 2, universe = 20000 } = {}) {
+export function compareToDatabase(genes, { minShared = 2, universe = 20000, exclude = null } = {}) {
   const query = new Set(genes)
   const rows = []
   const frequency = new Map()
 
   for (const study of store.studies) {
+    if (study === exclude) continue
     const shared = []
     for (const gene of study.genes) if (query.has(gene)) shared.push(gene)
     if (shared.length < minShared) continue

@@ -132,6 +132,9 @@ let results
 let mounted = false
 let activeTool = null
 let visibleStudies = []
+// The study whose genes were last loaded into the box. Comparing that list against the
+// database would otherwise return the study itself as a 100% match at the top.
+let loadedStudy = null
 
 export function mount(root) {
   if (mounted) return
@@ -224,6 +227,7 @@ export function mount(root) {
   showEmptyState()
 
   on('analyse-list', ({ study }) => {
+    loadedStudy = study
     textarea.value = study.genes.join(', ')
     updateCount()
     location.hash = '#/lists'
@@ -281,6 +285,7 @@ function selectStudy(study, row) {
   for (const other of studyPicker.querySelectorAll('.study-option')) {
     other.setAttribute('aria-selected', String(other === row))
   }
+  loadedStudy = study
   textarea.value = study.genes.join(', ')
   updateCount()
   toast(`Loaded ${fmt(study.size)} genes from the selected list`)
@@ -400,12 +405,15 @@ function runComparison() {
   if (!genes) return
   clearActiveTool()
 
-  const { rows, topGenes, queried, unmatched, significantCount } = compareToDatabase(genes)
+  // Leave out the source study only while the box still holds exactly its genes.
+  const loaded = loadedStudy && new Set(loadedStudy.genes)
+  const source = loaded && loaded.size === new Set(genes).size && genes.every((g) => loaded.has(g)) ? loadedStudy : null
+  const { rows, topGenes, queried, unmatched, significantCount } = compareToDatabase(genes, { exclude: source })
   clear(results)
 
   results.append(el('div', { class: 'stats' }, [
     stat('Genes queried', fmt(queried), `${fmt(queried - unmatched.length)} known to NeurOmix`),
-    stat('Matching gene lists', fmt(rows.length), 'sharing 2 or more genes'),
+    stat('Matching gene lists', fmt(rows.length), source ? 'sharing 2 or more genes, not counting the selected list' : 'sharing 2 or more genes'),
     stat('Statistically significant', fmt(significantCount), `of ${fmt(rows.length)} after correction`),
   ]))
 

@@ -180,6 +180,15 @@ async function fillGeneSummary(symbol, host) {
   }
 }
 
+// Share of all gene lists containing the gene. Cut points follow the database's own
+// spread: about 2% of genes reach 2% of lists, and half appear in only one or two lists.
+function commonness(share) {
+  if (share >= 0.02) return 'very common'
+  if (share >= 0.005) return 'common'
+  if (share >= 0.002) return 'uncommon'
+  return 'very uncommon'
+}
+
 function profileCard(p) {
   if (!p) return el('div')
   const total = p.lists
@@ -215,20 +224,13 @@ function profileCard(p) {
             el('span', { class: 'chip', text: `${fmt(p.neutral)} not directional` }),
             el('span', { class: 'chip chip-down', text: `${fmt(p.down)} down` }),
           ]),
-          p.conflicted && el('p', { class: 'hint', style: 'margin-top:8px' }, [
-            'Reported in both directions by different experiments, so the direction is context dependent.',
-          ]),
         ]),
         el('div', {}, [
           el('div', { class: 'k', text: 'Ranking' }),
           el('div', { class: 'v', text: `Best rank #${fmt(p.bestRank)}` }),
           el('div', { class: 'hint', text: `Typically in the top ${pct(p.medianPercentile, 0)} of the lists it appears in` }),
           el('div', { class: 'k', style: 'margin-top:10px', text: 'How common' }),
-          el('div', { class: 'hint' }, [
-            p.ubiquity > 0.03
-              ? `In ${pct(p.ubiquity, 1)} of all lists, so treat co-occurrence with it cautiously.`
-              : `In ${pct(p.ubiquity, 1)} of all lists, so its co-occurrences are fairly specific.`,
-          ]),
+          el('div', { class: 'hint', text: `Found in ${pct(p.ubiquity, 1)} of all gene lists (${commonness(p.ubiquity)})` }),
         ]),
         el('div', {}, [
           el('div', { class: 'k', text: 'Topics' }),
