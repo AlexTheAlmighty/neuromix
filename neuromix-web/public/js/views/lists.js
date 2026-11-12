@@ -361,7 +361,7 @@ function showEmptyState() {
   clear(results)
   results.append(el('div', { class: 'empty' }, [
     el('h3', { text: 'Analyse any gene list' }),
-    el('p', { text: 'Load one of the 1,037 NeurOmix lists from the panel on the left, or paste your own list of symbols.' }),
+    el('p', { text: `Load one of the ${fmt(store.stats.lists)} NeurOmix lists from the panel on the left, or paste your own list of symbols.` }),
     el('ul', { class: 'prose' }, [
       el('li', { text: 'Compare to NeurOmix ranks every other gene list by how many genes it shares with yours.' }),
       el('li', { text: 'The enrichment buttons send the list to Enrichr and return the enriched terms with a chart of the strongest hits.' }),

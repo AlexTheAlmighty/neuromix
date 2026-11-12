@@ -23,6 +23,11 @@ export function mount(root) {
     tile('Gene entries', fmt(s.geneEntries)),
     tile('Unique gene symbols', fmt(s.uniqueGenes)),
   ]))
+  if (store.generated) {
+    const built = new Date(`${store.generated}T00:00:00Z`)
+      .toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+    statsColumn.append(el('p', { class: 'hint', text: `Database last updated ${built}.` }))
+  }
 
   if (store.overview) statsColumn.append(overview(store.overview))
 

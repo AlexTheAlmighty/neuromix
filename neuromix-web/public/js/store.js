@@ -5,6 +5,8 @@ const RANK_SPAN = 1024
 
 export const store = {
   ready: false,
+  version: '',
+  generated: null,
   stats: null,
   overview: null,
   articles: [],
@@ -20,11 +22,32 @@ export const store = {
   facets: { journals: [], methods: [], tissues: [], topics: [], years: [], stats: [], assays: [], species: [] },
 }
 
+// The data file is rebuilt on every deploy. "no-cache" makes the browser ask the server
+// whether its copy is current on each page load (a 304 when it is, so it costs almost
+// nothing), instead of reusing a stale copy for up to ten minutes after a deploy.
+const DATA_URL = '/data/neuromix.json'
+const versionOf = (res) => res.headers.get('last-modified') ?? res.headers.get('etag') ?? ''
+
+// True when the server now holds a different data file from the one this page loaded,
+// which happens when a tab stays open across a deploy. Network errors count as "no".
+export async function databaseChanged() {
+  if (!store.version) return false
+  try {
+    const res = await fetch(DATA_URL, { method: 'HEAD', cache: 'no-cache' })
+    const current = res.ok ? versionOf(res) : ''
+    return Boolean(current) && current !== store.version
+  } catch {
+    return false
+  }
+}
+
 export async function loadDatabase() {
-  const res = await fetch('/data/neuromix.json')
+  const res = await fetch(DATA_URL, { cache: 'no-cache' })
   if (!res.ok) throw new Error(`Could not load the database (HTTP ${res.status})`)
   const payload = await res.json()
 
+  store.version = versionOf(res)
+  store.generated = payload.generated ?? null
   store.stats = payload.stats
   store.overview = payload.overview ?? null
   store.articles = payload.articles

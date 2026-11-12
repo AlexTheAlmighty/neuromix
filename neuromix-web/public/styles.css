@@ -492,6 +492,11 @@ table.data .desc-cell { max-width: 520px; }
   animation: slide-up 0.16s ease;
 }
 .toast.error { border-left-color: var(--critical); }
+.update-banner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px;
+  margin-bottom: 16px; background: var(--surface); border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent); padding: 8px 10px 8px 14px; font-size: 0.87rem;
+}
 @keyframes slide-up { from { transform: translateY(8px); opacity: 0; } }
 
 .prose { max-width: 74ch; }

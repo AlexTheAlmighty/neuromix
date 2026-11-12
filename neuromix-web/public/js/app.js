@@ -1,5 +1,5 @@
 // Boot, theme and hash routing.
-import { loadDatabase } from './store.js'
+import { loadDatabase, databaseChanged } from './store.js'
 import { el, clear, initDrawer, toast } from './ui.js'
 import * as genes from './views/genes.js'
 import * as lists from './views/lists.js'
@@ -43,6 +43,29 @@ function show(name) {
 
 window.addEventListener('hashchange', () => show(routeName()))
 
+/* ---------- database updates ---------- */
+// A tab left open keeps the data it loaded, so its counts fall behind after a deploy.
+// When the tab comes back into view (at most every five minutes), ask the server whether
+// the data file changed and offer a reload. The search lives in the URL, so it survives.
+const UPDATE_CHECK_MS = 5 * 60 * 1000
+
+function watchForUpdates() {
+  let lastCheck = Date.now()
+  let offered = false
+  const check = async () => {
+    if (offered || document.hidden || Date.now() - lastCheck < UPDATE_CHECK_MS) return
+    lastCheck = Date.now()
+    if (!(await databaseChanged())) return
+    offered = true
+    document.getElementById('main').prepend(el('div', { class: 'update-banner', role: 'status' }, [
+      el('span', { text: 'The database has been updated since this page was opened.' }),
+      el('button', { class: 'btn btn-primary btn-sm', type: 'button', text: 'Reload', onclick: () => location.reload() }),
+    ]))
+  }
+  document.addEventListener('visibilitychange', check)
+  setInterval(check, UPDATE_CHECK_MS)
+}
+
 /* ---------- boot ---------- */
 initDrawer()
 
@@ -54,6 +77,7 @@ loadDatabase()
     // this gene) reach a live listener even before that tab has been opened.
     for (const route of ROUTES) VIEWS[route].mount(document.getElementById(`view-${route}`))
     show(routeName())
+    watchForUpdates()
   })
   .catch((err) => {
     const boot = document.getElementById('boot')
