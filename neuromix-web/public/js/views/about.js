@@ -186,11 +186,7 @@ function overview(o) {
 
   const termScale = o.keyTerms[0]?.[1] ?? 0
   const termSplit = Math.ceil(o.keyTerms.length / 2)
-  const termChart = (terms) => bars(terms.map(([label, value, abstracts]) => ({
-    label,
-    value,
-    tooltip: [['Mentions', fmt(value)], ['Abstracts', fmt(abstracts)]],
-  })), 'Mentions', { maxValue: termScale })
+  const termChart = (terms) => bars(toRows(terms), 'Articles', { maxValue: termScale })
 
   return el('div', { class: 'overview' }, [
     panel('Gene lists by publication year', null, [
@@ -216,12 +212,12 @@ function overview(o) {
       tableToggle(['Disease', 'Gene lists', 'Articles'], o.diseases),
     ]),
 
-    panel('Key terms', 'Times each term appears across the source abstracts.', [
+    panel('Key terms', 'Articles mentioning each term.', [
       el('div', { class: 'split' }, [
         termChart(o.keyTerms.slice(0, termSplit)),
         termChart(o.keyTerms.slice(termSplit)),
       ]),
-      tableToggle(['Term', 'Mentions', 'Abstracts mentioning'], o.keyTerms),
+      tableToggle(['Term', 'Articles'], o.keyTerms),
     ], true),
 
     panel('Method by species', null, [speciesMatrix(o.methodSpecies)], true),
