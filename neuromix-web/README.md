@@ -165,7 +165,7 @@ commented out in the R app and depends on a file that is not in this folder.
 
 **Overlap significance.** Two long lists share genes by chance. Every comparison now
 carries a hypergeometric p value against a 20,000 gene background, with a Bonferroni
-threshold over the comparisons actually made and a "significant only" toggle. Comparing
+threshold over every list compared and a "significant only" toggle. Comparing
 the largest list in the database returns 504 matches, of which 80 survive correction.
 
 **Specificity for co-occurrence.** A raw co-occurrence count partly measures how often a

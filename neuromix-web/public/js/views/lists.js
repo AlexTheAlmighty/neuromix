@@ -408,13 +408,13 @@ function runComparison() {
   // Leave out the source study only while the box still holds exactly its genes.
   const loaded = loadedStudy && new Set(loadedStudy.genes)
   const source = loaded && loaded.size === new Set(genes).size && genes.every((g) => loaded.has(g)) ? loadedStudy : null
-  const { rows, topGenes, queried, unmatched, significantCount } = compareToDatabase(genes, { exclude: source })
+  const { rows, topGenes, queried, unmatched, significantCount, compared } = compareToDatabase(genes, { exclude: source })
   clear(results)
 
   results.append(el('div', { class: 'stats' }, [
     stat('Genes queried', fmt(queried), `${fmt(queried - unmatched.length)} known to NeurOmix`),
     stat('Matching gene lists', fmt(rows.length), source ? 'sharing 2 or more genes, not counting the selected list' : 'sharing 2 or more genes'),
-    stat('Statistically significant', fmt(significantCount), `of ${fmt(rows.length)} after correction`),
+    stat('Statistically significant', fmt(significantCount), `of ${fmt(rows.length)}, corrected for ${fmt(compared)} lists compared`),
   ]))
 
   if (!rows.length) {

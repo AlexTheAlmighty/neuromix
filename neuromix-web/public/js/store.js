@@ -430,8 +430,10 @@ export function compareToDatabase(genes, { minShared = 2, universe = 20000, excl
   }
 
   rows.sort((a, b) => b.count - a.count || b.coverage - a.coverage)
-  // Bonferroni over the comparisons actually made.
-  const threshold = rows.length ? 0.05 / rows.length : 0.05
+  // Bonferroni over every list the query was compared with. Counting only the lists
+  // that passed the overlap filter would select on the outcome and loosen the threshold.
+  const compared = store.studies.length - (exclude ? 1 : 0)
+  const threshold = compared ? 0.05 / compared : 0.05
   for (const row of rows) row.significant = row.pValue < threshold
 
   const topGenes = [...frequency.entries()]
@@ -444,6 +446,7 @@ export function compareToDatabase(genes, { minShared = 2, universe = 20000, excl
     queried: query.size,
     matchedGenes: topGenes.length,
     significantCount: rows.filter((r) => r.significant).length,
+    compared,
     threshold,
     unmatched: [...query].filter((g) => !store.geneIndex.has(g)),
   }
